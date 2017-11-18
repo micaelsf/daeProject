@@ -18,8 +18,8 @@ public class Student extends User implements Serializable {
     public Student() {
     }
 
-    public Student(Long id, String username, String password, String name, String email, String studentNumber) {
-        super(id, username, password, name, email);
+    public Student(String password, String name, String email, String studentNumber) {
+        super(password, name, email);
         this.studentNumber = studentNumber;
     }
 

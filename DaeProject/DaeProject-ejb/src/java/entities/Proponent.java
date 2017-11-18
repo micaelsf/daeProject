@@ -14,7 +14,7 @@ public class Proponent extends User implements Serializable{
     public Proponent() {
     }
 
-    public Proponent(Long id, String username, String password, String name, String email) {
-        super(id, username, password, name, email);
+    public Proponent(String password, String name, String email) {
+        super(password, name, email);
     }
 }

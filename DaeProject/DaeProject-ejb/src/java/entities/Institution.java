@@ -18,8 +18,8 @@ public class Institution extends Proponent implements Serializable {
     public Institution() {
     }
 
-    public Institution(Long id, String username, String password, String name, String email) {
-        super(id, username, password, name, email);
+    public Institution(String password, String name, String email) {
+        super(password, name, email);
     }
     
 }

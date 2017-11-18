@@ -38,8 +38,7 @@ public class User implements Serializable {
     protected User() {
     }
 
-    protected User(Long id, String username, String password, String name, String email) {
-        this.id = id;
+    protected User(String password, String name, String email) {
         this.password = password;
         this.name = name;
         this.email = email;

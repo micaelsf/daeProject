@@ -14,7 +14,7 @@ public class Teacher extends Proponent implements Serializable {
     public Teacher() {
     }
 
-    public Teacher(Long id, String username, String password, String name, String email) {
-        super(id, username, password, name, email);
+    public Teacher(String password, String name, String email) {
+        super(password, name, email);
     }
 }
