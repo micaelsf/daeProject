@@ -1,21 +1,70 @@
-#ant specific
-dist/
-build/
+#
+# Project specific excludes
+#
 
-#netbeans specific
+tomcat
+
+#
+# Default excludes
+#
+
+# Binaries
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.war
+*.ear
+*.sar
+*.class
+
+# Maven 
+target/
+
+# IntelliJ project files 
+*.iml
+*.iws
+*.ipr
+.idea/
+
+# eclipse project file
+.settings/
+.classpath
+.project
+
+# NetBeans specific
 core
-nbproject/*
-!nbproject/project.properties
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
 !nbproject/project.xml
+!nbproject/private/private.properties
+
+# not sure
+!DaeProject-ejb/setup
+!DaeProject-ejb/src/conf
+
 
 #java specific
 *.class
 
-#general swap/backup files
+# OS
+.DS_Store
+
+# Misc
+*.swp
 *.so
 *.log
 *.out
 *~
-*.swp
-*.DS_Store
 *.lock
+release.properties
+pom.xml.releaseBackup
+pom.xml.tag
