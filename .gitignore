@@ -47,6 +47,11 @@ nb-configuration.xml
 !nbproject/project.xml
 !nbproject/private/private.properties
 
+# not sure
+!DaeProject-ejb/setup
+!DaeProject-ejb/src/conf
+
+
 #java specific
 *.class
 
