@@ -6,11 +6,12 @@
 package dtos;
 
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author micae
- */
+@XmlRootElement(name = "Student") 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class StudentDTO extends UserDTO implements Serializable{
     private String studentNumber;
    
@@ -18,13 +19,11 @@ public class StudentDTO extends UserDTO implements Serializable{
     }
 
     public StudentDTO(
-            Long id,
+            int id,
             String studentNumber,
             String password,
             String name,
-            String email,            
-            int courseCode,
-            String courseName) {
+            String email) {
         super(id, password, name, email);
         this.studentNumber = studentNumber;
     }

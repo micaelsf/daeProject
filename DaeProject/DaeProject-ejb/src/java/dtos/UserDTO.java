@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class UserDTO implements Serializable{
     
-    protected Long id;
+    protected int id;
     protected String password;    
     protected String name;
     protected String email;
@@ -17,7 +17,7 @@ public class UserDTO implements Serializable{
     public UserDTO() {
     }    
     
-    public UserDTO(Long id, String password, String name, String email) {
+    public UserDTO(int id, String password, String name, String email) {
         this.id = id;
         this.password = password;
         this.name = name;
@@ -30,11 +30,11 @@ public class UserDTO implements Serializable{
         setEmail(null);
     }        
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     

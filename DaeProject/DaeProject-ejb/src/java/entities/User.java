@@ -23,7 +23,7 @@ import javax.validation.constraints.Pattern;
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private int id;
     @NotNull(message = "Password must not be empty")
     protected String password;
     @NotNull(message = "Name must not be empty")
@@ -44,11 +44,11 @@ public class User implements Serializable {
         this.email = email;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
     
