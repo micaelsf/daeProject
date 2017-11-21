@@ -6,19 +6,87 @@
         <title>
             <ui:insert name="title">Admin | Academics Management</ui:insert>
         </title> 
-        <h:outputStylesheet library="css" name="bootstrap.min.css"/>         
-        <h:outputStylesheet library="css" name="app.css"/> 
+        <h:outputStylesheet library="css" name="bootstrap.min.css"/>          
+        <h:outputStylesheet library="css" name="font-awesome/css/font-awesome.min.css"/> 
+        <h:outputStylesheet library="css" name="sb-admin-2.min.css" />              
+        <h:outputStylesheet library="css" name="admin.css"/> 
 
         <ui:insert name="css"> <!-- other style sheets you might want to include --> 
         </ui:insert> 
     </h:head> 
-    <h:body> <div id="main">
-            <ui:insert name="main">
-            </ui:insert> 
-        </div> 
-        <h:outputScript library="js" name="bootstrap.min.js">
-            
-        </h:outputScript>
+    <h:body> 
+        <div id="wrapper">
+            <!-- Navigation -->
+            <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Comissão Cientifico-Pedagógica EI</a>
+                </div>
+                <!-- /.navbar-header -->
+
+                <ul class="nav navbar-top-links navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                            <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                        </a>
+                        <ul class="dropdown-menu dropdown-user">
+                            <li><a href="#"><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                            </li>
+                        </ul>
+                        <!-- /.dropdown-user -->
+                    </li>
+                    <!-- /.dropdown -->
+                </ul>
+                <!-- /.navbar-top-links -->
+
+                <div class="navbar-default sidebar" role="navigation">
+                    <div class="sidebar-nav navbar-collapse">
+                        <ul class="nav" id="side-menu">
+                            <li>
+                                <a href="base.xhtml"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            </li>
+                            <li>
+                                <a href="#"><i class="fa fa-table fa-fw"></i> example</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- /.sidebar-collapse -->
+                </div>
+                <!-- /.navbar-static-side -->
+            </nav>
+
+            <!-- Page Content -->
+            <div id="page-wrapper">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="main">
+                                <ui:insert name="main">
+                                </ui:insert> 
+                            </div> 
+                        </div>
+                        <!-- /.col-lg-12 -->
+                    </div>
+                    <!-- /.row -->
+                </div>
+                <!-- /.container-fluid -->
+            </div>
+            <!-- /#page-wrapper -->
+
+        </div>
+        <!-- /#wrapper -->
+        
+        
+        <h:outputScript library="js" name="jquery.min.js"/>
+        <h:outputScript library="js" name="bootstrap.min.js"/>        
+        <h:outputScript library="js" name="sb-admin-2.min.js"/>  
+        <h:outputScript library="js" name="metisMenu.min.js"/> 
+        
         <ui:insert name="scripts"> 
             <!-- other scripts you might want to include -->
         </ui:insert> 

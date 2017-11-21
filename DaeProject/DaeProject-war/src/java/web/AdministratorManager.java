@@ -50,6 +50,6 @@ public class AdministratorManager {
             return null;
         }
 
-        return "index?faces-redirect=true";
+        return "views/app/index?faces-redirect=true";
     }
 }
