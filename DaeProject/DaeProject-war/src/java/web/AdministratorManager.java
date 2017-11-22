@@ -59,7 +59,7 @@ public class AdministratorManager {
             return null;
         }
 
-        return "views/admin/student/index?faces-redirect=true";
+        return "admin/student/index?faces-redirect=true";
     }
     
     public List<StudentDTO> getAllStudentsREST() {

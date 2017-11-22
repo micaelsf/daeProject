@@ -23,7 +23,7 @@
                                 value="#{object}" /> 
                         </h:commandLink> &nbsp; 
                         <h:commandLink 
-                            value="Update" 
+                            value="Edit" 
                             action="admin_students_update?faces-redirect=true"> 
                             <f:setPropertyActionListener 
                                 target="#{administratorManager.currentStudent}" 
@@ -39,6 +39,8 @@
                     </h:form> 
                 </p:column> 
             </em:dt>
+            
+            <h:link class="btn btn-primary pull-left" value="Create student" outcome="admin_students_create"/>
         </ui:define>
     </ui:composition>
 </html>
