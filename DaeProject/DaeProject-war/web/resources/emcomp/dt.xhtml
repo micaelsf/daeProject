@@ -14,7 +14,7 @@
         <p:dataTable value="${cc.attrs.list}" var="object" summary="${cc.attrs.title}"> 
             <f:facet name="header" rendered="#{not empty cc.attrs.title}"> 
                 <h:outputText value="${cc.attrs.title}" /> 
-            </f:facet> 
+            </f:facet>
             <c:forEach items="#{cc.attrs.headers}" var="header" varStatus="loop"> 
                 <p:column headerText="${header}">
                     <h:outputText value="${object[cc.attrs.props[loop.index]]}">
