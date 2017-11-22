@@ -10,7 +10,7 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/views/admin/index.xhtml</welcome-file>
+        <welcome-file>faces/admin/index.xhtml</welcome-file>
     </welcome-file-list>
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
