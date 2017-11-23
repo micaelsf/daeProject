@@ -53,13 +53,19 @@
                                     class="fa fa-dashboard fa-fw" 
                                     value=" Dashboard" 
                                     outcome="/admin/index"/>
-                             </li>
+                            </li>
                             <li>
                                 <h:link 
                                     class="fa fa-users fa-fw" 
                                     value=" Students" 
                                     outcome="/admin/student/index"/>
-                              </li>
+                            </li>
+                            <li>
+                                <h:link 
+                                    class="fa fa-users fa-fw" 
+                                    value=" Instituitions" 
+                                    outcome="/admin/instituition/index"/>
+                            </li>
                         </ul>
                     </div>
                     <!-- /.sidebar-collapse -->
@@ -87,13 +93,13 @@
 
         </div>
         <!-- /#wrapper -->
-        
-        
+
+
         <h:outputScript library="js" name="jquery.min.js"/>
         <h:outputScript library="js" name="bootstrap.min.js"/>        
         <h:outputScript library="js" name="sb-admin-2.min.js"/>  
         <h:outputScript library="js" name="metisMenu.min.js"/> 
-        
+
         <ui:insert name="scripts"> 
             <!-- other scripts you might want to include -->
         </ui:insert> 
