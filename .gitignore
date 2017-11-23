@@ -68,3 +68,8 @@ nb-configuration.xml
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
+DaeProject/DaeProject-ejb/nbproject/private/private.properties
+DaeProject/DaeProject-war/nbproject/project.properties
+DaeProject/DaeProject-war/nbproject/private/private.properties
+DaeProject/DaeProject-war/nbproject/private/private.xml
+DaeProject/nbproject/private/private.properties
