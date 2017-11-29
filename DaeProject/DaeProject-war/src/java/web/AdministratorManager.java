@@ -18,8 +18,11 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
+import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 
@@ -69,7 +72,41 @@ public class AdministratorManager {
             return null;
         }
 
-        return "admin/student/index?faces-redirect=true";
+        return "index?faces-redirect=true";
+    }
+    
+    public String updateStudentREST() {
+        try {
+            client.target(baseUri)
+                    .path("/students/updateREST")
+                    .path(currentStudent.getId() + "")
+                    .path(currentStudent.getName())
+                    .path(currentStudent.getEmail())
+                    .path(currentStudent.getStudentNumber())
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(this));
+ 
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    public void removeStudent(ActionEvent event) {
+        try {
+            System.out.println("web.AdministratorManager.removeStudent() #1");
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            System.out.println("web.AdministratorManager.removeStudent() #2" + param);
+            int id = Integer.parseInt(param.getValue().toString());
+            System.out.println("web.AdministratorManager.removeStudent() #3");
+            
+            studentBean.remove(id);
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        } 
     }
     
     public List<StudentDTO> getAllStudentsREST() {
@@ -87,8 +124,7 @@ public class AdministratorManager {
         }
         return returnedStudents;
     }
-    
-    
+
      public String createInstituition() {
         try {
             instituitionBean.create(
@@ -123,6 +159,30 @@ public class AdministratorManager {
             return null;
         }
         return returnedInstituitions;
+    }
+
+    public StudentDTO getNewStudent() {
+        return newStudent;
+    }
+
+    public void setNewStudent(StudentDTO newStudent) {
+        this.newStudent = newStudent;
+    }
+
+    public StudentDTO getCurrentStudent() {
+        return currentStudent;
+    }
+
+    public void setCurrentStudent(StudentDTO currentStudent) {
+        this.currentStudent = currentStudent;
+    }
+    
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
     }
     
 }
