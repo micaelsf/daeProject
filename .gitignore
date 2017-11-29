@@ -45,11 +45,11 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 !nbproject/project.xml
-!nbproject/private/private.properties
+!nbproject/private/
 
 # not sure
-!DaeProject-ejb/setup
-!DaeProject-ejb/src/conf
+DaeProject-ejb/setup
+DaeProject-ejb/src/conf
 
 
 #java specific

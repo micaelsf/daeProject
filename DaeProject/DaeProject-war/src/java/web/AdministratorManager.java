@@ -7,8 +7,10 @@ package web;
 
 import dtos.InstituitionDTO;
 import dtos.StudentDTO;
+import dtos.TeacherDTO;
 import ejbs.InstituitionBean;
 import ejbs.StudentBean;
+import ejbs.TeacherBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -40,14 +42,21 @@ public class AdministratorManager {
     private InstituitionDTO newInstituition;    
     private InstituitionDTO currentInstituition;
     
+    @EJB
+    private TeacherBean teacherBean;
+    
+    private TeacherDTO newTeacher;    
+    private TeacherDTO currentTeacher;
+    
     private UIComponent component;
 
     private Client client;
-    private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
+    private final String baseUri = "http://localhost:32163/DaeProject-war/webapi";
     
     public AdministratorManager() {
         newStudent = new StudentDTO();
         newInstituition = new InstituitionDTO();
+        newTeacher = new TeacherDTO();
         client = ClientBuilder.newClient();
         
     }
@@ -124,5 +133,46 @@ public class AdministratorManager {
         }
         return returnedInstituitions;
     }
+    
+    /* TEACHERS  */
+    
+    public String createTeacher() {
+        try {
+            teacherBean.create(
+                    newTeacher.getId(),
+                    newTeacher.getPassword(),
+                    newTeacher.getName(),
+                    newTeacher.getEmail(),
+                    newTeacher.getTeacherNumber());
+            newTeacher.reset();
+        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
+            return null;
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            return null;
+        }
+
+        return "admin/teacher/index?faces-redirect=true";
+    }
+    
+    public List<TeacherDTO> getAllTeachersREST() {
+        List<TeacherDTO> returnedTeachers;
+        try {
+            returnedTeachers = client.target(baseUri)
+                    .path("/teachers/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<TeacherDTO>>() {
+            });
+            System.out.println(returnedTeachers);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return returnedTeachers;
+    }
+    
+    
+    
     
 }
