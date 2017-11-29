@@ -18,8 +18,11 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -55,6 +58,51 @@ public class StudentBean {
         try {
             List<Student> students = (List<Student>) em.createNamedQuery("getAllStudents").getResultList();
             return studentsToDTOs(students);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT
+    @Path("updateREST/{id}/{password}/{name}/{email}/{studentNumber}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void updateREST(
+            @PathParam("id") String id,
+            @PathParam("name") String name,
+            @PathParam("email") String email,            
+            @PathParam("studentNumber") String studentNumber)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
+        try {
+            Student student = em.find(Student.class, id);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("There is no student with that id.");
+            }
+ 
+            student.setName(name);
+            student.setEmail(email);            
+            student.setStudentNumber(studentNumber);
+            em.merge(student);
+ 
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    public void remove(int id) throws EntityDoesNotExistsException {
+        try {
+            Student student = em.find(Student.class, id);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("There is no student with that id.");
+            }
+            
+            em.remove(student);
+        
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
