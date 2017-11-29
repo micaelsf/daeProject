@@ -22,6 +22,9 @@ tomcat
 *.sar
 *.class
 
+# Do not ignore primefaces!!
+!primefaces-6.1.jar
+
 # Maven 
 target/
 
