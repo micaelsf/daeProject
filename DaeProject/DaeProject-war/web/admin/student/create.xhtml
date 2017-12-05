@@ -16,7 +16,6 @@
                         required="true"
                         requiredMessage="Error: Name cannot be empty."                            
                         value="#{administratorManager.newStudent.name}">
-                        <f:validator validatorId="usernameValidator"/>
                     </h:inputText>
                     <h:message for="name" errorStyle="color: red" />
                     
@@ -50,10 +49,9 @@
                     <h:message for="name" errorStyle="color: red" />
                     <br/>
                     <br/>
-                    <h:commandButton
-                        class="btn btn-primary btn-md"
-                        value="Back"
-                        action="index?faces-redirect=true"/>
+                    <h:link class="btn btn-primary pull-left" 
+                            value="Back" 
+                            outcome="index?faces-redirect=true"/>
                     <h:commandButton
                         class="btn btn-primary btn-md"
                         id="submit"

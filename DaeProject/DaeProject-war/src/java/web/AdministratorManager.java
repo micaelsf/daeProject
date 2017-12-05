@@ -52,7 +52,6 @@ public class AdministratorManager {
         newStudent = new StudentDTO();
         newInstituition = new InstituitionDTO();
         client = ClientBuilder.newClient();
-        
     }
     
     public String createStudent() {
@@ -95,11 +94,8 @@ public class AdministratorManager {
     
     public void removeStudent(ActionEvent event) {
         try {
-            System.out.println("web.AdministratorManager.removeStudent() #1");
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            System.out.println("web.AdministratorManager.removeStudent() #2" + param);
             int id = Integer.parseInt(param.getValue().toString());
-            System.out.println("web.AdministratorManager.removeStudent() #3");
             
             studentBean.remove(id);
         } catch (EntityDoesNotExistsException e) {
