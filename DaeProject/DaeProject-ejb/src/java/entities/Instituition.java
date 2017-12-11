@@ -17,29 +17,18 @@ import javax.validation.constraints.NotNull;
 })
 public class Instituition extends Proponent implements Serializable {
 
-    @NotNull(message = "Instituition number must not be empty")
-    private String instituitionNumber;
+    @NotNull(message = "Instituition id must not be empty")
     
     public Instituition() {
     }
 
-    public Instituition(String password, String name, String email, String instituitionNumber) {
+    public Instituition(String password, String name, String email) {
         super(password, name, email);
-        this.instituitionNumber = instituitionNumber;
-    }
-
-    public String getInstituitionNumber() {
-        return instituitionNumber;
-    }
-
-    public void setInstituitionNumber(String instituitionNumber) {
-        this.instituitionNumber = instituitionNumber;
     }
 
     @Override
     public String toString() {
-        return "Instituition{" + 
-                "instituitionNumber=" + instituitionNumber + 
+        return "Instituition{" +  
                 ", name=" + name +
                 ", email=" + email +"}";
     }

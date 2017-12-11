@@ -35,11 +35,11 @@ public class ConfigBean {
             studentBean.create(5, "123123", "Bruno", "bruno@email.com", "555555555");
             studentBean.create(6, "123123", "Micael", "micael@email.com", "666666666");
             
-            instituitionBean.create(7, "123123", "CompanyA", "companya@email.com", "133333333");
-            instituitionBean.create(8, "123123", "CompanyB", "companyb@email.com", "144444444");
-            instituitionBean.create(9, "123123", "CompanyC", "companyc@email.com", "155555555");
-            instituitionBean.create(10, "123123", "CompanyD", "companyd@email.com", "166666666");
-            instituitionBean.create(11, "123123", "CompanyF", "companyf@email.com", "1166666");
+            instituitionBean.create(7, "123123", "CompanyA", "companya@email.com");
+            instituitionBean.create(8, "123123", "CompanyB", "companyb@email.com");
+            instituitionBean.create(9, "123123", "CompanyC", "companyc@email.com");
+            instituitionBean.create(10, "123123", "CompanyD", "companyd@email.com");
+            instituitionBean.create(11, "123123", "CompanyF", "companyf@email.com");
 
 
             /*
