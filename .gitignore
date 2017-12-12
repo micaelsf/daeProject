@@ -22,6 +22,10 @@ tomcat
 *.sar
 *.class
 
+# Do not ignore JAR!!
+!primefaces-6.1.jar
+!modelmapper-1.1.0.jar
+
 # Maven 
 target/
 
