@@ -12,7 +12,6 @@ import ejbs.StudentBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
-import java.io.Console;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;

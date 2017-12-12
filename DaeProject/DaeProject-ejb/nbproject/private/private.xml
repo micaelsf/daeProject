@@ -4,6 +4,9 @@
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
             <file>file:/D:/DAE/Projecto/daeProject/DaeProject/DaeProject-ejb/src/java/ejbs/InstituitionBean.java</file>
+            <file>file:/D:/DAE/Projecto/daeProject/DaeProject/DaeProject-ejb/src/java/exceptions/InstituitionNotEnrolledException.java</file>
+            <file>file:/D:/DAE/Projecto/daeProject/DaeProject/DaeProject-ejb/src/java/entities/Instituition.java</file>
+            <file>file:/D:/DAE/Projecto/daeProject/DaeProject/DaeProject-ejb/src/java/dtos/InstituitionDTO.java</file>
         </group>
     </open-files>
 </project-private>
