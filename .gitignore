@@ -50,6 +50,9 @@ nb-configuration.xml
 !nbproject/project.xml
 
 nbproject/private/private.properties
+nbproject/project.properties
+nbproject/private/private.xml
+nbproject/private/private.properties
 
 # not sure
 DaeProject-ejb/setup
@@ -72,8 +75,4 @@ DaeProject-ejb/src/conf
 release.properties
 pom.xml.releaseBackup
 pom.xml.tag
-DaeProject/DaeProject-ejb/nbproject/private/private.properties
-DaeProject/DaeProject-war/nbproject/project.properties
-DaeProject/DaeProject-war/nbproject/private/private.properties
-DaeProject/DaeProject-war/nbproject/private/private.xml
-DaeProject/nbproject/private/private.properties
+

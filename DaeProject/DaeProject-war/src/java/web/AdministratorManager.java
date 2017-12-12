@@ -12,6 +12,7 @@ import ejbs.StudentBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
+import java.io.Console;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -42,7 +43,7 @@ public class AdministratorManager {
     
     private InstituitionDTO newInstituition;    
     private InstituitionDTO currentInstituition;
-    
+
     private UIComponent component;
 
     private Client client;
@@ -127,8 +128,7 @@ public class AdministratorManager {
                     newInstituition.getId(),
                     newInstituition.getPassword(),
                     newInstituition.getName(),
-                    newInstituition.getEmail(),
-                    newInstituition.getInstituitionNumber());
+                    newInstituition.getEmail());
             newInstituition.reset();
         } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
@@ -138,7 +138,39 @@ public class AdministratorManager {
             return null;
         }
 
-        return "admin/instituition/index?faces-redirect=true";
+        return "index?faces-redirect=true";
+    }
+     
+    public String updateInstituition() {
+        try {
+            instituitionBean.update(
+                    currentInstituition.getPassword(),
+                    currentInstituition.getName(),
+                    currentInstituition.getEmail());
+
+        } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            return null;
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+        public String updateInstituitionREST() {
+        try {
+            client.target(baseUri)
+                    .path("/instituitions/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentInstituition));
+ 
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+       
+        return "index?faces-redirect=true";
     }
     
     public List<InstituitionDTO> getAllInstituitionsREST() {
@@ -181,4 +213,41 @@ public class AdministratorManager {
         this.component = component;
     }
     
+        public void removeInstituition(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            instituitionBean.remove(id);
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
+    
+    
+    /////////////// GETTERS & SETTERS ///////////////// 
+    public InstituitionDTO getCurrentInstituition() {
+        return currentInstituition;
+    }
+
+    public void setCurrentInstituition(InstituitionDTO currentInstituition) {
+        this.currentInstituition = currentInstituition;
+    }
+    
+     public InstituitionDTO getNewInstituition() {
+        return newInstituition;
+    }
+
+    public void setNewInstituition(InstituitionDTO newInstituition) {
+        this.newInstituition = newInstituition;
+    }
+    
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
+    }
 }
