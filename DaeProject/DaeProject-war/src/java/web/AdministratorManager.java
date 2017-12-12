@@ -242,12 +242,5 @@ public class AdministratorManager {
     public void setNewInstituition(InstituitionDTO newInstituition) {
         this.newInstituition = newInstituition;
     }
-    
-    public UIComponent getComponent() {
-        return component;
-    }
-
-    public void setComponent(UIComponent component) {
-        this.component = component;
-    }
+ 
 }
