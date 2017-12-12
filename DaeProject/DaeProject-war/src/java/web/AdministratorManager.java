@@ -46,7 +46,7 @@ public class AdministratorManager {
     private UIComponent component;
 
     private Client client;
-    private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
+    private final String baseUri = "http://localhost:32163/DaeProject-war/webapi";
     
     public AdministratorManager() {
         newStudent = new StudentDTO();
