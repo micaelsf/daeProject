@@ -54,6 +54,7 @@ nbproject/
 !nbproject/ant-deploy.xml
 !nbproject/build-impl.xml
 !nbproject/project.xml
+!nbproject/rest-build.xml
 
 # not sure
 DaeProject-ejb/setup
