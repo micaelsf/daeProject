@@ -49,10 +49,10 @@ nbactions.xml
 nb-configuration.xml
 
 nbproject/
-!genfiles.properties
-!ant-deploy.xml
-!build-impl.xml
-!project.xml
+!/genfiles.properties
+!/ant-deploy.xml
+!/build-impl.xml
+!/project.xml
 
 # not sure
 DaeProject-ejb/setup
