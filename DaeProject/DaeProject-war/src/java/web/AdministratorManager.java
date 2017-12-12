@@ -12,7 +12,6 @@ import ejbs.StudentBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
-import java.io.Console;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -72,38 +71,7 @@ public class AdministratorManager {
             return null;
         }
 
-        return "index?faces-redirect=true";
-    }
-    
-    public String updateStudentREST() {
-        try {
-            client.target(baseUri)
-                    .path("/students/updateREST")
-                    .path(currentStudent.getId() + "")
-                    .path(currentStudent.getName())
-                    .path(currentStudent.getEmail())
-                    .path(currentStudent.getStudentNumber())
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(this));
- 
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-        return "index?faces-redirect=true";
-    }
-    
-    public void removeStudent(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
-            
-            studentBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (NumberFormatException e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        } 
+        return "admin/student/index?faces-redirect=true";
     }
     
     public List<StudentDTO> getAllStudentsREST() {
@@ -121,7 +89,8 @@ public class AdministratorManager {
         }
         return returnedStudents;
     }
-
+    
+    
      public String createInstituition() {
         try {
             instituitionBean.create(
@@ -187,30 +156,6 @@ public class AdministratorManager {
             return null;
         }
         return returnedInstituitions;
-    }
-
-    public StudentDTO getNewStudent() {
-        return newStudent;
-    }
-
-    public void setNewStudent(StudentDTO newStudent) {
-        this.newStudent = newStudent;
-    }
-
-    public StudentDTO getCurrentStudent() {
-        return currentStudent;
-    }
-
-    public void setCurrentStudent(StudentDTO currentStudent) {
-        this.currentStudent = currentStudent;
-    }
-    
-    public UIComponent getComponent() {
-        return component;
-    }
-
-    public void setComponent(UIComponent component) {
-        this.component = component;
     }
     
         public void removeInstituition(ActionEvent event) {
