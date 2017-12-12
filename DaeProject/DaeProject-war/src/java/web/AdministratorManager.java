@@ -46,8 +46,8 @@ public class AdministratorManager {
     private InstituitionDTO newInstituition;    
     private InstituitionDTO currentInstituition;
 
-     @EJB
-     private TeacherBean teacherBean;
+    @EJB
+    private TeacherBean teacherBean;
      
     private TeacherDTO newTeacher;    
     private TeacherDTO currentTeacher;
