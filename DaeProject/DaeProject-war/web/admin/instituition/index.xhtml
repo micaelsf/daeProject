@@ -10,30 +10,30 @@
         <ui:define name="main">
             <h1 class="page-header">Instituitions</h1>
             <em:dt title="Instituitions" 
-                   headers="#{['Id', 'Name', 'Email', 'Instituition Number']}" 
-                   props="#{['id', 'name', 'email', 'instituitionNumber']}" 
+                   headers="#{['Name', 'Email']}" 
+                   props="#{['name', 'email']}" 
                    list="#{administratorManager.allInstituitionsREST}"> 
                 <p:column headerText="Actions">
                     <h:form> 
                         <h:commandLink 
                             value="Details" 
-                            action="admin_instituitions_details?faces-redirect=true"> 
+                            action="show?faces-redirect=true"> 
                             <f:setPropertyActionListener 
                                 target="#{administratorManager.currentInstituition}" 
                                 value="#{object}" /> 
                         </h:commandLink> &nbsp; 
                         <h:commandLink 
                             value="Edit" 
-                            action="admin_instituitions_update?faces-redirect=true"> 
+                            action="edit?faces-redirect=true"> 
                             <f:setPropertyActionListener 
                                 target="#{administratorManager.currentInstituition}" 
                                 value="#{object}" /> 
                         </h:commandLink> &nbsp; 
                         <h:commandLink 
-                            value="Remove" 
+                            value="Remove"
                             actionListener="#{administratorManager.removeInstituition}"> 
-                            <f:param name="instituitionUsername" 
-                                id="instituitionUsername" 
+                            <f:param name="id" 
+                                id="id" 
                                 value="#{object.id}" /> 
                         </h:commandLink> 
                     </h:form> 
@@ -43,7 +43,7 @@
             <h:link 
                 class="btn btn-primary pull-left" 
                 value="Create instituition" 
-                outcome="admin_instituitions_create"/>
+                outcome="create"/>
         </ui:define>
     </ui:composition>
 </html>
