@@ -49,16 +49,11 @@ nbdist/
 nbactions.xml
 nb-configuration.xml
 
-nbproject/
-!nbproject/genfiles.properties
-!nbproject/ant-deploy.xml
-!nbproject/build-impl.xml
-!nbproject/project.xml
-!nbproject/rest-build.xml
+nbproject/private
 
 # not sure
-DaeProject-ejb/setup
-DaeProject-ejb/src/conf
+#DaeProject-ejb/setup
+#DaeProject-ejb/src/conf
 
 
 #java specific
