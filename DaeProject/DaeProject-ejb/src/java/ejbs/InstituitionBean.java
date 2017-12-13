@@ -14,9 +14,13 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
@@ -24,13 +28,17 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/instituitions")
-public class InstituitionBean {
+public class InstituitionBean extends Bean<Instituition>{
 
+    @EJB
+    EmailBean emailBean;
+        
     @PersistenceContext
     private EntityManager em;
 
@@ -43,6 +51,7 @@ public class InstituitionBean {
 
             Instituition instituition = new Instituition(password, name, email);
             em.persist(instituition);
+            
         } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
@@ -52,23 +61,38 @@ public class InstituitionBean {
         }
     }
     
-    public void update(String password, String name, String email)
-        throws EntityDoesNotExistsException, MyConstraintViolationException {
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("all")
+    public Collection<InstituitionDTO> gettAllInstituitions() {
         try {
-            Instituition instituition = em.find(Instituition.class, name);
+            return getAll(InstituitionDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    @Override
+    protected Collection<Instituition> getAll() {
+        return em.createNamedQuery("getAllInstituitions").getResultList();
+    }
+    
+    
+
+    @GET
+    @RolesAllowed({"Instituition"})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findInstituition/{id}")
+    public InstituitionDTO findSInstituition(@PathParam("id") int id)
+            throws EntityDoesNotExistsException {
+        try {
+            Instituition instituition = em.find(Instituition.class, id);
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no student with that username.");
+                throw new EntityDoesNotExistsException("There is no user with such username.");
             }
-
-            instituition.setPassword(password);
-            instituition.setName(name);
-            instituition.setEmail(email);
-            em.merge(instituition);
-
+            return toDTO(instituition, InstituitionDTO.class);
         } catch (EntityDoesNotExistsException e) {
             throw e;
-        } catch (ConstraintViolationException e) {
-            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -100,6 +124,28 @@ public class InstituitionBean {
         }
     }
     
+        public void update(String password, String name, String email)
+        throws EntityDoesNotExistsException, MyConstraintViolationException {
+        try {
+            Instituition instituition = em.find(Instituition.class, name);
+            if (instituition == null) {
+                throw new EntityDoesNotExistsException("There is no student with that username.");
+            }
+
+            instituition.setPassword(password);
+            instituition.setName(name);
+            instituition.setEmail(email);
+            em.merge(instituition);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public void remove(int id) 
         throws EntityDoesNotExistsException {
         try {
@@ -112,19 +158,6 @@ public class InstituitionBean {
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-        
-    
-    @GET 
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("all")
-    public List<InstituitionDTO> getAll() {
-        try {
-            List<Instituition> instituitions = (List<Instituition>) em.createNamedQuery("getAllInstituitions").getResultList();
-            return instituitionsToDTOs(instituitions);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -145,5 +178,22 @@ public class InstituitionBean {
                 instituition.getName(),
                 instituition.getEmail()
         );
+    }
+    
+        public void sendEmailToStudent(String username) throws MessagingException, EntityDoesNotExistsException {
+        try {
+            Student student = em.find(Student.class, username);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("There is no student with that username.");
+            }
+
+            emailBean.send(
+                    student.getEmail(),
+                    "Subject",
+                    "Hello " + student.getName());
+        
+        } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
     }
 }
