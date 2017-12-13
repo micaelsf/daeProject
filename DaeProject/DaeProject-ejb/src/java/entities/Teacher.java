@@ -1,41 +1,53 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entities;
 
-import java.io.Serializable;
+import entities.UserGroup.GROUP;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Entity;
-import javax.persistence.NamedQueries;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
-import javax.validation.constraints.NotNull;
 
 @Entity
-@NamedQueries({
-    @NamedQuery(name = "getAllTeachers",
-    query = "SELECT s FROM Teacher s ORDER BY s.name")
-})
-public class Teacher extends Proponent implements Serializable {
+@NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
+public class Teacher extends User {
 
-    @NotNull(message = "Teacher number must not be empty")
-    private String teacherNumber;
+    private String office;
     
-    public Teacher() {
+    @ManyToMany(mappedBy = "teachers")
+    private List<TeacherProposal> teacherProposals;
+
+    protected Teacher() {
+        teacherProposals = new LinkedList<>();
     }
 
-    public Teacher(String password, String name, String email, String teacherNumber) {
+    public Teacher(String password, String name, String email, String office) {
         super(password, name, email);
-        this.teacherNumber = teacherNumber;
+        this.office = office;
+        teacherProposals = new LinkedList<>();
     }
 
-    public String getTeacherNumber() {
-        return teacherNumber;
+    public String getOffice() {
+        return office;
     }
 
-    public void setTeacherNumber(String teacherNumber) {
-        this.teacherNumber = teacherNumber;
+    public void setOffice(String office) {
+        this.office = office;
     }
     
+    public List<TeacherProposal> getSubjects() {
+        return teacherProposals;
+    }
+
+    public void setSubjects(List<TeacherProposal> teacherProposals) {
+        this.teacherProposals = teacherProposals;
+    }
+
+    public void addSubject(TeacherProposal teacherProposal) {
+        teacherProposals.add(teacherProposal);
+    }    
+    
+    public void removeSubject(TeacherProposal teacherProposal) {
+        teacherProposals.remove(teacherProposal);
+    }    
     
 }
