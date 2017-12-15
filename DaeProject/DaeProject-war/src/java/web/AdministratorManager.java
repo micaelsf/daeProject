@@ -210,18 +210,20 @@ public class AdministratorManager {
                      newTeacher.getPassword(),
                      newTeacher.getName(),
                      newTeacher.getEmail(),
-                     newTeacher.getTeacherNumber());
+                     newTeacher.getOffice());
              newTeacher.reset();
-         } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
+         } catch (EntityAlreadyExistsException e) {
              FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
              return null;
          } catch (Exception e) {
-             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter! RIGHT", component, logger);
              return null;
          }
  
-         return "index?faces-redirect=true";
+         return "/admin/index?faces-redirect=true";
      }
+     
+     
      
      public String updateTeacherREST() {
         try {
@@ -230,12 +232,12 @@ public class AdministratorManager {
                     .path(currentTeacher.getId() + "")
                     .path(currentTeacher.getName())
                     .path(currentTeacher.getEmail())
-                    .path(currentTeacher.getTeacherNumber())
+                    .path(currentTeacher.getOffice())
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(this));
  
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!er", logger);
             return null;
         }
         return "index?faces-redirect=true";

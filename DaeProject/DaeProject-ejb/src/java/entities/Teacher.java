@@ -1,29 +1,28 @@
 package entities;
 
-import entities.UserGroup.GROUP;
-import java.util.LinkedList;
-import java.util.List;
+import java.io.Serializable;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
-public class Teacher extends User {
-
+public class Teacher extends User implements Serializable{
+    
+    @NotNull(message = "Office must not be empty")
     private String office;
     
-    @ManyToMany(mappedBy = "teachers")
-    private List<TeacherProposal> teacherProposals;
-
+    //@ManyToMany(mappedBy = "teachers")
+    //private List<TeacherProposal> teacherProposals;
+    
     protected Teacher() {
-        teacherProposals = new LinkedList<>();
+        //teacherProposals = new LinkedList<>();
     }
 
     public Teacher(String password, String name, String email, String office) {
         super(password, name, email);
         this.office = office;
-        teacherProposals = new LinkedList<>();
+        //teacherProposals = new LinkedList<>();
     }
 
     public String getOffice() {
@@ -34,7 +33,7 @@ public class Teacher extends User {
         this.office = office;
     }
     
-    public List<TeacherProposal> getSubjects() {
+   /* public List<TeacherProposal> getSubjects() {
         return teacherProposals;
     }
 
@@ -49,5 +48,5 @@ public class Teacher extends User {
     public void removeSubject(TeacherProposal teacherProposal) {
         teacherProposals.remove(teacherProposal);
     }    
-    
+    */
 }
