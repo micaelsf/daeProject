@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/admin.xhtml"> 
+        <ui:define name="main">
+            <h1 class="page-header">Show Teacher with id:#{administratorManager.currentTeacher.id}</h1>
+            <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="name" value="Name: " />
+                <h:outputText 
+                    id="name"
+                    value="#{administratorManager.currentTeacher.name}"/>
+
+                <h:outputLabel for="email" value="Email: " />
+                <h:outputText 
+                    id="email"
+                    value="#{administratorManager.currentTeacher.email}"/>
+
+                <h:outputLabel for="office" value="Office: " />
+                <h:outputText 
+                    id="office"
+                    value="#{administratorManager.currentTeacher.office}"/>
+            </p:panelGrid>
+            <br/>
+            <br/>
+            <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/teacher/index"/>
+            <p:commandLink class="btn btn-primary btn-md" value="Edit" action="/admin/teacher/edit?faces-redirect=true">
+                <f:setPropertyActionListener 
+                    target="#{administratorManager.currentTeacher}" 
+                    value="#{object}" />
+            </p:commandLink>
+                
+        </ui:define>
+    </ui:composition>
+</html>
+
