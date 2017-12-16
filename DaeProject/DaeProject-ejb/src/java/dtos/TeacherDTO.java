@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package dtos;
 
 import java.io.Serializable;
@@ -10,36 +5,31 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "Teacher") 
+@XmlRootElement(name = "Teacher")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class TeacherDTO extends UserDTO implements Serializable{
-    private String teacherNumber;
-   
-    public TeacherDTO(){
-    }
+public class TeacherDTO extends UserDTO implements Serializable {
+    
+    private String office;
 
-    public TeacherDTO(
-            int id,
-            String teacherNumber,
-            String password,
-            String name,
-            String email) {
+    public TeacherDTO() {
+    }    
+    
+    public TeacherDTO(int id, String password, String name, String email, String office) {
         super(id, password, name, email);
-        this.teacherNumber = teacherNumber;
+        this.office = office;
     }
     
     @Override
     public void reset() {
         super.reset();
-        this.teacherNumber = null;
+        setOffice(null);
+    }    
+
+    public String getOffice() {
+        return office;
     }
 
-    public String getTeacherNumber() {
-        return teacherNumber;
+    public void setOffice(String office) {
+        this.office = office;
     }
-
-    public void setTeacherNumber(String teacherNumber) {
-        this.teacherNumber = teacherNumber;
-    }
-    
 }

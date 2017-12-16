@@ -29,14 +29,14 @@
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
 
-                    <h:outputLabel for="teacherNumber" value="Teacher number: " />
+                    <h:outputLabel for="office" value="Office: " />
                     <h:inputText 
-                        id="teacherNumber"
+                        id="office"
                         size="10"
                         required="true"
                         requiredMessage="Error: Teacher number cannot be empty."                            
-                        value="#{administratorManager.currentTeacher.teacherNumber}" />
-                    <h:message for="name" errorStyle="color: red" />
+                        value="#{administratorManager.currentTeacher.office}" />
+                    <h:message for="office" errorStyle="color: red" />
                     <br/>
                     <br/>
                     <h:commandButton

@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:p="http://primefaces.org/ui" 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+    <ui:composition template="/templates/admin.xhtml"> 
+        <ui:define name="main">
+            <h1 class="page-header">Students</h1>
+            <em:dt title="Students" 
+                   headers="#{['Id', 'Name', 'Email', 'Student Number']}" 
+                   props="#{['id', 'name', 'email', 'studentNumber']}" 
+                   list="#{administratorManager.allStudentsREST}"> 
+                <p:column headerText="Actions"> 
+                    <h:form class="center-text"> 
+                            <h:commandLink 
+                                class="fa fa-eye fa-fw"
+                                value=" " 
+                                title="Details"
+                                action="show?faces-redirect=true"> 
+                                <f:setPropertyActionListener 
+                                    target="#{administratorManager.currentStudent}" 
+                                    value="#{object}" /> 
+                            </h:commandLink> &nbsp;
+                            <h:commandLink 
+                                class="fa fa-pencil fa-fw"
+                                value=" " 
+                                title="Edit"
+                                action="edit?faces-redirect=true"> 
+                                <f:setPropertyActionListener 
+                                    target="#{administratorManager.currentStudent}" 
+                                    value="#{object}" /> 
+                            </h:commandLink> &nbsp; 
+                            <h:commandLink 
+                                class="fa fa-trash fa-fw"
+                                value=" " 
+                                title="Remove"
+                                actionListener="#{administratorManager.removeStudent}"> 
+                                <f:param name="id" 
+                                    id="id" 
+                                    value="#{object.id}" /> 
+                            </h:commandLink> 
+                    </h:form> 
+                </p:column> 
+            </em:dt>
+            <br/>
+            <br/>
+            <h:link class="btn btn-primary pull-left" value="Create student" outcome="create"/>
+        </ui:define>
+    </ui:composition>
+</html>
+
