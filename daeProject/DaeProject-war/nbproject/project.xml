@@ -20,16 +20,15 @@
                 <library dirs="200">
                     <file>${libs.restapi.classpath}</file>
                 </library>
-<!--
-                    <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD}</file>
-                </library>
                 <library dirs="200">
-                    <file>${file.reference.primefaces-6.1.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war> 
+                    <file>${libs.restlib.classpath}</file>
                 </library>
--->
                 <library dirs="200">
                     <file>${file.reference.modelmapper-1.1.0.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.javaee-endorsed-api-7.0_2.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
