@@ -5,7 +5,7 @@ dist/
 nbdist/
 .nb-gradle/
 
-#do not ignore
+
 !DaeProject/modelmapper-1.1.0.jar
 !DaeProject/primefaces-6.1.jar
 
