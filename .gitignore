@@ -5,6 +5,5 @@ dist/
 nbdist/
 .nb-gradle/
 
-!/daeProject/DaeProject-ejb/modelmapper-1.1.0.jar
-!/daeProject/modelmapper-1.1.0.jar
-!/daeProject/primefaces-6.1.jar
+!modelmapper-1.1.0.jar
+!primefaces-6.1.jar
