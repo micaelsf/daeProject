@@ -24,10 +24,13 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
+    
     @NotNull(message = "Password must not be empty")
     protected String password;
+    
     @NotNull(message = "Name must not be empty")
     protected String name;
+    
     @NotNull(message = "Email must not be empty")
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"

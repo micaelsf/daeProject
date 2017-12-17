@@ -27,6 +27,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import utils.URILookup;
 
 @ManagedBean
 @SessionScoped
@@ -55,7 +56,8 @@ public class AdministratorManager {
 
     private Client client;
     
-    private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";    
+    //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
+    //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";    
     //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
     
     public AdministratorManager() {
@@ -88,7 +90,7 @@ public class AdministratorManager {
     public List<StudentDTO> getAllStudentsREST() {
         List<StudentDTO> returnedStudents;
         try {
-            returnedStudents = client.target(baseUri)
+            returnedStudents = client.target(URILookup.getBaseAPI())
                     .path("/students/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<StudentDTO>>() {
@@ -101,8 +103,45 @@ public class AdministratorManager {
         return returnedStudents;
     }
     
+    public String updateStudentsREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentStudent));
+            
+            /*System.out.println("web.AdministratorManager.updateStudentsREST()");
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/updateREST")
+                    .path(currentStudent.getId() + "")
+                    .path(currentStudent.getName())
+                    .path(currentStudent.getEmail())
+                    .path(currentStudent.getStudentNumber())
+                    .path(currentStudent.getPassword())                    
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(""));*/
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+       
+        return "index?faces-redirect=true";
+    }
     
-     public String createInstituition() {
+    public void removeStudent(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            
+            studentBean.remove(id);
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        } 
+    }
+    
+    public String createInstituition() {
         try {
             instituitionBean.create(
                     newInstituition.getId(),
@@ -138,9 +177,9 @@ public class AdministratorManager {
         return "index?faces-redirect=true";
     }
     
-        public String updateInstituitionREST() {
+    public String updateInstituitionREST() {
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/instituitions/updateREST")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentInstituition));
@@ -156,7 +195,7 @@ public class AdministratorManager {
     public List<InstituitionDTO> getAllInstituitionsREST() {
         List<InstituitionDTO> returnedInstituitions;
         try {
-            returnedInstituitions = client.target(baseUri)
+            returnedInstituitions = client.target(URILookup.getBaseAPI())
                     .path("/instituitions/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<InstituitionDTO>>() {
@@ -195,7 +234,7 @@ public class AdministratorManager {
      
      public String updateTeacherREST() {
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/teachers/updateREST")
                     .path(currentTeacher.getId() + "")
                     .path(currentTeacher.getName())
@@ -227,7 +266,7 @@ public class AdministratorManager {
      public List<TeacherDTO> getAllTeachersREST() {
          List<TeacherDTO> returnedTeachers;
          try {
-             returnedTeachers = client.target(baseUri)
+             returnedTeachers = client.target(URILookup.getBaseAPI())
                      .path("/teachers/all")
                      .request(MediaType.APPLICATION_XML)
                      .get(new GenericType<List<TeacherDTO>>() {
