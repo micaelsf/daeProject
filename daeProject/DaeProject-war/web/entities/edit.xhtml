@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/skeleton.xhtml"> 
+        <ui:define name="main">
+            <h1 class="page-header">Editar Proposta de Trabalho</h1> 
+            <br/>
+            <h3>Tipo de Proposta: TODO</h3> 
+            <h:form>
+                <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="title" value="Titulo: " />
+                    <h:inputText 
+                        class="form-control"
+                        style="max-width: 25%"
+                        id="title"
+                        size="50"
+                        required="true"
+                        requiredMessage="Erro: O campo Título não pode ser vazio."                            
+                        value="#{administratorManager.currentProposal.title}">
+                    </h:inputText>
+                    <h:message for="title" errorStyle="color: red" />
+
+                    <h:outputLabel for="scientificAreas" value="Areas Científicas: " />
+                    <h:inputText
+                        class="form-control"
+                        style="max-width: 25%"
+                        id="scientificAreas"
+                        size="128"
+                        required="true"
+                        requiredMessage="Erro: O campo Areas Científicas não pode ser vazia."
+                        value="#{administratorManager.currentProposal.scientificAreas}"/>
+                    <h:message for="scientificAreas" errorStyle="color: red" /> 
+
+                    <h:outputLabel for="objective" value="Objetivos: " />
+                    <h:inputText
+                        class="form-control"
+                        style="max-width: 25%"
+                        id="objective"
+                        size="254"
+                        required="true"
+                        requiredMessage="Erro: O campo Objetivos não pode ser vazio."                            
+                        value="#{administratorManager.currentProposal.objectives}" />
+                    <h:message for="objective" errorStyle="color: red" />
+                    
+                </h:panelGrid>    
+                <br/>
+                <br/>
+                <h:link class="btn btn-primary pull-left" 
+                        style="margin-right: 15px"
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+                <h:commandButton
+                    class="btn btn-primary btn-md"
+                    id="submit"
+                    value="Atualizar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.updateWorkProposalREST()}" />
+                    <h:message for="submit" style="color: red"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

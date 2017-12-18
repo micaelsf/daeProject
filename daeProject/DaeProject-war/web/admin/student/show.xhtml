@@ -26,12 +26,10 @@
             </p:panelGrid>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/student/index"/>
-            <p:commandLink class="btn btn-primary btn-md" value="Editar" action="edit?faces-redirect=true">
-                <f:setPropertyActionListener 
-                    target="#{administratorManager.currentStudent}" 
-                    value="#{object}" />
-            </p:commandLink>
+            <p:link class="btn btn-primary btn-md" 
+                    style="margin-right: 15px"
+                    value="Voltar" 
+                    outcome="/admin/student/index"/>
                 
         </ui:define>
     </ui:composition>

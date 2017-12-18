@@ -10,9 +10,13 @@ import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.WorkProposalDTO;
 import ejbs.InstituitionBean;
+import ejbs.StageProposalBean;
 import ejbs.StudentBean;
 import ejbs.TeacherBean;
 import ejbs.WorkProposalBean;
+import entities.DissertationProposal;
+import entities.ProjectProposal;
+import entities.StageProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -56,10 +60,12 @@ public class AdministratorManager {
     @EJB
     private WorkProposalBean proposalBean;
     private WorkProposalDTO newProposal;    
-    private WorkProposalDTO currentProposal;
+    private WorkProposalDTO currentProposal;    
     
     private UIComponent component;
     private Client client;
+    
+    private int selectOption;
     
     //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
     //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";    
@@ -69,6 +75,7 @@ public class AdministratorManager {
         newStudent = new StudentDTO();
         newInstituition = new InstituitionDTO();
         newTeacher = new TeacherDTO();
+        newProposal = new WorkProposalDTO();
         client = ClientBuilder.newClient();
     }
     
@@ -235,8 +242,6 @@ public class AdministratorManager {
          return "/admin/index?faces-redirect=true";
      }
      
-     
-     
      public String updateTeacherREST() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -284,6 +289,147 @@ public class AdministratorManager {
          return returnedTeachers;
      }
 
+    public void removeInstituition(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            instituitionBean.remove(id);
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
+    
+    public String createWorkProposal() {
+        try {
+            proposalBean.create(
+                    newProposal.getId(),
+                    newProposal.getTitle(),
+                    newProposal.getScientificAreas(),                    
+                    newProposal.getObjectives(),
+                    newProposal.getStatus());
+            newProposal.reset();
+        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
+            return null;
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            return null;
+        }
+
+        return "admin/proposal/index?faces-redirect=true";
+    }
+    
+    public List<WorkProposalDTO> getAllWorkProposalsREST() {
+        List<WorkProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<WorkProposalDTO>>() {
+            });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return returnedProposals;
+    }
+    
+    public String updateWorkProposalREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentProposal));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+       
+        return "index?faces-redirect=true";
+    }
+    
+    public void updateStatusWorkProposalREST(ActionEvent event) {
+        try {
+            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");            
+            UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
+            int id = 0, status = 3;
+            
+            if (paramAccept != null) {
+                id = Integer.parseInt(paramAccept.getValue().toString());
+                status = 1;
+            }
+            
+            if (paramReject != null) {
+                id = Integer.parseInt(paramReject.getValue().toString());
+                status = 2;
+            }
+            
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/updateREST")
+                    .path(id + "")
+                    .path(status + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(""));
+            
+            //proposalBean.updateStatus(id, status);
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        } 
+    }
+    
+    public void removeProposal(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/updateREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(""));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
+    /*public void removeProposal(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            
+            proposalBean.remove(id);
+        } catch (EntityDoesNotExistsException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        } 
+    }*/
+    
+    /////////////// UTILS ///////////////// 
+/*    public String getProposalType() {
+        if (currentProposal instanceof DissertationProposal) {
+            return "Dissertação";
+        }
+        if (currentProposal instanceof StageProposal) {
+            return "Estágio";
+        }
+        if (currentProposal instanceof ProjectProposal) {
+            return "Projeto";
+        }
+        return null;
+    }
+  */  
+    public int getSelectOption() {
+        return selectOption;
+    }
+
+    public void setSelectOption(int selectOption) {
+        this.selectOption = selectOption;
+    }
+    
+    /////////////// GETTERS & SETTERS ///////////////// 
     public StudentDTO getNewStudent() {
         return newStudent;
     }
@@ -300,8 +446,6 @@ public class AdministratorManager {
         this.currentStudent = currentStudent;
     }
     
-    /* TEACHERS GETTER & SETTER */
-
     public TeacherDTO getCurrentTeacher() {
         return currentTeacher;
     }
@@ -327,20 +471,6 @@ public class AdministratorManager {
         this.component = component;
     }
     
-    public void removeInstituition(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
-            instituitionBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        }
-    }
-    
-    
-    /////////////// GETTERS & SETTERS ///////////////// 
     public InstituitionDTO getCurrentInstituition() {
         return currentInstituition;
     }
@@ -355,6 +485,22 @@ public class AdministratorManager {
 
     public void setNewInstituition(InstituitionDTO newInstituition) {
         this.newInstituition = newInstituition;
+    }
+
+    public WorkProposalDTO getNewProposal() {
+        return newProposal;
+    }
+
+    public void setNewProposal(WorkProposalDTO newProposal) {
+        this.newProposal = newProposal;
+    }
+
+    public WorkProposalDTO getCurrentProposal() {
+        return currentProposal;
+    }
+
+    public void setCurrentProposal(WorkProposalDTO currentProposal) {
+        this.currentProposal = currentProposal;
     }
  
 }

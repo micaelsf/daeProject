@@ -8,9 +8,10 @@
         <ui:define name="main">
             <h1 class="page-header">Criar Estudante</h1>   
             <h:form>
-                <h:panelGrid columns="3">
+                <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
+                        class="form-control"
                         id="name"
                         size="52"
                         required="true"
@@ -21,6 +22,7 @@
                     
                     <h:outputLabel for="password" value="Password: " />
                     <h:inputSecret
+                        class="form-control"
                         id="password"
                         size="20"
                         required="true"
@@ -30,6 +32,7 @@
                 
                     <h:outputLabel for="email" value="Email: " />
                     <h:inputText
+                        class="form-control"
                         id="email"
                         size="52"
                         required="true"
@@ -41,26 +44,28 @@
 
                     <h:outputLabel for="studentNumber" value="Número de estudante: " />
                     <h:inputText 
+                        class="form-control"
                         id="studentNumber"
                         size="10"
                         required="true"
                         requiredMessage="Erro: O número de estudante não pode ser vazio."                            
                         value="#{administratorManager.newStudent.studentNumber}" />
                     <h:message for="name" errorStyle="color: red" />
-                    <br/>
-                    <br/>
-                    
-                    <h:link class="btn btn-primary pull-left" 
-                            value="Voltar" 
-                            outcome="index?faces-redirect=true"/>
-                    <h:commandButton
-                        class="btn btn-primary btn-md"
-                        id="submit"
-                        value="Criar"
-                        binding="#{administratorManager.component}" 
-                        action="#{administratorManager.createStudent}" />
-                    <h:message for="submit" style="color: red"/>
-                </h:panelGrid>    
+                </h:panelGrid>  
+                <br/>
+                <br/>
+
+                <h:link styleClass="btn btn-primary" 
+                        style="margin-right: 15px"
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+                <h:commandButton
+                    styleClass="btn btn-primary"
+                    id="submit"
+                    value="Criar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createStudent}" />
+                <h:message for="submit" style="color: red"/>
             </h:form>
         </ui:define>    
     </ui:composition> 

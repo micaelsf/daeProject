@@ -89,9 +89,10 @@ public class WorkProposal implements Serializable {
         
     }
     
-    public WorkProposal(String title, String scientificAreas, int status) {
+    public WorkProposal(String title, String scientificAreas, String objectives, int status) {
         this.title = title;
-        this.scientificAreas = scientificAreas;
+        this.scientificAreas = scientificAreas;        
+        this.objectives = objectives;
         this.status = status;
         this.proponents = new LinkedList<>();
         this.studentsApply = new LinkedList<>();
@@ -233,22 +234,12 @@ public class WorkProposal implements Serializable {
         this.support = support;
     }
 
-     public String getStatus() {
-        switch (status) {
-            case 1: return "Não aceite";            
-            case 2: return "Aceite";
-            case 3: return "Em espera";
-        }
-        return null;
+     public int getStatus() {
+        return this.status;
     }
 
-    public void setStatus(String status) {
-        switch (status) {
-            case "Não aceite": this.status = 1; break;            
-            case "Aceite": this.status = 2; break;
-            case "Em espera": this.status = 3; break;
-            default: this.status = -1;
-        }
+    public void setStatus(int status) {
+        this.status = status;
     }
-    
+ 
 }

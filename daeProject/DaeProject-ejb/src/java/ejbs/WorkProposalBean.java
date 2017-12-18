@@ -18,32 +18,25 @@ import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("/proposal")
+@Path("/proposals")
 public class WorkProposalBean extends Bean<WorkProposal>{
     
-    public void create(int id, String title, String scietificAreas, String status)
+    public void create(int id, String title, String scietificAreas, String objectives, int status)
          throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             if (em.find(WorkProposal.class, id) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
-            int statusNumber;
-            
-            switch (status) {
-                case "Não aceite": statusNumber = 1; break;            
-                case "Aceite": statusNumber = 2; break;
-                case "Em espera": statusNumber = 3; break;
-                default: statusNumber = -1;
-            }
-            
-            WorkProposal proposal = new WorkProposal(title, scietificAreas, statusNumber);
+            WorkProposal proposal = new WorkProposal(title, scietificAreas, objectives, status);
             em.persist(proposal);
         } catch (EntityAlreadyExistsException e) {
             throw e;
@@ -54,15 +47,41 @@ public class WorkProposalBean extends Bean<WorkProposal>{
         }
     }
     
-    public void remove(int id) 
+            
+    @DELETE 
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @Path("/deleteREST")
+    public void removeREST(WorkProposalDTO proposalDTO) 
         throws EntityDoesNotExistsException {
         try {
-            WorkProposal proposal = em.find(WorkProposal.class, id);
+            WorkProposal proposal = em.find(WorkProposal.class, proposalDTO.getId());
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
             }
-
             em.remove(proposal);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @PUT 
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @Path("/updateStatusREST/{id}/{status}")
+    public void updateStatusWorkProposalREST(
+            @PathParam("id") String idStr,
+            @PathParam("status") String statusStr) 
+        throws EntityDoesNotExistsException {
+        try {
+            WorkProposal proposal = em.find(WorkProposal.class, Integer.parseInt(idStr));
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+            
+            proposal.setStatus(Integer.parseInt(statusStr));
+            em.merge(proposal);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -124,7 +143,8 @@ public class WorkProposalBean extends Bean<WorkProposal>{
         return new WorkProposalDTO(
                 proposal.getId(),
                 proposal.getTitle(),
-                proposal.getScientificAreas(),
+                proposal.getScientificAreas(),                
+                proposal.getObjectives(),
                 proposal.getStatus());
     }
 }

@@ -12,24 +12,27 @@ public class WorkProposalDTO implements Serializable {
     private int id;        
     private String title;    
     private String scientificAreas;
-    private String status;
+    private String objectives;
+    private int status;
 
 
     public WorkProposalDTO() {
     }    
     
-    public WorkProposalDTO(int id, String title, String scientificAreas, String status) {
+    public WorkProposalDTO(int id, String title, String scientificAreas, String objectives, int status) {
         this.id = id;        
         this.title = title;        
-        this.scientificAreas = scientificAreas;
+        this.scientificAreas = scientificAreas;        
+        this.objectives = objectives;
         this.status = status;
     }
     
     public void reset() {
         setId(-1);
         setTitle(null);        
-        setScientificAreas(null);
-        setStatus(null);
+        setScientificAreas(null);        
+        setObjectives(null);
+        setStatus(-1);
     }    
 
     public String getTitle() {
@@ -48,11 +51,11 @@ public class WorkProposalDTO implements Serializable {
         this.scientificAreas = scientificAreas;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return this.status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;            
     }
 
@@ -63,6 +66,31 @@ public class WorkProposalDTO implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
+    public String getObjectives() {
+        return objectives;
+    }
+
+    public void setObjectives(String objectives) {
+        this.objectives = objectives;
+    }
     
+    public String statusToStr(int status) {
+        switch (status) {
+            case 1: return "Não aceite";            
+            case 2: return "Aceite";
+            case 3: return "Em espera"; 
+            default: return null;
+        }
+    }
+    
+    private int statusToInt(String status) {
+        switch (status) {
+            case "Não aceite": return 1;            
+            case "Aceite": return 2;
+            case "Em espera": return 3; 
+            default: return -1;
+        }
+    }
     
 }

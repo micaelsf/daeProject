@@ -10,9 +10,13 @@
         <ui:define name="main">
             <h1 class="page-header">Propostas de trabalho</h1>
             <em:dt title="Propostas" 
-                   headers="#{['Id', 'Titulo', 'Área Científica', 'Estado']}" 
-                   props="#{['id', 'title', 'scientificArea', 'status']}" 
-                   list="#{administratorManager.allWorkProposalREST}"> 
+                   headers="#{['Id', 'Titulo', 'Áreas Científica', 'Objetivos']}" 
+                   props="#{['id', 'title', 'scientificAreas', 'objectives']}" 
+                   list="#{administratorManager.allWorkProposalsREST}"> 
+                <p:column headerText="Estado"> 
+                    <h:outputText class="center-text"
+                                  value="#{administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
+                </p:column> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
                             <h:commandLink 
@@ -21,33 +25,33 @@
                                 title="Detalhes"
                                 action="show?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentWorkProposal}" 
+                                    target="#{administratorManager.currentProposal}" 
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp;
-                            <h:commandLink 
+                            <h:commandLink
                                 class="btn btn-success btn-md"
-                                value=" " 
+                                value="Aceitar" 
                                 title="Aceitar"
-                                actionListener="#{administratorManager.acceptProposal}"> 
-                                <f:param name="acceptedProposal" 
-                                    id="acceptedProposal" 
+                                actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
+                                <f:param name="acceptProposalID" 
+                                    id="acceptProposal" 
                                     value="#{object.id}" /> 
-                            </h:commandLink> 
+                            </h:commandLink> &nbsp;
                             <h:commandLink 
                                 class="btn btn-danger btn-md"
-                                value=" " 
+                                value="Rejeitar" 
                                 title="Rejeitar"
-                                actionListener="#{administratorManager.rejectProposal}"> 
-                                <f:param name="rejectedProposal" 
-                                    id="rejectedProposal" 
+                                actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
+                                <f:param name="rejectProposalID" 
+                                    id="rejectProposal" 
                                     value="#{object.id}" /> 
-                            </h:commandLink>
+                            </h:commandLink> &nbsp;
                     </h:form> 
                 </p:column> 
             </em:dt>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/student/index"/>
+            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/proposal/index"/>
         </ui:define>
     </ui:composition>
 </html>
