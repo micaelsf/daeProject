@@ -5,8 +5,8 @@
  */
 package ejbs;
 
-import dtos.StudentDTO;
-import entities.Student;
+import dtos.WorkProposalDTO;
+import entities.WorkProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -25,18 +25,26 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("/students")
-public class StudentBean extends Bean<Student>{
-
-    public void create(int id, String password, String name, String email, String studentNumber)
+@Path("/proposal")
+public class WorkProposalBean extends Bean<WorkProposal>{
+    
+    public void create(int id, String title, String scietificAreas, String status)
          throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            if (em.find(Student.class, id) != null) {
-                throw new EntityAlreadyExistsException("User already exists.");
+            if (em.find(WorkProposal.class, id) != null) {
+                throw new EntityAlreadyExistsException("A proposta já existe.");
             }
-
-            Student student = new Student(password, name, email, studentNumber);
-            em.persist(student);
+            int statusNumber;
+            
+            switch (status) {
+                case "Não aceite": statusNumber = 1; break;            
+                case "Aceite": statusNumber = 2; break;
+                case "Em espera": statusNumber = 3; break;
+                default: statusNumber = -1;
+            }
+            
+            WorkProposal proposal = new WorkProposal(title, scietificAreas, statusNumber);
+            em.persist(proposal);
         } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
@@ -49,12 +57,12 @@ public class StudentBean extends Bean<Student>{
     public void remove(int id) 
         throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, id);
-            if (student == null) {
-                throw new EntityDoesNotExistsException("There is no student with that username.");
+            WorkProposal proposal = em.find(WorkProposal.class, id);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
             }
 
-            em.remove(student);
+            em.remove(proposal);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -62,18 +70,18 @@ public class StudentBean extends Bean<Student>{
             throw new EJBException(e.getMessage());
         }
     }
-        
+    
     @Override
-    protected Collection<Student> getAll() {
-        return em.createNamedQuery("getAllStudents").getResultList();
+    protected Collection<WorkProposal> getAll() {
+        return em.createNamedQuery("getAllProposals").getResultList();
     }
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
     @Path("all")
-    public Collection<StudentDTO> getAllStudents() {
+    public Collection<WorkProposalDTO> getAllProposals() {
         try {
-            return getAll(StudentDTO.class);
+            return getAll(WorkProposalDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -82,20 +90,19 @@ public class StudentBean extends Bean<Student>{
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateREST(StudentDTO studentDTO)
+    public void updateREST(WorkProposalDTO proposalDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Student student = em.find(Student.class, studentDTO.getId());
-            if (student == null) {
-                throw new EntityDoesNotExistsException("There is no student with that name.");
+            WorkProposal proposal = em.find(WorkProposal.class, proposalDTO.getId());
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID");
             }
 
-            student.setPassword(studentDTO.getPassword());
-            student.setName(studentDTO.getName());
-            student.setEmail(studentDTO.getEmail());
-            student.setStudentNumber(studentDTO.getStudentNumber());
+            proposal.setTitle(proposalDTO.getTitle());
+            proposal.setScientificAreas(proposalDTO.getScientificAreas());
+            proposal.setStatus(proposalDTO.getStatus());
             
-            em.merge(student);
+            em.merge(proposal);
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
@@ -105,20 +112,19 @@ public class StudentBean extends Bean<Student>{
         }
     }
     
-    List<StudentDTO> studentsToDTOs(List<Student> students) {
-        List<StudentDTO> dtos = new ArrayList<>();
-        for (Student s : students) {
-            dtos.add(studentToDTO(s));
+    List<WorkProposalDTO> proposalsToDTOs(List<WorkProposal> proposals) {
+        List<WorkProposalDTO> dtos = new ArrayList<>();
+        for (WorkProposal p : proposals) {
+            dtos.add(proposalToDTO(p));
         }
         return dtos;
     }
     
-    StudentDTO studentToDTO(Student student) {
-        return new StudentDTO(
-                student.getId(),
-                student.getStudentNumber(),
-                null,
-                student.getName(),
-                student.getEmail());
+    WorkProposalDTO proposalToDTO(WorkProposal proposal) {
+        return new WorkProposalDTO(
+                proposal.getId(),
+                proposal.getTitle(),
+                proposal.getScientificAreas(),
+                proposal.getStatus());
     }
 }

@@ -8,9 +8,11 @@ package web;
 import dtos.InstituitionDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
+import dtos.WorkProposalDTO;
 import ejbs.InstituitionBean;
 import ejbs.StudentBean;
 import ejbs.TeacherBean;
+import ejbs.WorkProposalBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -48,12 +50,15 @@ public class AdministratorManager {
 
     @EJB
     private TeacherBean teacherBean;
-     
     private TeacherDTO newTeacher;    
     private TeacherDTO currentTeacher;
 
+    @EJB
+    private WorkProposalBean proposalBean;
+    private WorkProposalDTO newProposal;    
+    private WorkProposalDTO currentProposal;
+    
     private UIComponent component;
-
     private Client client;
     
     //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils

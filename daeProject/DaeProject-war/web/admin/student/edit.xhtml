@@ -6,15 +6,15 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Edit student with id:#{administratorManager.currentStudent.id}</h1>   
+            <h1 class="page-header">Editar estudante número de estudante:#{administratorManager.currentStudent.studentNumber}</h1>   
             <h:form>
                 <h:panelGrid columns="3">
-                    <h:outputLabel for="name" value="Name: " />
+                    <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
                         id="name"
                         size="52"
                         required="true"
-                        requiredMessage="Error: Name cannot be empty."                            
+                        requiredMessage="Erro: O nome não pode ser vazio."                            
                         value="#{administratorManager.currentStudent.name}" />
                     <h:message for="name" errorStyle="color: red" />
 
@@ -23,26 +23,29 @@
                         id="email"
                         size="52"
                         required="true"
-                        requiredMessage="Error: Email cannot be empty."                            
+                        requiredMessage="Erro: O email não pode ser vazio."                            
                         value="#{administratorManager.currentStudent.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
 
-                    <h:outputLabel for="studentNumber" value="Student number: " />
+                    <h:outputLabel for="studentNumber" value="Número de estudante: " />
                     <h:inputText 
                         id="studentNumber"
                         size="10"
                         required="true"
-                        requiredMessage="Error: Student number cannot be empty."                            
+                        requiredMessage="Erro: O número de estudante não pode ser vazio."                            
                         value="#{administratorManager.currentStudent.studentNumber}" />
                     <h:message for="name" errorStyle="color: red" />
                     <br/>
                     <br/>
+                    <h:link class="btn btn-primary pull-left" 
+                            value="Voltar" 
+                            outcome="index?faces-redirect=true"/>
                     <h:commandButton
-                        class="btn btn-primary btn-md"
+                        class="btn btn-primary btn-md pull-left"
                         id="submit"
-                        value="Update"
+                        value="Atualizar"
                         action="#{administratorManager.updateStudentsREST()}" />
                     <h:message for="submit" style="color: red"/>
                 </h:panelGrid>    

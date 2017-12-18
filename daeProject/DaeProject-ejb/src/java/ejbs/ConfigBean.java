@@ -23,6 +23,9 @@ public class ConfigBean {
     
     @EJB
     private TeacherBean teacherBean;
+    
+    @EJB
+    private WorkProposalBean proposalBean;
 
     @PostConstruct
     public void populateBD() {
@@ -45,6 +48,11 @@ public class ConfigBean {
             teacherBean.create(12, "t1", "t1", "t1@ipleiria.pt", "O1");
             teacherBean.create(13, "t2", "t2", "t2@ipleiria.pt", "O2");
             teacherBean.create(14, "t3", "t3", "t3@ipleiria.pt", "O3");
+
+            proposalBean.create(1, "Titulo 1", "EI", "Em espera");
+            proposalBean.create(2, "Titulo 2", "EI", "Em espera");
+            proposalBean.create(3, "Titulo 3", "EI", "Em espera");            
+            proposalBean.create(4, "Titulo 4", "EI", "Em espera");
 
             /*
             studentBean.enrollStudent("1111111", 1);
