@@ -26,8 +26,8 @@
             </p:panelGrid>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/student/index"/>
-            <p:commandLink class="btn btn-primary btn-md" value="Edit" action="/admin/student/edit?faces-redirect=true">
+            <p:link class="btn btn-primary btn-md" value="Back" outcome="index"/>
+            <p:commandLink class="btn btn-primary btn-md" value="Edit" action="edit?faces-redirect=true">
                 <f:setPropertyActionListener 
                     target="#{administratorManager.currentStudent}" 
                     value="#{object}" />

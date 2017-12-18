@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
     @NamedQuery(name = "getAllInstituitions",
     query = "SELECT s FROM Instituition s ORDER BY s.name")
 })
+
 public class Instituition extends Proponent implements Serializable {
 
     @NotNull(message = "Instituition id must not be empty")
@@ -22,8 +23,8 @@ public class Instituition extends Proponent implements Serializable {
     public Instituition() {
     }
 
-    public Instituition(String password, String name, String email) {
-        super(password, name, email);
+    public Instituition(String password, UserGroup.GROUP group, String name, String email) {
+        super(password, group, name, email);
     }
 
     @Override
