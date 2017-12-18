@@ -1,5 +1,6 @@
 package ejbs;
 
+import dtos.StudentDTO;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -31,12 +32,12 @@ public class ConfigBean {
     public void populateBD() {
 
         try {
-            studentBean.create(1, "123123", "Zé", "ze@email.com", "111111111");            
-            studentBean.create(2, "123123", "Maria", "maria@email.com", "222222222");
-            studentBean.create(3, "123123", "Joana", "joana@email.com", "333333333");
-            studentBean.create(4, "123123", "André", "andre@email.com", "444444444");
-            studentBean.create(5, "123123", "Bruno", "bruno@email.com", "555555555");
-            studentBean.create(6, "123123", "Micael", "micael@email.com", "666666666");
+            studentBean.create(new StudentDTO(1, "123123", "Zé", "ze@email.com", "111111111"));            
+            studentBean.create(new StudentDTO(2, "123123", "Maria", "maria@email.com", "222222222"));
+            studentBean.create(new StudentDTO(3, "123123", "Joana", "joana@email.com", "333333333"));
+            studentBean.create(new StudentDTO(4, "123123", "André", "andre@email.com", "444444444"));
+            studentBean.create(new StudentDTO(5, "123123", "Bruno", "bruno@email.com", "555555555"));
+            studentBean.create(new StudentDTO(6, "123123", "Micael", "micael@email.com", "666666666"));
             
             instituitionBean.create(7, "123123", "CompanyA", "companya@email.com");
             instituitionBean.create(8, "123123", "CompanyB", "companyb@email.com");

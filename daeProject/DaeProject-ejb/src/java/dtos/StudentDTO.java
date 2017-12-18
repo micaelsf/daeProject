@@ -20,10 +20,10 @@ public class StudentDTO extends UserDTO implements Serializable{
 
     public StudentDTO(
             int id,
-            String studentNumber,
             String password,
             String name,
-            String email) {
+            String email,
+            String studentNumber) {
         super(id, password, name, email);
         this.studentNumber = studentNumber;
     }

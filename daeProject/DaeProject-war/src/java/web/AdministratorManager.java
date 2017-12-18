@@ -81,22 +81,16 @@ public class AdministratorManager {
     
     public String createStudent() {
         try {
-            studentBean.create(
-                    newStudent.getId(),
-                    newStudent.getPassword(),
-                    newStudent.getName(),
-                    newStudent.getEmail(),
-                    newStudent.getStudentNumber());
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(newStudent));
             newStudent.reset();
-        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-            return null;
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-
-        return "admin/student/index?faces-redirect=true";
+        return "index?faces-redirect=true";
     }
     
     public List<StudentDTO> getAllStudentsREST() {
@@ -145,12 +139,16 @@ public class AdministratorManager {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
             
-            studentBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-        } catch (NumberFormatException e) {
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(""));
+            
+            //studentBean.remove(id);
+        } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        } 
+        }
     }
     
     public String createInstituition() {

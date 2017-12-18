@@ -19,8 +19,10 @@ import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -28,14 +30,21 @@ import javax.ws.rs.core.MediaType;
 @Path("/students")
 public class StudentBean extends Bean<Student>{
 
-    public void create(int id, String password, String name, String email, String studentNumber)
+    @POST
+    @Path("/createREST")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(StudentDTO studentDTO)
          throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            if (em.find(Student.class, id) != null) {
+            System.out.println("ejbs.StudentBean.create()");
+            if (em.find(Student.class, studentDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("User already exists.");
             }
-
-            Student student = new Student(password, name, email, studentNumber);
+            Student student = new Student(
+                    studentDTO.getPassword(), 
+                    studentDTO.getName(), 
+                    studentDTO.getEmail(), 
+                    studentDTO.getStudentNumber());
             em.persist(student);
         } catch (EntityAlreadyExistsException e) {
             throw e;
@@ -46,10 +55,13 @@ public class StudentBean extends Bean<Student>{
         }
     }
     
-    public void remove(int id) 
+    @POST
+    @Path("/removeREST")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("id") String idStr) 
         throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, id);
+            Student student = em.find(Student.class, Integer.parseInt(idStr));
             if (student == null) {
                 throw new EntityDoesNotExistsException("There is no student with that username.");
             }
