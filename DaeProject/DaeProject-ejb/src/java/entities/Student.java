@@ -5,6 +5,7 @@
  */
 package entities;
 
+import entities.UserGroup.GROUP;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,12 +30,14 @@ public class Student extends User implements Serializable {
     public List<Document> documents;
 
     public Student() {
+
         documents = new LinkedList<>();
     }
 
     public Student(String password, String name, String email, String studentNumber) {
-        super(password, name, email);
+        super(password, GROUP.Student, name, email);
         this.studentNumber = studentNumber;
+
         documents = new LinkedList<>();
     }
 
@@ -53,11 +56,15 @@ public class Student extends User implements Serializable {
     public void setDocuments(List<Document> documents) {
         this.documents = documents;
     }
-    
+
     public void addDocument(Document document) {
         this.documents.add(document);
     }
-    
+
+    public void removeDocument(Document document) {
+        this.documents.remove(document);
+    }
+
     @Override
     public String toString() {
         return "Student{" + "Password=" + password + ", name=" + name + ", email=" + email + ", student number=" + studentNumber + '}';

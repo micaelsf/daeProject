@@ -14,7 +14,7 @@ public class Admin extends User implements Serializable {
     public Admin() {
     }
 
-    public Admin(String password, String name, String email) {
-        super(password, name, email);
+    public Admin(String password, UserGroup.GROUP group, String name, String email) {
+        super(password, group, name, email);
     }
 }

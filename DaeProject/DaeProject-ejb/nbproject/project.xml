@@ -5,7 +5,8 @@
         <data xmlns="http://www.netbeans.org/ns/j2ee-ejbjarproject/3">
             <name>DaeProject-ejb</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
-            <included-library dirs="200">file.reference.modelmapper-1.1.0.jar</included-library>
+            <included-library dirs="200">libs.javaee-endorsed-api-7.0_2.classpath</included-library>
+            <included-library dirs="200">file.reference.modelmapper-1.1.0.jar-1</included-library>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>

@@ -6,15 +6,24 @@
 package entities;
 
 import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import util.Security;
 
 @Entity
-public class Proponent extends User implements Serializable{
+public class Proponent extends User implements Serializable {
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
+    protected UserGroup group;
 
     public Proponent() {
     }
 
-    public Proponent(String password, String name, String email) {
-        super(password, name, email);
+    public Proponent(String password, UserGroup.GROUP group, String name, String email) {
+        super(password, group, name, email);
     }
 }

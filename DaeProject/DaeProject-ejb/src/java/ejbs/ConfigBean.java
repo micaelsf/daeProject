@@ -21,8 +21,8 @@ public class ConfigBean {
     @EJB
     private InstituitionBean instituitionBean;
     
-    //@EJB
-    //private TeacherBean teacherBean;
+    @EJB
+    private TeacherBean teacherBean;
 
     @PostConstruct
     public void populateBD() {
@@ -40,7 +40,11 @@ public class ConfigBean {
             instituitionBean.create(9, "123123", "CompanyC", "companyc@email.com");
             instituitionBean.create(10, "123123", "CompanyD", "companyd@email.com");
             instituitionBean.create(11, "123123", "CompanyF", "companyf@email.com");
-
+            
+            
+            teacherBean.create(12, "t1", "t1", "t1@ipleiria.pt");
+            teacherBean.create(13, "t2", "t2", "t2@ipleiria.pt");
+            teacherBean.create(14, "t3", "t3", "t3@ipleiria.pt");
 
             /*
             studentBean.enrollStudent("1111111", 1);
