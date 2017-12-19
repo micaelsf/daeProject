@@ -11,9 +11,7 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -25,6 +23,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import org.jboss.logging.Param;
 
 @Stateless
 @Path("/students")
@@ -36,7 +35,6 @@ public class StudentBean extends Bean<Student>{
     public void create(StudentDTO studentDTO)
          throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            System.out.println("ejbs.StudentBean.create()");
             if (em.find(Student.class, studentDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("User already exists.");
             }
@@ -56,16 +54,16 @@ public class StudentBean extends Bean<Student>{
     }
     
     @POST
-    @Path("/removeREST")
+    @Path("/removeREST/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String idStr) 
+    public void remove(@PathParam("id") String id) 
         throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, Integer.parseInt(idStr));
+            Student student = em.find(Student.class, Integer.parseInt(id));
             if (student == null) {
                 throw new EntityDoesNotExistsException("There is no student with that username.");
             }
-
+            
             em.remove(student);
 
         } catch (EntityDoesNotExistsException e) {
@@ -94,7 +92,7 @@ public class StudentBean extends Bean<Student>{
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateREST(StudentDTO studentDTO)
+    public void update(StudentDTO studentDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             Student student = em.find(Student.class, studentDTO.getId());
@@ -115,22 +113,5 @@ public class StudentBean extends Bean<Student>{
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
-    }
-    
-    List<StudentDTO> studentsToDTOs(List<Student> students) {
-        List<StudentDTO> dtos = new ArrayList<>();
-        for (Student s : students) {
-            dtos.add(studentToDTO(s));
-        }
-        return dtos;
-    }
-    
-    StudentDTO studentToDTO(Student student) {
-        return new StudentDTO(
-                student.getId(),
-                student.getStudentNumber(),
-                null,
-                student.getName(),
-                student.getEmail());
     }
 }

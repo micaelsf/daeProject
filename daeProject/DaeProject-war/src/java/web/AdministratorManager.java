@@ -10,13 +10,9 @@ import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.WorkProposalDTO;
 import ejbs.InstituitionBean;
-import ejbs.StageProposalBean;
 import ejbs.StudentBean;
 import ejbs.TeacherBean;
 import ejbs.WorkProposalBean;
-import entities.DissertationProposal;
-import entities.ProjectProposal;
-import entities.StageProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -84,7 +80,7 @@ public class AdministratorManager {
             client.target(URILookup.getBaseAPI())
                     .path("/students/createREST")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(newStudent));
+                    .post(Entity.xml(newStudent));
             newStudent.reset();
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
@@ -139,11 +135,12 @@ public class AdministratorManager {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
             
+            
             client.target(URILookup.getBaseAPI())
                     .path("/students/removeREST")
                     .path(id + "")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(""));
+                    .post(Entity.xml(""));
             
             //studentBean.remove(id);
         } catch (Exception e) {
@@ -299,24 +296,19 @@ public class AdministratorManager {
         }
     }
     
+    /* PROPOSAL */
     public String createWorkProposal() {
         try {
-            proposalBean.create(
-                    newProposal.getId(),
-                    newProposal.getTitle(),
-                    newProposal.getScientificAreas(),                    
-                    newProposal.getObjectives(),
-                    newProposal.getStatus());
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newProposal));
             newProposal.reset();
-        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-            return null;
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-
-        return "admin/proposal/index?faces-redirect=true";
+        return "index?faces-redirect=true";
     }
     
     public List<WorkProposalDTO> getAllWorkProposalsREST() {
@@ -384,10 +376,12 @@ public class AdministratorManager {
             int id = Integer.parseInt(param.getValue().toString());
             
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/updateREST")
+                    .path("/proposals/removeREST")
                     .path(id + "")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(""));
+                    .post(Entity.xml(""));
+            
+            //studentBean.remove(id);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
@@ -404,21 +398,7 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         } 
     }*/
-    
-    /////////////// UTILS ///////////////// 
-/*    public String getProposalType() {
-        if (currentProposal instanceof DissertationProposal) {
-            return "Dissertação";
-        }
-        if (currentProposal instanceof StageProposal) {
-            return "Estágio";
-        }
-        if (currentProposal instanceof ProjectProposal) {
-            return "Projeto";
-        }
-        return null;
-    }
-  */  
+ 
     public int getSelectOption() {
         return selectOption;
     }
