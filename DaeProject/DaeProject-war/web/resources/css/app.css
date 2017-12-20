@@ -16,3 +16,11 @@ and open the template in the editor.
 .center-text {
     text-align: center;
 }
+
+.columnWidth {
+    width: 12%;
+}
+
+.rowMargin {
+    margin-bottom: 8px;
+}

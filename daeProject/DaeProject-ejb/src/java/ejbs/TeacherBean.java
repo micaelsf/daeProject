@@ -8,21 +8,13 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/teachers")
@@ -45,10 +37,10 @@ public class TeacherBean extends Bean<Teacher> {
         }
     }
 
-    public void update(String username, String name, String email, String office)
+    public void update(int id, String name, String email)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Teacher teacher = em.find(Teacher.class, username);
+            Teacher teacher = em.find(Teacher.class, id);
             if (teacher == null) {
                 throw new EntityDoesNotExistsException("There is no teacher with that username.");
             }
@@ -68,7 +60,7 @@ public class TeacherBean extends Bean<Teacher> {
         try {
             Teacher teacher = em.find(Teacher.class, id);
             if (teacher == null) {
-                throw new EntityDoesNotExistsException("There is no student with that username.");
+                throw new EntityDoesNotExistsException("There is no teacher with that username.");
             }
 
             em.remove(teacher);
@@ -93,32 +85,4 @@ public class TeacherBean extends Bean<Teacher> {
         return em.createNamedQuery("getAllTeachers").getResultList();
     }
 
-  
-    public void addSubjectTeacher(int subjectCode, String username) throws EntityDoesNotExistsException {
-        try {
-
-            Teacher teacher = em.find(Teacher.class, username);
-            if (teacher == null) {
-                throw new EntityDoesNotExistsException("There is no teacher with that username.");
-            }
-        } catch (EntityDoesNotExistsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-
-    public void removeSubjectTeacher(int subjectCode, String username) throws EntityDoesNotExistsException {
-        try {
-
-            Teacher teacher = em.find(Teacher.class, username);
-            if (teacher == null) {
-                throw new EntityDoesNotExistsException("There is no teacher with that username.");
-            }
-        } catch (EntityDoesNotExistsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
 }

@@ -1,4 +1,4 @@
-package util;
+package utils;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;

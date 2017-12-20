@@ -3,11 +3,9 @@ package web;
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.StudentDTO;
-import dtos.SubjectDTO;
 import ejbs.StudentBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -18,7 +16,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import util.URILookup;
+import utils.URILookup;
 
 @ManagedBean
 @SessionScoped

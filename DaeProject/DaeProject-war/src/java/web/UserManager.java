@@ -33,11 +33,11 @@ public class UserManager implements Serializable {
         }
 
         if (isUserInRole(UserGroup.GROUP.Teacher)) {
-            return "/faces/teacher/subjects?faces-redirect=true";
+            return "/faces/teacher/index?faces-redirect=true";
         }
 
         if (isUserInRole(UserGroup.GROUP.Instituition)) {
-            return "/faces/instituition/subjects?faces-redirect=true";
+            return "/faces/instituition/index?faces-redirect=true";
         }
 
         return "error?faces-redirect=true";

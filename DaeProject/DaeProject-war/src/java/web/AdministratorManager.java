@@ -8,9 +8,11 @@ package web;
 import dtos.InstituitionDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
+import dtos.WorkProposalDTO;
 import ejbs.InstituitionBean;
 import ejbs.StudentBean;
 import ejbs.TeacherBean;
+import ejbs.WorkProposalBean;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -27,6 +29,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import utils.URILookup;
 
 @ManagedBean
 @SessionScoped
@@ -50,34 +53,38 @@ public class AdministratorManager {
     private TeacherDTO newTeacher;
     private TeacherDTO currentTeacher;
 
+    @EJB
+    private WorkProposalBean proposalBean;
+    private WorkProposalDTO newProposal;    
+    private WorkProposalDTO currentProposal;    
+    
     private UIComponent component;
-
     private Client client;
 
     private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
+    
+    private int selectOption;
+    
+    //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
     //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
 
     public AdministratorManager() {
         newStudent = new StudentDTO();
         newInstituition = new InstituitionDTO();
         newTeacher = new TeacherDTO();
+        newProposal = new WorkProposalDTO();
         client = ClientBuilder.newClient();
     }
 
     public String createStudent() {
         try {
-            studentBean.create(
-                    newStudent.getId(),
-                    newStudent.getPassword(),
-                    newStudent.getName(),
-                    newStudent.getEmail(),
-                    newStudent.getStudentNumber());
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(newStudent));
             newStudent.reset();
-        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-            return null;
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -102,7 +109,7 @@ public class AdministratorManager {
     public List<StudentDTO> getAllStudentsREST() {
         List<StudentDTO> returnedStudents;
         try {
-            returnedStudents = client.target(baseUri)
+            returnedStudents = client.target(URILookup.getBaseAPI())
                     .path("/students/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<StudentDTO>>() {
@@ -115,10 +122,26 @@ public class AdministratorManager {
         return returnedStudents;
     }
 
+    public String updateStudentsREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentStudent));
+            
+         } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+       
+        return "index?faces-redirect=true";
+    }
+    
     public void removeStudent(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
+            
             studentBean.remove(id);
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
@@ -143,13 +166,12 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
             return null;
         }
-
         return "index?faces-redirect=true";
     }
-
+    
     public String updateInstituitionREST() {
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/instituitions/updateREST")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentInstituition));
@@ -164,7 +186,7 @@ public class AdministratorManager {
     public List<InstituitionDTO> getAllInstituitionsREST() {
         List<InstituitionDTO> returnedInstituitions;
         try {
-            returnedInstituitions = client.target(baseUri)
+            returnedInstituitions = client.target(URILookup.getBaseAPI())
                     .path("/instituitions/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<InstituitionDTO>>() {
@@ -209,9 +231,9 @@ public class AdministratorManager {
         return "/admin/index?faces-redirect=true";
     }
 
-    public String updateTeacherREST() {
+     public String updateTeacherREST() {
         try {
-            client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/teachers/updateREST")
                     .path(currentTeacher.getId() + "")
                     .path(currentTeacher.getName())
@@ -238,23 +260,121 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-
-    public List<TeacherDTO> getAllTeachersREST() {
-        List<TeacherDTO> returnedTeachers;
+     
+     public List<TeacherDTO> getAllTeachersREST() {
+         List<TeacherDTO> returnedTeachers;
+         try {
+             returnedTeachers = client.target(URILookup.getBaseAPI())
+                     .path("/teachers/all")
+                     .request(MediaType.APPLICATION_XML)
+                     .get(new GenericType<List<TeacherDTO>>() {
+             });
+             System.out.println(returnedTeachers);
+         } catch (Exception e) {
+             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+             return null;
+         }
+         return returnedTeachers;
+     }
+    
+    public String createWorkProposal() {
         try {
-            returnedTeachers = client.target(baseUri)
-                    .path("/teachers/all")
+            proposalBean.create(
+                    newProposal.getId(),
+                    newProposal.getTitle(),
+                    newProposal.getScientificAreas(),                    
+                    newProposal.getObjectives(),
+                    newProposal.getStatus());
+            newProposal.reset();
+        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
+            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
+            return null;
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            return null;
+        }
+
+        return "admin/proposal/index?faces-redirect=true";
+    }
+    
+    public List<WorkProposalDTO> getAllWorkProposalsREST() {
+        List<WorkProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/all")
                     .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<TeacherDTO>>() {
-                    });
-            System.out.println(returnedTeachers);
+                    .get(new GenericType<List<WorkProposalDTO>>() {
+            });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
             return null;
         }
-        return returnedTeachers;
+        return returnedProposals;
+    }
+    
+    public String updateWorkProposalREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentProposal));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    public void updateStatusWorkProposalREST(ActionEvent event) {
+        try {
+            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");            
+            UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
+            int id = 0, status = 3;
+            
+            if (paramAccept != null) {
+                id = Integer.parseInt(paramAccept.getValue().toString());
+                status = 1;
+            }
+            
+            if (paramReject != null) {
+                id = Integer.parseInt(paramReject.getValue().toString());
+                status = 2;
+            }
+            
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/updateREST")
+                    .path(id + "")
+                    .path(status + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(""));
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        } 
+    }
+    
+    public void removeProposal(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/updateREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(""));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+        }
+    }
+    public int getSelectOption() {
+        return selectOption;
     }
 
+    public void setSelectOption(int selectOption) {
+        this.selectOption = selectOption;
+    }
+    
     /////////////// GETTERS & SETTERS ///////////////// 
     //instituition
     public InstituitionDTO getCurrentInstituition() {
@@ -315,4 +435,19 @@ public class AdministratorManager {
         this.component = component;
     }
 
+    public WorkProposalDTO getNewProposal() {
+        return newProposal;
+    }
+
+    public void setNewProposal(WorkProposalDTO newProposal) {
+        this.newProposal = newProposal;
+    }
+
+    public WorkProposalDTO getCurrentProposal() {
+        return currentProposal;
+    }
+
+    public void setCurrentProposal(WorkProposalDTO currentProposal) {
+        this.currentProposal = currentProposal;
+    }
 }

@@ -8,17 +8,17 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Students</h1>
-            <em:dt title="Students" 
-                   headers="#{['Id', 'Name', 'Email', 'Student Number']}" 
+            <h1 class="page-header">Estudantes</h1>
+            <em:dt title="Estudantes" 
+                   headers="#{['Id', 'Nome', 'Email', 'Número do estudante']}" 
                    props="#{['id', 'name', 'email', 'studentNumber']}" 
                    list="#{administratorManager.allStudentsREST}"> 
-                <p:column headerText="Actions"> 
+                <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
                             <h:commandLink 
                                 class="fa fa-eye fa-fw"
                                 value=" " 
-                                title="Details"
+                                title="Detalhes"
                                 action="show?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
                                     target="#{administratorManager.currentStudent}" 
@@ -27,7 +27,7 @@
                             <h:commandLink 
                                 class="fa fa-pencil fa-fw"
                                 value=" " 
-                                title="Edit"
+                                title="Editar"
                                 action="edit?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
                                     target="#{administratorManager.currentStudent}" 
@@ -36,7 +36,7 @@
                             <h:commandLink 
                                 class="fa fa-trash fa-fw"
                                 value=" " 
-                                title="Remove"
+                                title="Remover"
                                 actionListener="#{administratorManager.removeStudent}"> 
                                 <f:param name="id" 
                                     id="id" 
@@ -47,7 +47,7 @@
             </em:dt>
             <br/>
             <br/>
-            <h:link class="btn btn-primary pull-left" value="Create student" outcome="create"/>
+            <h:link class="btn btn-primary pull-left" value="Criar estudante" outcome="create"/>
         </ui:define>
     </ui:composition>
 </html>

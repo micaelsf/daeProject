@@ -9,7 +9,6 @@ import dtos.DocumentDTO;
 import dtos.StudentDTO;
 import entities.Document;
 import entities.Student;
-import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -22,6 +21,7 @@ import javax.mail.MessagingException;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -35,16 +35,27 @@ public class StudentBean extends Bean<Student> {
     @EJB
     EmailBean emailBean;
 
-    public void create(int id, String password, String name, String email, String studentNumber)
-            throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
+    @POST
+    @Path("/createREST")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(StudentDTO studentDTO)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            if (em.find(Student.class, id) != null) {
-                throw new EntityAlreadyExistsException("Student already exists.");
+            Student student = em.find(Student.class, studentDTO.getId());
+            if (student != null) {
+                throw new EntityDoesNotExistsException("There is no Student with that name.");
             }
 
-            Student student = new Student(password, name, email, studentNumber);
-            em.persist(student);
-        } catch (EntityAlreadyExistsException e) {
+            student = new Student(
+                    studentDTO.getPassword(),
+                    studentDTO.getName(),
+                    studentDTO.getEmail(),
+                    studentDTO.getStudentNumber()
+            );
+
+            em.merge(student);
+
+        } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -148,22 +159,22 @@ public class StudentBean extends Bean<Student> {
         return toDTO(doc, DocumentDTO.class);
     }
 
-    public Collection<DocumentDTO> getDocuments(String username) throws EntityDoesNotExistsException {
+    public Collection<DocumentDTO> getDocuments(int id) throws EntityDoesNotExistsException {
         try {
-            List<Document> docs = em.createNamedQuery("getDocumentsOfStudent", Document.class).setParameter("username", username).getResultList();
+            List<Document> docs = em.createNamedQuery("getDocumentsOfStudent", Document.class).setParameter("id", id).getResultList();
             return toDTOs(docs, DocumentDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
 
-    public boolean hasDocuments(String username)
+    public boolean hasDocuments(int id)
             throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, username);
+            Student student = em.find(Student.class, id);
 
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no user with such username.");
+                throw new EntityDoesNotExistsException("There is no user with such id.");
             }
             return !student.getDocuments().isEmpty();
         } catch (EntityDoesNotExistsException e) {
@@ -178,7 +189,7 @@ public class StudentBean extends Bean<Student> {
         try {
             Student student = em.find(Student.class, id);
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no Student with that username.");
+                throw new EntityDoesNotExistsException("There is no Student with that id.");
             }
 
             em.remove(student);
@@ -190,28 +201,11 @@ public class StudentBean extends Bean<Student> {
         }
     }
 
-    public void sendEmailToStudent(String username) throws MessagingException, EntityDoesNotExistsException {
-        try {
-            Student student = em.find(Student.class, username);
-            if (student == null) {
-                throw new EntityDoesNotExistsException("There is no student with that username.");
-            }
-
-            emailBean.send(
-                    student.getEmail(),
-                    "Subject",
-                    "Hello " + student.getName());
-
-        } catch (MessagingException | EntityDoesNotExistsException e) {
-            throw e;
-        }
-    }
-
     public void sendEmailToStudent(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
             Student student = em.find(Student.class, id);
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no student with that username.");
+                throw new EntityDoesNotExistsException("There is no student with that id.");
             }
 
             emailBean.send(
@@ -223,4 +217,5 @@ public class StudentBean extends Bean<Student> {
             throw e;
         }
     }
+
 }

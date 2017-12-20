@@ -1,11 +1,12 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
-    <ui:composition template="/templates/skeleton.xhtml"> 
+    <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h1 class="page-header">Propostas de trabalho</h1>
             <em:dt title="Propostas" 
@@ -16,7 +17,7 @@
                     <h:outputText class="center-text"
                                   value="#{administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
                 </p:column> 
-                <p:column headerText="Ações">
+                <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
                             <h:commandLink 
                                 class="fa fa-eye fa-fw"
@@ -27,30 +28,31 @@
                                     target="#{administratorManager.currentProposal}" 
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp;
-                            <h:commandLink 
-                                class="fa fa-pencil fa-fw"
-                                value=" " 
-                                title="Editar"
-                                action="edit?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentProposal}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp; 
-                            <h:commandLink 
-                                class="fa fa-trash fa-fw"
-                                value=" " 
-                                title="Remover"
-                                actionListener="#{administratorManager.removeProposal}"> 
-                                <f:param name="id" 
-                                    id="id" 
+                            <h:commandLink
+                                class="btn btn-success btn-md"
+                                value="Aceitar" 
+                                title="Aceitar"
+                                actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
+                                <f:param name="acceptProposalID" 
+                                    id="acceptProposal" 
                                     value="#{object.id}" /> 
-                            </h:commandLink> 
+                            </h:commandLink> &nbsp;
+                            <h:commandLink 
+                                class="btn btn-danger btn-md"
+                                value="Rejeitar" 
+                                title="Rejeitar"
+                                actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
+                                <f:param name="rejectProposalID" 
+                                    id="rejectProposal" 
+                                    value="#{object.id}" /> 
+                            </h:commandLink> &nbsp;
                     </h:form> 
                 </p:column> 
             </em:dt>
             <br/>
             <br/>
-            <h:link class="btn btn-primary pull-left" value="Criar Proposta de trabalho" outcome="create"/>
+            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/proposal/index"/>
         </ui:define>
     </ui:composition>
 </html>
+

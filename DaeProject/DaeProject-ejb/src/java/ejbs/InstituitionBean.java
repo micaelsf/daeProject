@@ -6,7 +6,6 @@
 package ejbs;
 
 import dtos.InstituitionDTO;
-import dtos.StudentDTO;
 import entities.Instituition;
 import entities.UserGroup.GROUP;
 import exceptions.EntityAlreadyExistsException;
@@ -104,7 +103,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, instituitionDTO.getId());
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no Student with that name.");
+                throw new EntityDoesNotExistsException("There is no Instituition with that name.");
             }
 
             instituition.getPassword();
@@ -126,7 +125,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, id);
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no Student with that username.");
+                throw new EntityDoesNotExistsException("There is no Instituition with that name.");
             }
 
             em.remove(instituition);
@@ -142,7 +141,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, id);
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no instituition with that username.");
+                throw new EntityDoesNotExistsException("There is no instituition with that name.");
             }
 
             emailBean.send(
@@ -155,20 +154,4 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         }
     }
 
-    public void sendEmailToStudent(int id) throws MessagingException, EntityDoesNotExistsException {
-        try {
-            Instituition instituition = em.find(Instituition.class, id);
-            if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no student with that username.");
-            }
-
-            emailBean.send(
-                    instituition.getEmail(),
-                    "Subject",
-                    "Hello " + instituition.getName());
-
-        } catch (MessagingException | EntityDoesNotExistsException e) {
-            throw e;
-        }
-    }
 }

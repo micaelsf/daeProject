@@ -15,6 +15,7 @@
                 </library>
                 <library dirs="200">
                     <file>${file.reference.primefaces-6.1.jar}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="100">
                     <file>${reference.DaeProject-ejb.dist}</file>
@@ -22,6 +23,9 @@
                 </library>
                 <library dirs="200">
                     <file>${libs.restlib.classpath}</file>
+                </library>
+                <library dirs="200">
+                    <file>${libs.restapi.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>
