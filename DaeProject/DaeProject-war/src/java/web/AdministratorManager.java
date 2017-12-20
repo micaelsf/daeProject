@@ -242,7 +242,7 @@ public class AdministratorManager {
                     .put(Entity.xml(this));
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!er", logger);
+            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter", logger);
             return null;
         }
         return "index?faces-redirect=true";

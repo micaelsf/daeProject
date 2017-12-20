@@ -50,24 +50,10 @@
                         required="true"
                         requiredMessage="Erro: O número de estudante não pode ser vazio."                            
                         value="#{administratorManager.newStudent.studentNumber}" />
-<<<<<<< HEAD:DaeProject/DaeProject-war/web/admin/student/create.xhtml
                     <h:message for="studentNumber" errorStyle="color: red" />
-                    <br/>
-                    <br/>
-                    <h:link class="btn btn-primary pull-left" 
-                            value="Back" 
-                            outcome="index?faces-redirect=true"/>
-                    <h:commandButton
-                        class="btn btn-primary btn-md"
-                        id="submit"
-                        value="Create"
-                        binding="#{administratorManager.component}" 
-                        action="#{administratorManager.createStudent}" />
-                    <h:message for="submit" style="color: red"/>
+
                 </h:panelGrid>    
-=======
-                    <h:message for="name" errorStyle="color: red" />
-                </h:panelGrid>  
+
                 <br/>
                 <br/>
 
@@ -82,7 +68,6 @@
                     binding="#{administratorManager.component}" 
                     action="#{administratorManager.createStudent}" />
                 <h:message for="submit" style="color: red"/>
->>>>>>> d507632bb978313d7d272f384dd752dd0b966529:daeProject/DaeProject-war/web/admin/student/create.xhtml
             </h:form>
         </ui:define>    
     </ui:composition> 
