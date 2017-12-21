@@ -21,7 +21,7 @@ import utils.URILookup;
 @ManagedBean
 @SessionScoped
 public class StudentManager implements Serializable {
-
+/*
     private Client client;
     private HttpAuthenticationFeature feature;
 
@@ -123,4 +123,5 @@ public class StudentManager implements Serializable {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
+*/
 }

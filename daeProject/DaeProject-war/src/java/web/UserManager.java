@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 @ManagedBean
 @SessionScoped
 public class UserManager implements Serializable {
-
+/*
     private String email;
     private String password;
     private static final Logger logger = Logger.getLogger("web.UserManager");
@@ -105,4 +105,5 @@ public class UserManager implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
+*/
 }
