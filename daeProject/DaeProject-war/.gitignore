@@ -1,6 +1,4 @@
-**/nbproject/private/
-**/nbproject/genfiles.properties
-**/nbproject/project.properties
+/nbproject/private/*
 build/
 nbbuild/
 dist/
