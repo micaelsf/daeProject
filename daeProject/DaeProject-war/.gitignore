@@ -1,0 +1,9 @@
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+!modelmapper-1.1.0.jar
+!primefaces-6.1.jar
