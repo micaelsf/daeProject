@@ -55,19 +55,18 @@ public class AdministratorManager {
 
     @EJB
     private WorkProposalBean proposalBean;
-    private WorkProposalDTO newProposal;    
-    private WorkProposalDTO currentProposal;    
-    
+    private WorkProposalDTO newProposal;
+    private WorkProposalDTO currentProposal;
+
     private UIComponent component;
     private Client client;
 
     private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
-    
+
     private int selectOption;
-    
+
     //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
     //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
-
     public AdministratorManager() {
         newStudent = new StudentDTO();
         newInstituition = new InstituitionDTO();
@@ -81,10 +80,10 @@ public class AdministratorManager {
             client.target(URILookup.getBaseAPI())
                     .path("/students/createREST")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(newStudent));
+                    .post(Entity.xml(newStudent));
             newStudent.reset();
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -92,17 +91,16 @@ public class AdministratorManager {
 
     public String updateStudentREST() {
         try {
-            client.target(baseUri)
+            // client.target(baseUri)
+            client.target(URILookup.getBaseAPI())
                     .path("/students/updateREST")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentStudent));
-            System.out.println("Erro #11111111111 updateRest AdminManager");
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
-        System.out.println("Erro #123455 updateRest AdminManager");
         return "index?faces-redirect=true";
     }
 
@@ -116,59 +114,49 @@ public class AdministratorManager {
                     });
             System.out.println(returnedStudents);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return returnedStudents;
     }
 
-    public String updateStudentsREST() {
-        try {
-            client.target(URILookup.getBaseAPI())
-                    .path("/students/updateREST")
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(currentStudent));
-            
-         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-       
-        return "index?faces-redirect=true";
-    }
-    
     public void removeStudent(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-            
+
             studentBean.remove(id);
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            /* 
+            client.target(URILookup.getBaseAPI())
+                    .path("/students/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+             */
+            //studentBean.remove(id);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
 
     //Instituition
     public String createInstituition() {
         try {
-            instituitionBean.create(
-                    newInstituition.getId(),
-                    newInstituition.getPassword(),
-                    newInstituition.getName(),
-                    newInstituition.getEmail());
-            newInstituition.reset();
-        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-            return null;
+            client.target(URILookup.getBaseAPI())
+                    .path("/instituitions/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newInstituition)
+                    );
+
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return "index?faces-redirect=true";
     }
-    
+
     public String updateInstituitionREST() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -177,7 +165,7 @@ public class AdministratorManager {
                     .put(Entity.xml(currentInstituition));
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -193,7 +181,7 @@ public class AdministratorManager {
                     });
             System.out.println(returnedInstituitions);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return returnedInstituitions;
@@ -207,42 +195,36 @@ public class AdministratorManager {
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
 
     /* TEACHERS  */
     public String createTeacher() {
         try {
-            teacherBean.create(
-                    newTeacher.getId(),
-                    newTeacher.getPassword(),
-                    newTeacher.getName(),
-                    newTeacher.getEmail());
-            newTeacher.reset();
-        } catch (EntityAlreadyExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-            return null;
+            client.target(URILookup.getBaseAPI())
+                    .path("/teachers/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newTeacher)
+                    );
+
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter! RIGHT", component, logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
-
-        return "/admin/index?faces-redirect=true";
+        return "index?faces-redirect=true";
     }
-
-     public String updateTeacherREST() {
+  
+        public String updateTeacherREST() {
         try {
+            // client.target(baseUri)
             client.target(URILookup.getBaseAPI())
                     .path("/teachers/updateREST")
-                    .path(currentTeacher.getId() + "")
-                    .path(currentTeacher.getName())
-                    .path(currentTeacher.getEmail())
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(this));
+                    .put(Entity.xml(currentTeacher));
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -257,46 +239,41 @@ public class AdministratorManager {
         } catch (EntityDoesNotExistsException e) {
             FacesExceptionHandler.handleException(e, e.getMessage(), logger);
         } catch (NumberFormatException e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
-     
-     public List<TeacherDTO> getAllTeachersREST() {
-         List<TeacherDTO> returnedTeachers;
-         try {
-             returnedTeachers = client.target(URILookup.getBaseAPI())
-                     .path("/teachers/all")
-                     .request(MediaType.APPLICATION_XML)
-                     .get(new GenericType<List<TeacherDTO>>() {
-             });
-             System.out.println(returnedTeachers);
-         } catch (Exception e) {
-             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-             return null;
-         }
-         return returnedTeachers;
-     }
-    
+
+    public List<TeacherDTO> getAllTeachersREST() {
+        List<TeacherDTO> returnedTeachers;
+        try {
+            returnedTeachers = client.target(URILookup.getBaseAPI())
+                    .path("/teachers/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<TeacherDTO>>() {
+                    });
+            System.out.println(returnedTeachers);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedTeachers;
+    }
+
+    /* PROPOSAL */
     public String createWorkProposal() {
         try {
-            proposalBean.create(
-                    newProposal.getId(),
-                    newProposal.getTitle(),
-                    newProposal.getScientificAreas(),                    
-                    newProposal.getObjectives(),
-                    newProposal.getStatus());
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newProposal));
             newProposal.reset();
-        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException | MyConstraintViolationException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), component, logger);
-            return null;
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", component, logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
-
-        return "admin/proposal/index?faces-redirect=true";
+        return "index?faces-redirect=true";
     }
-    
+
     public List<WorkProposalDTO> getAllWorkProposalsREST() {
         List<WorkProposalDTO> returnedProposals;
         try {
@@ -304,14 +281,14 @@ public class AdministratorManager {
                     .path("/proposals/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<WorkProposalDTO>>() {
-            });
+                    });
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return returnedProposals;
     }
-    
+
     public String updateWorkProposalREST() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -319,54 +296,57 @@ public class AdministratorManager {
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentProposal));
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return "index?faces-redirect=true";
     }
-    
+
     public void updateStatusWorkProposalREST(ActionEvent event) {
         try {
-            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");            
+            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");
             UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
             int id = 0, status = 3;
-            
+
             if (paramAccept != null) {
                 id = Integer.parseInt(paramAccept.getValue().toString());
                 status = 1;
             }
-            
+
             if (paramReject != null) {
                 id = Integer.parseInt(paramReject.getValue().toString());
                 status = 2;
             }
-            
+
             client.target(URILookup.getBaseAPI())
                     .path("/proposals/updateREST")
                     .path(id + "")
                     .path(status + "")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(""));
-            
+
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-        } 
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+        }
     }
-    
+
     public void removeProposal(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-            
+
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/updateREST")
+                    .path("/proposals/removeREST")
                     .path(id + "")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(""));
+                    .post(Entity.xml(""));
+
+            //studentBean.remove(id);
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
+
     public int getSelectOption() {
         return selectOption;
     }
@@ -374,7 +354,7 @@ public class AdministratorManager {
     public void setSelectOption(int selectOption) {
         this.selectOption = selectOption;
     }
-    
+
     /////////////// GETTERS & SETTERS ///////////////// 
     //instituition
     public InstituitionDTO getCurrentInstituition() {

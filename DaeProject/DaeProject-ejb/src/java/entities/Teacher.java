@@ -21,7 +21,7 @@ public class Teacher extends Proponent implements Serializable {
     protected Teacher() {
     }
 
-    public Teacher(String password, GROUP group, String name, String email) {
+    public Teacher(String password, String name, String email) {
         super(password, GROUP.Teacher, name, email);
     }
 }

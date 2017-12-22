@@ -14,7 +14,7 @@ public class WorkProposalDTO implements Serializable {
     private String scientificAreas;
     private String objectives;
     private int status;
-
+    //private String status;
 
     public WorkProposalDTO() {
     }    
@@ -84,7 +84,7 @@ public class WorkProposalDTO implements Serializable {
         }
     }
     
-    private int statusToInt(String status) {
+    public int statusToInt(String status) {
         switch (status) {
             case "Não aceite": return 1;            
             case "Aceite": return 2;

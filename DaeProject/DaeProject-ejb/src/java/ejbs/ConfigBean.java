@@ -1,6 +1,9 @@
 package ejbs;
 
+import dtos.InstituitionDTO;
 import dtos.StudentDTO;
+import dtos.TeacherDTO;
+import dtos.WorkProposalDTO;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -39,21 +42,21 @@ public class ConfigBean {
             studentBean.create(new StudentDTO(5, "123123", "Bruno", "bruno@email.com", "555555555"));
             studentBean.create(new StudentDTO(6, "123123", "Micael", "micael@email.com", "666666666"));
             
-            instituitionBean.create(7, "123123", "CompanyA", "companya@email.com");
-            instituitionBean.create(8, "123123", "CompanyB", "companyb@email.com");
-            instituitionBean.create(9, "123123", "CompanyC", "companyc@email.com");
-            instituitionBean.create(10, "123123", "CompanyD", "companyd@email.com");
-            instituitionBean.create(11, "123123", "CompanyF", "companyf@email.com");
+            instituitionBean.create(new InstituitionDTO(7, "123123", "CompanyA", "companya@email.com"));
+            instituitionBean.create(new InstituitionDTO(8, "123123", "CompanyB", "companyb@email.com"));
+            instituitionBean.create(new InstituitionDTO(9, "123123", "CompanyC", "companyc@email.com"));
+            instituitionBean.create(new InstituitionDTO(10, "123123", "CompanyD", "companyd@email.com"));
+            instituitionBean.create(new InstituitionDTO(11, "123123", "CompanyF", "companyf@email.com"));
             
             
-            teacherBean.create(12, "t1", "t1", "t1@ipleiria.pt");
-            teacherBean.create(13, "t2", "t2", "t2@ipleiria.pt");
-            teacherBean.create(14, "t3", "t3", "t3@ipleiria.pt");
+            teacherBean.create(new TeacherDTO(12, "t1", "t1", "t1@ipleiria.pt"));
+            teacherBean.create(new TeacherDTO(13, "t2", "t2", "t2@ipleiria.pt"));
+            teacherBean.create(new TeacherDTO(14, "t3", "t3", "t3@ipleiria.pt"));
 
-            proposalBean.create(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3);
-            proposalBean.create(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3);
-            proposalBean.create(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3);            
-            proposalBean.create(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3);
+            proposalBean.create(new WorkProposalDTO(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3));
+            proposalBean.create(new WorkProposalDTO(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3));
+            proposalBean.create(new WorkProposalDTO(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3));            
+            proposalBean.create(new WorkProposalDTO(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3));
 
             /*
             studentBean.enrollStudent("1111111", 1);

@@ -100,6 +100,6 @@ public class Student extends User implements Serializable {
     }
 
     public String toString() {
-        return "Student{" + "Password=" + password + ", name=" + name + ", email=" + email + ", student number=" + studentNumber + '}';
+        return "Student{" + "Password=" + password + ", nome=" + name + ", e-mail=" + email + ", número de estudante=" + studentNumber + '}';
     }
 }

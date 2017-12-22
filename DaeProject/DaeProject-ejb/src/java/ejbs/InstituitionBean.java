@@ -7,8 +7,6 @@ package ejbs;
 
 import dtos.InstituitionDTO;
 import entities.Instituition;
-import entities.UserGroup.GROUP;
-import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -23,9 +21,9 @@ import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -40,16 +38,26 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
     @PersistenceContext
     private EntityManager em;
 
-    public void create(int id, String password, String name, String email)
-            throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
+    @POST
+    @Path("/createREST")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(InstituitionDTO instituitionDTO)
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            if (em.find(Instituition.class, id) != null) {
-                throw new EntityAlreadyExistsException("Instituition already exists.");
+            Instituition instituition = em.find(Instituition.class, instituitionDTO.getId());
+            if (instituition != null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
-            em.persist(new Instituition(password, GROUP.Instituition, name, email));
+            instituition = new Instituition(
+                    instituitionDTO.getPassword(),
+                    instituitionDTO.getName(),
+                    instituitionDTO.getEmail()
+            );
 
-        } catch (EntityAlreadyExistsException e) {
+            em.merge(instituition);
+
+        } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -83,7 +91,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
             Instituition instituition = em.find(Instituition.class, id);
 
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no Instituition with such name.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
             
             return toDTO(instituition, InstituitionDTO.class);
@@ -103,7 +111,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, instituitionDTO.getId());
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no Instituition with that name.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
             instituition.getPassword();
@@ -125,7 +133,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, id);
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no Instituition with that name.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
             em.remove(instituition);
@@ -141,13 +149,13 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, id);
             if (instituition == null) {
-                throw new EntityDoesNotExistsException("There is no instituition with that name.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
             emailBean.send(
                     instituition.getEmail(),
-                    "Subject",
-                    "Hello " + instituition.getName());
+                    "Assunto",
+                    "Olá " + instituition.getName());
 
         } catch (MessagingException | EntityDoesNotExistsException e) {
             throw e;

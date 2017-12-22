@@ -19,20 +19,20 @@ import javax.validation.constraints.NotNull;
 
 public class Instituition extends Proponent implements Serializable {
 
-    @NotNull(message = "Instituition id must not be empty")
+    @NotNull(message = "O id da instituição não pode ser null")
     
     public Instituition() {
     }
 
-    public Instituition(String password, UserGroup.GROUP group, String name, String email) {
+    public Instituition(String password, String name, String email) {
         super(password, GROUP.Instituition, name, email);
     }
 
     @Override
     public String toString() {
-        return "Instituition{" +  
-                ", name=" + name +
-                ", email=" + email +"}";
+        return "Instituição{" +  
+                ", nome=" + name +
+                ", e-mail=" + email +"}";
     }
  
 }
