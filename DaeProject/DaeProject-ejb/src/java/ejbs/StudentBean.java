@@ -12,6 +12,7 @@ import entities.Student;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -30,7 +31,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/students")
-public class StudentBean extends Bean<Student> {
+public class StudentBean extends Bean<Student> implements Serializable{
 
     @EJB
     EmailBean emailBean;
@@ -43,7 +44,7 @@ public class StudentBean extends Bean<Student> {
         try {
             Student student = em.find(Student.class, studentDTO.getId());
             if (student != null) {
-                throw new EntityDoesNotExistsException("There is no Student with that name.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
             }
 
             student = new Student(
@@ -89,7 +90,7 @@ public class StudentBean extends Bean<Student> {
             Student student = em.find(Student.class, id);
 
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no user with such username.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
             }
             return toDTO(student, StudentDTO.class);
         } catch (EntityDoesNotExistsException e) {
@@ -107,7 +108,7 @@ public class StudentBean extends Bean<Student> {
         try {
             Student student = em.find(Student.class, studentDTO.getId());
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no Student with that name.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
             }
 
             student.getPassword();
@@ -135,7 +136,7 @@ public class StudentBean extends Bean<Student> {
         try {
             Student student = em.find(Student.class, id);
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no student with such username.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
             }
 
             Document document = new Document(doc.getFilepath(), doc.getDesiredName(), doc.getMimeType(), student);
@@ -174,7 +175,7 @@ public class StudentBean extends Bean<Student> {
             Student student = em.find(Student.class, id);
 
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no user with such id.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
             return !student.getDocuments().isEmpty();
         } catch (EntityDoesNotExistsException e) {
@@ -189,7 +190,7 @@ public class StudentBean extends Bean<Student> {
         try {
             Student student = em.find(Student.class, id);
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no Student with that id.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
 
             em.remove(student);
@@ -205,13 +206,13 @@ public class StudentBean extends Bean<Student> {
         try {
             Student student = em.find(Student.class, id);
             if (student == null) {
-                throw new EntityDoesNotExistsException("There is no student with that id.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
 
             emailBean.send(
                     student.getEmail(),
-                    "Subject",
-                    "Hello " + student.getName());
+                    "Assunto",
+                    "Olá " + student.getName());
 
         } catch (MessagingException | EntityDoesNotExistsException e) {
             throw e;
