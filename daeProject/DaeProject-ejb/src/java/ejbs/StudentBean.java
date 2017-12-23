@@ -12,6 +12,7 @@ import entities.Student;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -30,7 +31,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/students")
-public class StudentBean extends Bean<Student> {
+public class StudentBean extends Bean<Student> implements Serializable{
 
     @EJB
     EmailBean emailBean;
@@ -70,6 +71,7 @@ public class StudentBean extends Bean<Student> {
     public Collection<StudentDTO> getAllStudents() {
         try {
             System.out.println("StudentBean: getAll erro??");
+            System.out.println("StudentBean GetALL :" + getAll(StudentDTO.class));
             return getAll(StudentDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());

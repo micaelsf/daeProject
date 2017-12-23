@@ -10,6 +10,7 @@ import entities.Instituition;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -29,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/instituitions")
-public class InstituitionBean extends Bean<Instituition>  {
+public class InstituitionBean extends Bean<Instituition> implements Serializable {
 
     @EJB
     EmailBean emailBean;

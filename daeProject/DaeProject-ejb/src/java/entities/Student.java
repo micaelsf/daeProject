@@ -6,6 +6,7 @@
 package entities;
 
 import entities.UserGroup.GROUP;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ import javax.validation.constraints.NotNull;
             query = "SELECT s FROM Student s ORDER BY s.name")
 })
 
-public class Student extends User {
+public class Student extends User implements Serializable{
 
     @NotNull(message = "Student number must not be empty")
     private String studentNumber;

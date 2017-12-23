@@ -11,6 +11,7 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -26,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/proposals")
-public class WorkProposalBean extends Bean<WorkProposal>{
+public class WorkProposalBean extends Bean<WorkProposal> implements Serializable{
     
     @POST
     @Path("/createREST")

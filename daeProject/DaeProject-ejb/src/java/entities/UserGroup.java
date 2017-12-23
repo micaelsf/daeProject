@@ -14,10 +14,10 @@ import javax.persistence.Table;
 @Table(name = "USERS_GROUPS")
 public class UserGroup {
 
-    public static enum GROUP {
+    public static enum GROUP implements Serializable {
         Administrator, Teacher, Student, Instituition
     }
-    
+
     @Id
     @Enumerated(EnumType.STRING)
     private GROUP groupName;
@@ -29,7 +29,7 @@ public class UserGroup {
 
     public UserGroup() {
     }
-    
+
     public UserGroup(GROUP groupName, User user) {
         this.groupName = groupName;
         this.user = user;

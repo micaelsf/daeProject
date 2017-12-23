@@ -5,6 +5,7 @@ import entities.Teacher;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -22,7 +23,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/teachers")
-public class TeacherBean extends Bean<Teacher> {
+public class TeacherBean extends Bean<Teacher> implements Serializable{
 
     @EJB
     EmailBean emailBean;
