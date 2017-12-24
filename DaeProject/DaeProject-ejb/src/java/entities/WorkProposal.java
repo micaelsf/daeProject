@@ -18,7 +18,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
@@ -30,7 +29,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(name = "getAllProposals", query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
 })
-public class WorkProposal implements Serializable {
+public class WorkProposal implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -46,7 +45,7 @@ public class WorkProposal implements Serializable {
     @JoinTable(name = "PROPOSAL_PROPONENT",
             joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<Proponent> proponents;
+    private List<User> proponents;
     
     @ManyToMany
     @JoinTable(name = "PROPOSAL_STUDENT",
@@ -98,15 +97,7 @@ public class WorkProposal implements Serializable {
         this.studentsApply = new LinkedList<>();
         this.bibliography = new LinkedList<>();
     }
-   
-    public void addProponent(Proponent proponent) {
-        proponents.add(proponent);  
-    }
-
-    public void removeProponent(Proponent proponent) {
-        proponents.remove(proponent);
-    }
-  
+     
     public void addStudentApply(Student student) {
         studentsApply.add(student);
     }
@@ -146,11 +137,11 @@ public class WorkProposal implements Serializable {
         this.scientificAreas = scientificAreas;
     }
 
-    public List<Proponent> getProponents() {
+    public List<User> getProponents() {
         return proponents;
     }
 
-    public void setProponents(List<Proponent> proponents) {
+    public void setProponents(List<User> proponents) {
         this.proponents = proponents;
     }
 

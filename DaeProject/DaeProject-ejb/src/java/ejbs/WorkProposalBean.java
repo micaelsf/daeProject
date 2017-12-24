@@ -11,6 +11,7 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -26,7 +27,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/proposals")
-public class WorkProposalBean extends Bean<WorkProposal>{
+public class WorkProposalBean extends Bean<WorkProposal> implements Serializable{
     
     @POST
     @Path("/createREST")
@@ -61,7 +62,7 @@ public class WorkProposalBean extends Bean<WorkProposal>{
         try {
             WorkProposal proposal = em.find(WorkProposal.class, Integer.parseInt(id));
             if (proposal == null) {
-                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
             em.remove(proposal);
         } catch (EntityDoesNotExistsException e) {
@@ -81,7 +82,7 @@ public class WorkProposalBean extends Bean<WorkProposal>{
         try {
             WorkProposal proposal = em.find(WorkProposal.class, Integer.parseInt(idStr));
             if (proposal == null) {
-                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
             
             proposal.setStatus(Integer.parseInt(statusStr));
@@ -118,7 +119,7 @@ public class WorkProposalBean extends Bean<WorkProposal>{
         try {
             WorkProposal proposal = em.find(WorkProposal.class, proposalDTO.getId());
             if (proposal == null) {
-                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID");
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
 
             proposal.setTitle(proposalDTO.getTitle());

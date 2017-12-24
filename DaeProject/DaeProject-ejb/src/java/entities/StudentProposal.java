@@ -10,11 +10,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 @Entity
 //@Table(name="STUDENT_PROPOSAL")
-public class Student_Proposal implements Serializable {
+public class StudentProposal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Student") 
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StudentDTO extends UserDTO implements Serializable{
+public class StudentDTO extends UserDTO implements Serializable {
     
   
     private String studentNumber;

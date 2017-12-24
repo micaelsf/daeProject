@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "Instituition") 
+@XmlRootElement(name = "Instituition")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InstituitionDTO extends UserDTO implements Serializable{  
-    
-    public InstituitionDTO(){
+public class InstituitionDTO extends UserDTO implements Serializable{
+
+    public InstituitionDTO() {
     }
 
     public InstituitionDTO(
@@ -24,10 +24,10 @@ public class InstituitionDTO extends UserDTO implements Serializable{
             String email) {
         super(id, password, name, email);
     }
-    
+
     @Override
     public void reset() {
         super.reset();
     }
- 
+
 }

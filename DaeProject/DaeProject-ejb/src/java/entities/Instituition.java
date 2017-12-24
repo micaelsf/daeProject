@@ -12,27 +12,28 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 
-@Entity@NamedQueries({
+@Entity
+@NamedQueries({
     @NamedQuery(name = "getAllInstituitions",
-    query = "SELECT s FROM Instituition s ORDER BY s.name")
+            query = "SELECT s FROM Instituition s ORDER BY s.name")
 })
 
-public class Instituition extends Proponent implements Serializable {
+public class Instituition extends User implements Serializable{
 
-    @NotNull(message = "Instituition id must not be empty")
-    
+    @NotNull(message = "O nome da instituição não pode ser null")
+
     public Instituition() {
     }
 
-    public Instituition(String password, UserGroup.GROUP group, String name, String email) {
+    public Instituition(String password, String name, String email) {
         super(password, GROUP.Instituition, name, email);
     }
 
     @Override
     public String toString() {
-        return "Instituition{" +  
-                ", name=" + name +
-                ", email=" + email +"}";
+        return "Instituição{"
+                + ", nome=" + name
+                + ", e-mail=" + email + "}";
     }
- 
+
 }

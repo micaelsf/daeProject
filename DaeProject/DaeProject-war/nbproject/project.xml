@@ -17,12 +17,17 @@
                     <file>${file.reference.primefaces-6.1.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
+<<<<<<< HEAD
                 <library dirs="200">
                     <file>${libs.restapi.classpath}</file>
 				</library>
                 <library dirs="100">
                     <file>${reference.DaeProject-ejb.dist}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
+=======
+                <library dirs="100">
+                    <file>${reference.DaeProject-ejb.dist}</file>
+>>>>>>> 900d366b690cbb5a7a6f63f810d9a01c62529b2c
                 </library>
                 <library dirs="200">
                     <file>${libs.restlib.classpath}</file>
