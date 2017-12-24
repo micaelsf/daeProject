@@ -9,16 +9,26 @@ import entities.UserGroup.GROUP;
 import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
 
-public class Teacher extends User implements Serializable{
+public class Teacher extends User implements Serializable {
+
+    @NotNull(message = "O nome do professor não pode ser null")
 
     protected Teacher() {
     }
 
     public Teacher(String password, String name, String email) {
         super(password, GROUP.Teacher, name, email);
+    }
+
+    @Override
+    public String toString() {
+        return "Professor{"
+                + ", nome=" + name
+                + ", e-mail=" + email + "}";
     }
 }

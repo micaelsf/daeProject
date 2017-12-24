@@ -20,7 +20,7 @@ import javax.validation.constraints.NotNull;
 
 public class Instituition extends User implements Serializable{
 
-    @NotNull(message = "O id da instituição não pode ser null")
+    @NotNull(message = "O nome da instituição não pode ser null")
 
     public Instituition() {
     }
