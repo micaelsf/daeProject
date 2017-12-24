@@ -6,7 +6,7 @@
  * -------------------------- */
 @font-face{
     font-family:'FontAwesome';
-    src:url('#{resource[font-awesome:fonts/fontawesome-webfont.eot]}&v=4.7.0');
+    /*src:url('#{resource[font-awesome:fonts/fontawesome-webfont.eot]}&v=4.7.0');*/
     src:url('#{resource[font-awesome:fonts/fontawesome-webfont.eot]}&#iefix&v=4.7.0') format('embedded-opentype'),
         url('#{resource[font-awesome:fonts/fontawesome-webfont.woff2]}&v=4.7.0') format('woff2'),
         url('#{resource[font-awesome:fonts/fontawesome-webfont.woff]}&v=4.7.0') format('woff'),
