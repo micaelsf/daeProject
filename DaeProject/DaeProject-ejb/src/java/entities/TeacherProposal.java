@@ -26,7 +26,7 @@ import javax.persistence.NamedQuery;
 public class TeacherProposal extends WorkProposal {
 
     public static enum TeacherProposalType implements Serializable {
-        Projeto, Dissertação
+        Projeto, Dissertação;
     }
     
     @Enumerated(EnumType.STRING)
@@ -43,8 +43,8 @@ public class TeacherProposal extends WorkProposal {
         
     }
     
-    public TeacherProposal(String title, String scientificAreas, String objectives, int status, TeacherProposalType proposalType) {
-        super(title, scientificAreas, objectives, status);
+    public TeacherProposal(String title, String scientificAreas, String objectives, TeacherProposalType proposalType) {
+        super(title, scientificAreas, objectives);
         this.teachers = new LinkedList<>();
         this.enumProposalType = proposalType;
     }

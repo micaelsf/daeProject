@@ -1,5 +1,6 @@
 package dtos;
 
+import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -13,18 +14,18 @@ public class WorkProposalDTO implements Serializable {
     private String title;    
     private String scientificAreas;
     private String objectives;
-    private int status;
+    private ProposalStatus status;
     //private String status;
 
     public WorkProposalDTO() {
     }    
     
-    public WorkProposalDTO(int id, String title, String scientificAreas, String objectives, int status) {
+    public WorkProposalDTO(int id, String title, String scientificAreas, String objectives) {
         this.id = id;        
         this.title = title;        
         this.scientificAreas = scientificAreas;        
         this.objectives = objectives;
-        this.status = status;
+        this.status = ProposalStatus.Pendente;
     }
     
     public void reset() {
@@ -32,7 +33,7 @@ public class WorkProposalDTO implements Serializable {
         setTitle(null);        
         setScientificAreas(null);        
         setObjectives(null);
-        setStatus(-1);
+        setStatus(null);
     }    
 
     public String getTitle() {
@@ -51,11 +52,11 @@ public class WorkProposalDTO implements Serializable {
         this.scientificAreas = scientificAreas;
     }
 
-    public int getStatus() {
+    public ProposalStatus getStatus() {
         return this.status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(ProposalStatus status) {
         this.status = status;            
     }
 

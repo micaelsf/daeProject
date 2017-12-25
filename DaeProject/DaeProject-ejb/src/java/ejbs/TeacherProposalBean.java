@@ -7,6 +7,7 @@ package ejbs;
 
 import dtos.TeacherProposalDTO;
 import entities.TeacherProposal;
+import entities.WorkProposal.ProposalStatus;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -43,7 +44,6 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
                     proposalDTO.getObjectives(), 
-                    proposalDTO.getStatus(),
                     proposalDTO.getTeacherProposalType());
             
             em.persist(proposal);
@@ -79,7 +79,7 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
     @Path("/updateStatusREST/{id}/{status}")
     public void updateStatusWorkProposalREST(
             @PathParam("id") String idStr,
-            @PathParam("status") String statusStr) 
+            @PathParam("status") ProposalStatus status) 
         throws EntityDoesNotExistsException {
         try {
             TeacherProposal proposal = em.find(TeacherProposal.class, Integer.parseInt(idStr));
@@ -87,7 +87,7 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
             
-            proposal.setStatus(Integer.parseInt(statusStr));
+            proposal.setStatus(status);
             em.merge(proposal);
 
         } catch (EntityDoesNotExistsException e) {

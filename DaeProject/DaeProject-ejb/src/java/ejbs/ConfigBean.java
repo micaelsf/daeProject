@@ -7,6 +7,7 @@ import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
 import entities.InstitutionProposal.InstitutionProposalType;
 import entities.TeacherProposal.TeacherProposalType;
+import entities.WorkProposal.ProposalStatus;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -62,13 +63,13 @@ public class ConfigBean {
             teacherBean.create(new TeacherDTO(14, "t3", "t3", "t3@ipleiria.pt"));
             
             System.out.println("Inserting Institution Proposals:");     
-            institutionProposalBean.create(new InstitutionProposalDTO(15, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3, "Inácio", InstitutionProposalType.Estágio));
-            institutionProposalBean.create(new InstitutionProposalDTO(16, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3, "Paulo Neves", InstitutionProposalType.Dissertação));
-            institutionProposalBean.create(new InstitutionProposalDTO(17, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3, "João Andrade", InstitutionProposalType.Estágio));            
-            institutionProposalBean.create(new InstitutionProposalDTO(18, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3, "Jonh", InstitutionProposalType.Projeto));
+            institutionProposalBean.create(new InstitutionProposalDTO(15, "Titulo 1", "EI", "Objetivos do trabalho: ...", "Inácio", InstitutionProposalType.Estágio));
+            institutionProposalBean.create(new InstitutionProposalDTO(16, "Titulo 2", "EI", "Objetivos do trabalho: ...", "Paulo Neves", InstitutionProposalType.Dissertação));
+            institutionProposalBean.create(new InstitutionProposalDTO(17, "Titulo 3", "EI", "Objetivos do trabalho: ...", "João Andrade", InstitutionProposalType.Estágio));            
+            institutionProposalBean.create(new InstitutionProposalDTO(18, "Titulo 4", "EI", "Objetivos do trabalho: ...", "Jonh", InstitutionProposalType.Projeto));
             
             System.out.println("Inserting Teacher Proposals:");
-            teacherProposalBean.create(new TeacherProposalDTO(19, "Titulo 5", "EI", "Objetivos do trabalho: ...", 3, TeacherProposalType.Dissertação));
+            teacherProposalBean.create(new TeacherProposalDTO(19, "Titulo 5", "EI", "Objetivos do trabalho: ...", TeacherProposalType.Dissertação));
             //teacherProposalBean.create(new TeacherProposalDTO(20, "Titulo 6", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
             //teacherProposalBean.create(new TeacherProposalDTO(21, "Titulo 7", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));            
             //teacherProposalBean.create(new TeacherProposalDTO(22, "Titulo 8", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));

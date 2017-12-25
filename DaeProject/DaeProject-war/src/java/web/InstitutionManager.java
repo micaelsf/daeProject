@@ -3,12 +3,13 @@ package web;
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.InstitutionProposalDTO;
+import entities.InstitutionProposal.InstitutionProposalType;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
 import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
@@ -39,7 +40,8 @@ public class InstitutionManager implements Serializable {
     private DocumentDTO document;
 
     private String filePath;
-
+    private UIComponent component;
+    
     public InstitutionManager() {
         client = ClientBuilder.newClient();
         newProposal = new InstitutionProposalDTO();
@@ -86,6 +88,10 @@ public class InstitutionManager implements Serializable {
     }
 */
         /* PROPOSAL */
+    public InstitutionProposalType[] getAllTypes() {
+        return InstitutionProposalType.values();
+    }
+    
     public String createProposal() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -128,34 +134,6 @@ public class InstitutionManager implements Serializable {
         return "index?faces-redirect=true";
     }
 
-    public void updateStatusProposalREST(ActionEvent event) {
-        try {
-            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");
-            UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
-            int id = 0, status = 3;
-
-            if (paramAccept != null) {
-                id = Integer.parseInt(paramAccept.getValue().toString());
-                status = 1;
-            }
-
-            if (paramReject != null) {
-                id = Integer.parseInt(paramReject.getValue().toString());
-                status = 2;
-            }
-
-            client.target(URILookup.getBaseAPI())
-                    .path("/institutionProposals/updateREST")
-                    .path(id + "")
-                    .path(status + "")
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(""));
-
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-        }
-    }
-
     public void removeProposal(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
@@ -167,7 +145,6 @@ public class InstitutionManager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
 
-            //studentBean.remove(id);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
@@ -220,6 +197,14 @@ public class InstitutionManager implements Serializable {
 
     public void setCurrentProposal(InstitutionProposalDTO currentProposal) {
         this.currentProposal = currentProposal;
+    }
+
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
     }
 
 }

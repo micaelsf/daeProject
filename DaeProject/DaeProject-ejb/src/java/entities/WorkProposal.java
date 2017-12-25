@@ -11,6 +11,8 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -30,7 +32,11 @@ import javax.persistence.Table;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
 public class WorkProposal implements Serializable {
-
+    
+    public static enum ProposalStatus implements Serializable {
+        Aceite, NãoAceite, Pendente;
+    }
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
@@ -75,18 +81,19 @@ public class WorkProposal implements Serializable {
     @Column(nullable = true)
     private String support;
     
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private int status;
+    private ProposalStatus status;
     
     public WorkProposal() {
         
     }
     
-    public WorkProposal(String title, String scientificAreas, String objectives, int status) {
+    public WorkProposal(String title, String scientificAreas, String objectives) {
         this.title = title;
         this.scientificAreas = scientificAreas;        
         this.objectives = objectives;
-        this.status = status;
+        this.status = ProposalStatus.Pendente;
         this.studentsApply = new LinkedList<>();
         this.bibliography = new LinkedList<>();
     }
@@ -210,12 +217,11 @@ public class WorkProposal implements Serializable {
         this.support = support;
     }
 
-     public int getStatus() {
-        return this.status;
+    public ProposalStatus getStatus() {
+        return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(ProposalStatus status) {
         this.status = status;
     }
- 
 }

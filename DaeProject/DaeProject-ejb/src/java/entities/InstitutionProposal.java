@@ -26,14 +26,14 @@ import javax.persistence.NamedQuery;
 public class InstitutionProposal extends WorkProposal {
 
     public static enum InstitutionProposalType implements Serializable {
-        Projeto, Estágio, Dissertação
+        Projeto, Estágio, Dissertação;
     }
     
     @Column(nullable = false)
     private String supervisor;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "PROPOSAL_TYPE")
+    @Column(nullable = false, name = "PROPOSAL_TYPE")
     private InstitutionProposalType enumProposalType;
     
     @ManyToMany
@@ -45,8 +45,8 @@ public class InstitutionProposal extends WorkProposal {
     public InstitutionProposal() {
     }
     
-    public InstitutionProposal(String title, String scientificAreas, String objectives, int status, String supervisor, InstitutionProposalType proposalType) {
-        super(title, scientificAreas, objectives, status);
+    public InstitutionProposal(String title, String scientificAreas, String objectives, String supervisor, InstitutionProposalType proposalType) {
+        super(title, scientificAreas, objectives);
         this.supervisor = supervisor;
         this.enumProposalType = proposalType;
         this.institutions = new LinkedList<>();
@@ -83,6 +83,5 @@ public class InstitutionProposal extends WorkProposal {
     public void setInstitutions(List<Institution> institutions) {
         this.institutions = institutions;
     }
-    
     
 }

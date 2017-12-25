@@ -9,6 +9,18 @@
             <h1 class="page-header">Criar Proposta de Trabalho</h1>  
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="supervisor" value="Supervisor: " />
+                    <h:inputText 
+                        class="form-control"
+                        style="max-width: 25%"
+                        id="supervisor"
+                        size="50"
+                        required="true"
+                        requiredMessage="Erro: O campo Supervisor não pode ser vazio."                            
+                        value="#{institutionManager.newProposal.supervisor}">
+                    </h:inputText>
+                    <h:message for="supervisor" errorStyle="color: red" />
+                    
                     <h:outputLabel for="title" value="Titulo: " />
                     <h:inputText 
                         class="form-control"
@@ -17,7 +29,7 @@
                         size="50"
                         required="true"
                         requiredMessage="Erro: O campo Título não pode ser vazio."                            
-                        value="#{administratorManager.newProposal.title}">
+                        value="#{institutionManager.newProposal.title}">
                     </h:inputText>
                     <h:message for="title" errorStyle="color: red" />
 
@@ -29,7 +41,7 @@
                         size="128"
                         required="true"
                         requiredMessage="Erro: O campo Areas Científicas não pode ser vazia."
-                        value="#{administratorManager.newProposal.scientificAreas}"/>
+                        value="#{institutionManager.newProposal.scientificAreas}"/>
                     <h:message for="scientificAreas" errorStyle="color: red" /> 
 
                     <h:outputLabel for="objective" value="Objetivos: " />
@@ -40,7 +52,7 @@
                         size="254"
                         required="true"
                         requiredMessage="Erro: O campo Objetivos não pode ser vazio."                            
-                        value="#{administratorManager.newProposal.objectives}" />
+                        value="#{institutionManager.newProposal.objectives}" />
                     <h:message for="objective" errorStyle="color: red" />
 
                     <h:outputLabel for="proposalType" value="Tipo de Proposta: " />
@@ -48,10 +60,12 @@
                         class="form-control"
                         style="max-width: 25%"
                         id="proposalType"
-                        value = "#{administratorManager.selectOption}"> 
-                        <f:selectItem itemValue = "1" itemLabel = "Projeto" /> 
-                        <f:selectItem itemValue = "2" itemLabel = "Estágio" />                         
-                        <f:selectItem itemValue = "3" itemLabel = "Dissertação" /> 
+                        value = "#{institutionManager.newProposal.institutionProposalType}"> 
+                        <f:selectItems
+                            value="#{institutionManager.allTypes}"
+                            var="type"
+                            itemValue="#{type}"
+                            itemLabel="#{type}" />
                     </h:selectOneMenu> 
                 </h:panelGrid>  
                 <br/>
@@ -64,8 +78,8 @@
                     class="btn btn-primary btn-md"
                     id="submit"
                     value="Criar"
-                    binding="#{administratorManager.component}" 
-                    action="#{administratorManager.createWorkProposal()}" />
+                    binding="#{institutionManager.component}" 
+                    action="#{institutionManager.createProposal()}" />
                 <h:message for="submit" style="color: red"/>
             </h:form>
         </ui:define>

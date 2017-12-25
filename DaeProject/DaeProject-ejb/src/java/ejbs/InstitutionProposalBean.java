@@ -7,6 +7,8 @@ package ejbs;
 
 import dtos.InstitutionProposalDTO;
 import entities.InstitutionProposal;
+import entities.WorkProposal;
+import entities.WorkProposal.ProposalStatus;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -37,11 +39,12 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             if (em.find(InstitutionProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
+            System.out.println("ejbs.InstitutionProposalBean.create() proposal type at bean: " + proposalDTO.getInstitutionProposalType());
+            System.out.println("ejbs.InstitutionProposalBean.create() status at bean: " + proposalDTO.getStatus());
             InstitutionProposal proposal = new InstitutionProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
-                    proposalDTO.getObjectives(), 
-                    proposalDTO.getStatus(),
+                    proposalDTO.getObjectives(),
                     proposalDTO.getSupervisor(),
                     proposalDTO.getInstitutionProposalType());
             
@@ -78,7 +81,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     @Path("/updateStatusREST/{id}/{status}")
     public void updateStatusWorkProposalREST(
             @PathParam("id") String idStr,
-            @PathParam("status") String statusStr) 
+            @PathParam("status") ProposalStatus status) 
         throws EntityDoesNotExistsException {
         try {
             InstitutionProposal proposal = em.find(InstitutionProposal.class, Integer.parseInt(idStr));
@@ -86,7 +89,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
             
-            proposal.setStatus(Integer.parseInt(statusStr));
+            proposal.setStatus(status);
             em.merge(proposal);
 
         } catch (EntityDoesNotExistsException e) {

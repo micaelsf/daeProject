@@ -6,28 +6,34 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Id da Proposta de Trabalho:#{administratorManager.currentProposal.id}</h1>
+            <h2>Id da Proposta de Trabalho: #{institutionManager.currentProposal.id}</h2>
+            <h3>Tipo: #{institutionManager.currentProposal.institutionProposalType}</h3>
             <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="supervisor" value="Supervisor: " />
+                <h:outputText 
+                    id="supervisor"
+                    value="#{institutionManager.currentProposal.supervisor}"/>
+                
                 <h:outputLabel for="title" value="Titulo: " />
                 <h:outputText 
                     id="title"
-                    value="#{administratorManager.currentProposal.title}"/>
+                    value="#{institutionManager.currentProposal.title}"/>
 
                 <h:outputLabel for="scientificAreas" value="Áreas científicas: " />
                 <h:outputText 
                     id="scientificAreas"
-                    value="#{administratorManager.currentProposal.scientificAreas}"/>
+                    value="#{institutionManager.currentProposal.scientificAreas}"/>
                 
                 <h:outputLabel for="objectives" value="Objetivos: " />
                 <h:outputText 
                     id="objectives"
-                    value="#{administratorManager.currentProposal.objectives}"/>
+                    value="#{institutionManager.currentProposal.objectives}"/>
 
                 
                 <h:outputLabel for="status" value="Estado: " />
                 <h:outputText 
                     id="status"
-                    value="#{administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
+                    value="#{institutionManager.currentProposal.status}"/>
             </p:panelGrid>
             <br/>
             <br/>

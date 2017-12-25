@@ -1,6 +1,7 @@
 package dtos;
 
 import entities.InstitutionProposal.InstitutionProposalType;
+import entities.WorkProposal.ProposalStatus;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,10 +21,9 @@ public class InstitutionProposalDTO extends WorkProposalDTO {
             String title, 
             String scientificAreas, 
             String objectives, 
-            int status, 
             String supervisor,
             InstitutionProposalType proposalType) {
-        super(id, title, scientificAreas, objectives, status);
+        super(id, title, scientificAreas, objectives);
         this.supervisor = supervisor;
         this.institutionProposalType = proposalType;
     }

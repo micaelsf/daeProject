@@ -262,20 +262,6 @@ public class AdministratorManager implements Serializable {
     }
 
     /* PROPOSAL */
-/*    public String createWorkProposal() {
-        try {
-            client.target(URILookup.getBaseAPI())
-                    .path("/proposals/createREST")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newProposal));
-            newProposal.reset();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
-        }
-        return "index?faces-redirect=true";
-    }
-*/
     public List<WorkProposalDTO> getAllWorkProposalsREST() {
         List<WorkProposalDTO> returnedProposals;
         try {
@@ -289,19 +275,6 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return returnedProposals;
-    }
-/*
-    public String updateWorkProposalREST() {
-        try {
-            client.target(URILookup.getBaseAPI())
-                    .path("/proposals/updateREST")
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(currentProposal));
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
-        }
-        return "index?faces-redirect=true";
     }
 
     public void updateStatusWorkProposalREST(ActionEvent event) {
@@ -332,23 +305,6 @@ public class AdministratorManager implements Serializable {
         }
     }
 
-    public void removeProposal(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
-
-            client.target(URILookup.getBaseAPI())
-                    .path("/proposals/removeREST")
-                    .path(id + "")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(""));
-
-            //studentBean.remove(id);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-        }
-    }
-*/
     public int getSelectOption() {
         return selectOption;
     }
