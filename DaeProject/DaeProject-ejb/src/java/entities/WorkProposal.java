@@ -15,10 +15,11 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Inheritance;
+import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -26,10 +27,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "PROPOSALS")
-@NamedQueries({
-    @NamedQuery(name = "getAllProposals", query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
-})
-public class WorkProposal implements Serializable{
+@Inheritance(strategy = InheritanceType.JOINED)
+@NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
+public class WorkProposal implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -40,13 +40,7 @@ public class WorkProposal implements Serializable{
     
     @Column(nullable = false)
     private String scientificAreas;
-    
-    @ManyToMany
-    @JoinTable(name = "PROPOSAL_PROPONENT",
-            joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<User> proponents;
-    
+
     @ManyToMany
     @JoinTable(name = "PROPOSAL_STUDENT",
             joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
@@ -93,7 +87,6 @@ public class WorkProposal implements Serializable{
         this.scientificAreas = scientificAreas;        
         this.objectives = objectives;
         this.status = status;
-        this.proponents = new LinkedList<>();
         this.studentsApply = new LinkedList<>();
         this.bibliography = new LinkedList<>();
     }
@@ -135,14 +128,6 @@ public class WorkProposal implements Serializable{
 
     public void setScientificAreas(String scientificAreas) {
         this.scientificAreas = scientificAreas;
-    }
-
-    public List<User> getProponents() {
-        return proponents;
-    }
-
-    public void setProponents(List<User> proponents) {
-        this.proponents = proponents;
     }
 
     public List<Student> getStudentsApply() {

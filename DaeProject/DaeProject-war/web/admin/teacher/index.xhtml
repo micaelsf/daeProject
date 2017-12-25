@@ -9,16 +9,16 @@
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h1 class="page-header">Teachers</h1>
-            <em:dt title="Teachers" 
-                   headers="#{['Id', 'Name', 'Email']}" 
+            <em:dt title="Profesores" 
+                   headers="#{['Id', 'Nome', 'Email']}" 
                    props="#{['id', 'name', 'email']}" 
                    list="#{administratorManager.allTeachersREST}"> 
-                <p:column headerText="Actions"> 
+                <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
                             <h:commandLink 
                                 class="fa fa-eye fa-fw"
                                 value=" " 
-                                title="Details"
+                                title="Detalhes"
                                 action="show?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
                                     target="#{administratorManager.currentTeacher}" 
@@ -27,7 +27,7 @@
                             <h:commandLink 
                                 class="fa fa-pencil fa-fw"
                                 value=" " 
-                                title="Edit"
+                                title="Editar"
                                 action="edit?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
                                     target="#{administratorManager.currentTeacher}" 
@@ -36,7 +36,7 @@
                             <h:commandLink 
                                 class="fa fa-trash fa-fw"
                                 value=" " 
-                                title="Remove"
+                                title="Remover"
                                 actionListener="#{administratorManager.removeTeacher}"> 
                                 <f:param name="id" 
                                     id="id" 
@@ -47,8 +47,7 @@
             </em:dt>
             <br/>
             <br/>
-            <br/>
-            <h:link class="btn btn-primary pull-left" value="Create teacher" outcome="create"/>
+            <h:link class="btn btn-primary pull-left" value="Criar Professor" outcome="create"/>
         </ui:define>
     </ui:composition>
 </html>

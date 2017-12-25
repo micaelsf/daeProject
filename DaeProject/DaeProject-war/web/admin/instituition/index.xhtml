@@ -8,17 +8,17 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Instituitions</h1>
-            <em:dt title="Instituitions" 
-                   headers="#{['Name', 'Email']}" 
+            <h1 class="page-header">Institutions</h1>
+            <em:dt title="Instituições" 
+                   headers="#{['Nome', 'Email']}" 
                    props="#{['name', 'email']}" 
-                   list="#{administratorManager.allInstituitionsREST}"> 
+                   list="#{administratorManager.allInstitutionsREST}"> 
                 <p:column headerText="Actions">
                     <h:form class="center-text"> 
                         <h:commandLink 
                             class="fa fa-eye fa-fw"
                             value=" " 
-                            title="Details"
+                            title="Detalhes"
                             action="show?faces-redirect=true"> 
                             <f:setPropertyActionListener 
                                 target="#{administratorManager.currentInstituition}" 
@@ -27,7 +27,7 @@
                         <h:commandLink
                             class="fa fa-pencil fa-fw"
                             value=" " 
-                            title="Edit" 
+                            title="Editar" 
                             action="edit?faces-redirect=true"> 
                             <f:setPropertyActionListener 
                                 target="#{administratorManager.currentInstituition}" 
@@ -36,7 +36,7 @@
                         <h:commandLink 
                             class="fa fa-trash fa-fw"
                             value=" " 
-                            title="Remove"
+                            title="Remover"
                             actionListener="#{administratorManager.removeInstituition}"> 
                             <f:param name="id" 
                                      id="id" 
@@ -45,10 +45,11 @@
                     </h:form> 
                 </p:column> 
             </em:dt>
-
+            <br/>
+            <br/>
             <h:link 
                 class="btn btn-primary pull-left" 
-                value="Create instituition" 
+                value="Criar Instituição" 
                 outcome="create"/>
         </ui:define>
     </ui:composition>

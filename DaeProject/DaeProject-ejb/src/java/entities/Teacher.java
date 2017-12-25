@@ -13,7 +13,6 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
-
 public class Teacher extends User implements Serializable {
 
     @NotNull(message = "O nome do professor não pode ser null")

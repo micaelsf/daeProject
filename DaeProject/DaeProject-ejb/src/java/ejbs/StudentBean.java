@@ -31,7 +31,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/students")
-public class StudentBean extends Bean<Student> implements Serializable{
+public class StudentBean extends Bean<Student> {
 
     @EJB
     EmailBean emailBean;
@@ -54,7 +54,7 @@ public class StudentBean extends Bean<Student> implements Serializable{
                     studentDTO.getStudentNumber()
             );
 
-            em.merge(student);
+            em.persist(student);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;

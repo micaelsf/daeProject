@@ -1,9 +1,12 @@
 package ejbs;
 
-import dtos.InstituitionDTO;
+import dtos.InstitutionDTO;
+import dtos.InstitutionProposalDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
-import dtos.WorkProposalDTO;
+import dtos.TeacherProposalDTO;
+import entities.InstitutionProposal.INSTITUTION_PROPOSAL_TYPE;
+import entities.TeacherProposal.TEACHER_PROPOSAL_TYPE;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -23,18 +26,20 @@ public class ConfigBean {
     private StudentBean studentBean;
     
     @EJB
-    private InstituitionBean instituitionBean;
+    private InstitutionBean instituitionBean;
     
     @EJB
     private TeacherBean teacherBean;
     
     @EJB
-    private WorkProposalBean proposalBean;
+    private InstitutionProposalBean institutionProposalBean;
+    private TeacherProposalBean teacherProposalBean;
 
     @PostConstruct
     public void populateBD() {
 
         try {
+            System.out.println("Inserting Students:");
             studentBean.create(new StudentDTO(1, "123123", "Zé", "ze@email.com", "111111111"));            
             studentBean.create(new StudentDTO(2, "123123", "Maria", "maria@email.com", "222222222"));
             studentBean.create(new StudentDTO(3, "123123", "Joana", "joana@email.com", "333333333"));
@@ -42,21 +47,29 @@ public class ConfigBean {
             studentBean.create(new StudentDTO(5, "123123", "Bruno", "bruno@email.com", "555555555"));
             studentBean.create(new StudentDTO(6, "123123", "Micael", "micael@email.com", "666666666"));
             
-            instituitionBean.create(new InstituitionDTO(7, "123123", "CompanyA", "companya@email.com"));
-            instituitionBean.create(new InstituitionDTO(8, "123123", "CompanyB", "companyb@email.com"));
-            instituitionBean.create(new InstituitionDTO(9, "123123", "CompanyC", "companyc@email.com"));
-            instituitionBean.create(new InstituitionDTO(10, "123123", "CompanyD", "companyd@email.com"));
-            instituitionBean.create(new InstituitionDTO(11, "123123", "CompanyF", "companyf@email.com"));
+            System.out.println("Inserting Institutions:");
+            instituitionBean.create(new InstitutionDTO(7, "123123", "CompanyA", "companya@email.com"));
+            instituitionBean.create(new InstitutionDTO(8, "123123", "CompanyB", "companyb@email.com"));
+            instituitionBean.create(new InstitutionDTO(9, "123123", "CompanyC", "companyc@email.com"));
+            instituitionBean.create(new InstitutionDTO(10, "123123", "CompanyD", "companyd@email.com"));
+            instituitionBean.create(new InstitutionDTO(11, "123123", "CompanyF", "companyf@email.com"));
             
-            
+            System.out.println("Inserting Teachers:");
             teacherBean.create(new TeacherDTO(12, "t1", "t1", "t1@ipleiria.pt"));
             teacherBean.create(new TeacherDTO(13, "t2", "t2", "t2@ipleiria.pt"));
             teacherBean.create(new TeacherDTO(14, "t3", "t3", "t3@ipleiria.pt"));
-
-            proposalBean.create(new WorkProposalDTO(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3));
-            proposalBean.create(new WorkProposalDTO(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3));
-            proposalBean.create(new WorkProposalDTO(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3));            
-            proposalBean.create(new WorkProposalDTO(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3));
+            
+            System.out.println("Inserting Teacher Proposals:");
+            teacherProposalBean.create(new TeacherProposalDTO(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));
+            teacherProposalBean.create(new TeacherProposalDTO(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
+            teacherProposalBean.create(new TeacherProposalDTO(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));            
+            teacherProposalBean.create(new TeacherProposalDTO(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
+            
+            System.out.println("Inserting Institution Proposals:");     
+            institutionProposalBean.create(new InstitutionProposalDTO(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3, "Inácio", INSTITUTION_PROPOSAL_TYPE.Estágio));
+            institutionProposalBean.create(new InstitutionProposalDTO(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3, "Paulo Neves", INSTITUTION_PROPOSAL_TYPE.Dissertação));
+            institutionProposalBean.create(new InstitutionProposalDTO(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3, "João Andrade", INSTITUTION_PROPOSAL_TYPE.Estágio));            
+            institutionProposalBean.create(new InstitutionProposalDTO(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3, "Jonh", INSTITUTION_PROPOSAL_TYPE.Projeto));
 
             /*
             studentBean.enrollStudent("1111111", 1);
@@ -76,7 +89,8 @@ public class ConfigBean {
             administratorBean.create("a1", "a1", "a1", "a1@ipleiria.pt");
             administratorBean.create("a2", "a2", "a2", "a2@ipleiria.pt");
             administratorBean.create("a3", "a3", "a3", "a3@ipleiria.pt");
-*/
+*/  
+            System.out.println("End Inserting Entities Classes");
         } catch(Exception e){
             logger.warning(e.getMessage());
         }

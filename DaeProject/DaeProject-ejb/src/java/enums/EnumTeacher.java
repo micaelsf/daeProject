@@ -3,8 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ejbs;
+package enums;
 
-public class StageProposalBean extends WorkProposalBean {
-    
+/**
+ *
+ * @author micae
+ */
+public enum EnumTeacher {
+    PROJETO,
+    DISSERTAÇÃO
 }

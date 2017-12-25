@@ -12,12 +12,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "Instituition")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InstituitionDTO extends UserDTO implements Serializable{
+public class InstitutionDTO extends UserDTO implements Serializable{
 
-    public InstituitionDTO() {
+    public InstitutionDTO() {
     }
 
-    public InstituitionDTO(
+    public InstitutionDTO(
             int id,
             String password,
             String name,

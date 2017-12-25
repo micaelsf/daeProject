@@ -5,11 +5,11 @@
  */
 package web;
 
-import dtos.InstituitionDTO;
+import dtos.InstitutionDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.WorkProposalDTO;
-import ejbs.InstituitionBean;
+import ejbs.InstitutionBean;
 import ejbs.StudentBean;
 import ejbs.TeacherBean;
 import ejbs.WorkProposalBean;
@@ -41,9 +41,9 @@ public class AdministratorManager {
     private StudentDTO currentStudent;
 
     @EJB
-    private InstituitionBean instituitionBean;
-    private InstituitionDTO newInstituition;
-    private InstituitionDTO currentInstituition;
+    private InstitutionBean instituitionBean;
+    private InstitutionDTO newInstituition;
+    private InstitutionDTO currentInstituition;
 
     @EJB
     private TeacherBean teacherBean;
@@ -65,7 +65,7 @@ public class AdministratorManager {
     //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
     public AdministratorManager() {
         newStudent = new StudentDTO();
-        newInstituition = new InstituitionDTO();
+        newInstituition = new InstitutionDTO();
         newTeacher = new TeacherDTO();
         newProposal = new WorkProposalDTO();
         client = ClientBuilder.newClient();
@@ -142,7 +142,7 @@ public class AdministratorManager {
     public String createInstituition() {
         try {
             client.target(URILookup.getBaseAPI())
-                    .path("/instituitions/createREST")
+                    .path("/institutions/createREST")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newInstituition)
                     );
@@ -157,7 +157,7 @@ public class AdministratorManager {
     public String updateInstituitionREST() {
         try {
             client.target(URILookup.getBaseAPI())
-                    .path("/instituitions/updateREST")
+                    .path("/institutions/updateREST")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentInstituition));
 
@@ -168,20 +168,20 @@ public class AdministratorManager {
         return "index?faces-redirect=true";
     }
 
-    public List<InstituitionDTO> getAllInstituitionsREST() {
-        List<InstituitionDTO> returnedInstituitions;
+    public List<InstitutionDTO> getAllInstitutionsREST() {
+        List<InstitutionDTO> returnedInstitutions;
         try {
-            returnedInstituitions = client.target(URILookup.getBaseAPI())
-                    .path("/instituitions/all")
+            returnedInstitutions = client.target(URILookup.getBaseAPI())
+                    .path("/institutions/all")
                     .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<InstituitionDTO>>() {
+                    .get(new GenericType<List<InstitutionDTO>>() {
                     });
-            System.out.println(returnedInstituitions);
+            System.out.println(returnedInstitutions);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
-        return returnedInstituitions;
+        return returnedInstitutions;
     }
 
     public void removeInstituition(ActionEvent event) {
@@ -257,7 +257,7 @@ public class AdministratorManager {
     }
 
     /* PROPOSAL */
-    public String createWorkProposal() {
+/*    public String createWorkProposal() {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/proposals/createREST")
@@ -270,7 +270,7 @@ public class AdministratorManager {
         }
         return "index?faces-redirect=true";
     }
-
+*/
     public List<WorkProposalDTO> getAllWorkProposalsREST() {
         List<WorkProposalDTO> returnedProposals;
         try {
@@ -285,7 +285,7 @@ public class AdministratorManager {
         }
         return returnedProposals;
     }
-
+/*
     public String updateWorkProposalREST() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -343,7 +343,7 @@ public class AdministratorManager {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
-
+*/
     public int getSelectOption() {
         return selectOption;
     }
@@ -354,19 +354,19 @@ public class AdministratorManager {
 
     /////////////// GETTERS & SETTERS ///////////////// 
     //instituition
-    public InstituitionDTO getCurrentInstituition() {
+    public InstitutionDTO getCurrentInstituition() {
         return currentInstituition;
     }
 
-    public void setCurrentInstituition(InstituitionDTO currentInstituition) {
+    public void setCurrentInstituition(InstitutionDTO currentInstituition) {
         this.currentInstituition = currentInstituition;
     }
 
-    public InstituitionDTO getNewInstituition() {
+    public InstitutionDTO getNewInstituition() {
         return newInstituition;
     }
 
-    public void setNewInstituition(InstituitionDTO newInstituition) {
+    public void setNewInstituition(InstitutionDTO newInstituition) {
         this.newInstituition = newInstituition;
     }
 

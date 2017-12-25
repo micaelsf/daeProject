@@ -6,9 +6,9 @@
 package entities;
 
 import entities.UserGroup.GROUP;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -16,17 +16,15 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllStudents",
             query = "SELECT s FROM Student s ORDER BY s.name")
 })
+public class Student extends User{
 
-public class Student extends User implements Serializable{
-
-    @NotNull(message = "Student number must not be empty")
+    @Column(nullable = false)
     private String studentNumber;
 
     @OneToMany(mappedBy = "student")

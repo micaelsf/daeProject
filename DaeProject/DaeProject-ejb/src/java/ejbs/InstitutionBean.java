@@ -5,8 +5,8 @@
  */
 package ejbs;
 
-import dtos.InstituitionDTO;
-import entities.Instituition;
+import dtos.InstitutionDTO;
+import entities.Institution;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -29,33 +29,30 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("/instituitions")
-public class InstituitionBean extends Bean<Instituition> implements Serializable {
+@Path("/institutions")
+public class InstitutionBean extends Bean<Institution> {
 
     @EJB
     EmailBean emailBean;
 
-    @PersistenceContext
-    private EntityManager em;
-
     @POST
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(InstituitionDTO instituitionDTO)
+    public void create(InstitutionDTO instituitionDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Instituition instituition = em.find(Instituition.class, instituitionDTO.getId());
-            if (instituition != null) {
+            Institution institution = em.find(Institution.class, instituitionDTO.getId());
+            if (institution != null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
-            instituition = new Instituition(
+            institution = new Institution(
                     instituitionDTO.getPassword(),
                     instituitionDTO.getName(),
                     instituitionDTO.getEmail()
             );
 
-            em.merge(instituition);
+            em.persist(institution);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -69,32 +66,32 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
-    public Collection<InstituitionDTO> getAllInstituitions() {
+    public Collection<InstitutionDTO> getAllInstitutions() {
         try {
-            return getAll(InstituitionDTO.class);
+            return getAll(InstitutionDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
 
     @Override
-    protected Collection<Instituition> getAll() {
-        return em.createNamedQuery("getAllInstituitions").getResultList();
+    protected Collection<Institution> getAll() {
+        return em.createNamedQuery("getAllInstitutions").getResultList();
     }
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findInstituition/{id}")
-    public InstituitionDTO findInstituition(@PathParam("id") String id)
+    @Path("findInstitution/{id}")
+    public InstitutionDTO findInstituition(@PathParam("id") String id)
             throws EntityDoesNotExistsException {
         try {
-            Instituition instituition = em.find(Instituition.class, id);
+            Institution institution = em.find(Institution.class, id);
 
-            if (instituition == null) {
+            if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
             
-            return toDTO(instituition, InstituitionDTO.class);
+            return toDTO(institution, InstitutionDTO.class);
             
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -106,18 +103,18 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateREST(InstituitionDTO instituitionDTO)
+    public void updateREST(InstitutionDTO instituitionDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Instituition instituition = em.find(Instituition.class, instituitionDTO.getId());
-            if (instituition == null) {
+            Institution institution = em.find(Institution.class, instituitionDTO.getId());
+            if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
-            instituition.getPassword();
-            instituition.getName();
-            instituition.getEmail();
-            em.merge(instituition);
+            institution.getPassword();
+            institution.getName();
+            institution.getEmail();
+            em.merge(institution);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -131,12 +128,12 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
     public void remove(int id)
             throws EntityDoesNotExistsException {
         try {
-            Instituition instituition = em.find(Instituition.class, id);
-            if (instituition == null) {
+            Institution institution = em.find(Institution.class, id);
+            if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
-            em.remove(instituition);
+            em.remove(institution);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -145,9 +142,9 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         }
     }
 
-    public void sendEmailToInstituition(int id) throws MessagingException, EntityDoesNotExistsException {
+    public void sendEmailToInstitution(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
-            Instituition instituition = em.find(Instituition.class, id);
+            Institution instituition = em.find(Institution.class, id);
             if (instituition == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
