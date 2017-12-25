@@ -5,6 +5,7 @@
  */
 package entities;
 
+import entities.UserGroup.GROUP;
 import javax.persistence.Entity;
 
 @Entity
@@ -13,7 +14,7 @@ public class Admin extends User {
     public Admin() {
     }
 
-    public Admin(String password, UserGroup.GROUP group, String name, String email) {
-        super(password, group, name, email);
+    public Admin(String password, String name, String email) {
+        super(password, GROUP.Administrator, name, email);
     }
 }

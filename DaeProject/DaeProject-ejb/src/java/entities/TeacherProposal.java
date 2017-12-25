@@ -6,11 +6,6 @@
 package entities;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Table;
 
 public class TeacherProposal extends WorkProposal implements Serializable {
 

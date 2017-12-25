@@ -10,7 +10,6 @@ import entities.Instituition;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -30,7 +29,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/instituitions")
-public class InstituitionBean extends Bean<Instituition> implements Serializable {
+public class InstituitionBean extends Bean<Instituition> {
 
     @EJB
     EmailBean emailBean;
@@ -46,7 +45,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
         try {
             Instituition instituition = em.find(Instituition.class, instituitionDTO.getId());
             if (instituition != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+                throw new EntityDoesNotExistsException("Já existe uma instituição com esse Id.");
             }
 
             instituition = new Instituition(
@@ -55,7 +54,7 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
                     instituitionDTO.getEmail()
             );
 
-            em.merge(instituition);
+            em.persist(instituition);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -93,9 +92,9 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
             if (instituition == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
-            
+
             return toDTO(instituition, InstituitionDTO.class);
-            
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -114,9 +113,10 @@ public class InstituitionBean extends Bean<Instituition> implements Serializable
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
-            instituition.getPassword();
-            instituition.getName();
-            instituition.getEmail();
+            instituition.setPassword(instituitionDTO.getPassword());
+            instituition.setName(instituitionDTO.getName());
+            instituition.setEmail(instituitionDTO.getEmail());
+
             em.merge(instituition);
 
         } catch (EntityDoesNotExistsException e) {

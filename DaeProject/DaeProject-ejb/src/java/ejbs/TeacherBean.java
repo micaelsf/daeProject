@@ -5,7 +5,6 @@ import entities.Teacher;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
@@ -23,7 +22,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/teachers")
-public class TeacherBean extends Bean<Teacher> implements Serializable{
+public class TeacherBean extends Bean<Teacher> {
 
     @EJB
     EmailBean emailBean;
@@ -36,7 +35,7 @@ public class TeacherBean extends Bean<Teacher> implements Serializable{
         try {
             Teacher teacher = em.find(Teacher.class, teacherDTO.getId());
             if (teacher != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
+                throw new EntityDoesNotExistsException("Já existe um professor com esse nome.");
             }
 
             teacher = new Teacher(
@@ -45,7 +44,7 @@ public class TeacherBean extends Bean<Teacher> implements Serializable{
                     teacherDTO.getEmail()
             );
 
-            em.merge(teacher);
+            em.persist(teacher);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -56,7 +55,6 @@ public class TeacherBean extends Bean<Teacher> implements Serializable{
         }
     }
 
-    
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("all")
@@ -67,12 +65,11 @@ public class TeacherBean extends Bean<Teacher> implements Serializable{
             throw new EJBException(e.getMessage());
         }
     }
-    
-     @Override
+
+    @Override
     protected Collection<Teacher> getAll() {
         return em.createNamedQuery("getAllTeachers").getResultList();
     }
-    
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -104,9 +101,9 @@ public class TeacherBean extends Bean<Teacher> implements Serializable{
                 throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
             }
 
-            teacher.getPassword();
-            teacher.getName();
-            teacher.getEmail();
+            teacher.setPassword(teacherDTO.getPassword());
+            teacher.setName(teacherDTO.getName());
+            teacher.setEmail(teacherDTO.getEmail());
             em.merge(teacher);
 
         } catch (EntityDoesNotExistsException e) {
@@ -150,7 +147,5 @@ public class TeacherBean extends Bean<Teacher> implements Serializable{
             throw e;
         }
     }
-
-   
 
 }

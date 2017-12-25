@@ -105,7 +105,6 @@ public class AdministratorManager {
     public List<StudentDTO> getAllStudentsREST() {
         List<StudentDTO> returnedStudents;
         try {
-            System.out.println("getAllStudents Metodo erro");
             returnedStudents = client.target(URILookup.getBaseAPI())
                     // returnedStudents = client.target(baseUri)
                     .path("/students/all")

@@ -32,17 +32,16 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotNull(message = "Password must not be empty")
+    @NotNull(message = "Necessário preencher o campo da Password!")
     protected String password;
 
-    @NotNull(message = "Name must not be empty")
+    @NotNull(message = "Necessário preeencher o campo de nome!")
     protected String name;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")
     protected UserGroup group;
 
-    @NotNull(message = "Email must not be empty")
-
+    @NotNull(message = "Necessário preeencher o campo do email!")
     @Column(unique = true, nullable = false)
     @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\."
             + "[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@"

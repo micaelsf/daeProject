@@ -6,7 +6,6 @@
 package entities;
 
 import entities.UserGroup.GROUP;
-import java.io.Serializable;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -18,9 +17,9 @@ import javax.validation.constraints.NotNull;
             query = "SELECT s FROM Instituition s ORDER BY s.name")
 })
 
-public class Instituition extends User implements Serializable{
+public class Instituition extends User {
 
-    @NotNull(message = "O nome da instituição não pode ser null")
+    @NotNull(message = "O nome da instituição não pode ser null!")
 
     public Instituition() {
     }

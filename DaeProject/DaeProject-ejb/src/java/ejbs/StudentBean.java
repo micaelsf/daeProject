@@ -12,7 +12,6 @@ import entities.Student;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;
@@ -31,7 +30,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/students")
-public class StudentBean extends Bean<Student> implements Serializable{
+public class StudentBean extends Bean<Student> {
 
     @EJB
     EmailBean emailBean;
@@ -44,7 +43,7 @@ public class StudentBean extends Bean<Student> implements Serializable{
         try {
             Student student = em.find(Student.class, studentDTO.getId());
             if (student != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
+                throw new EntityDoesNotExistsException("Já existe um estudante com esse id.");
             }
 
             student = new Student(
@@ -54,7 +53,7 @@ public class StudentBean extends Bean<Student> implements Serializable{
                     studentDTO.getStudentNumber()
             );
 
-            em.merge(student);
+            em.persist(student);
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -70,8 +69,6 @@ public class StudentBean extends Bean<Student> implements Serializable{
     @Path("all")
     public Collection<StudentDTO> getAllStudents() {
         try {
-            System.out.println("StudentBean: getAll erro??");
-            System.out.println("StudentBean GetALL :" + getAll(StudentDTO.class));
             return getAll(StudentDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
@@ -92,7 +89,7 @@ public class StudentBean extends Bean<Student> implements Serializable{
             Student student = em.find(Student.class, id);
 
             if (student == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
             return toDTO(student, StudentDTO.class);
         } catch (EntityDoesNotExistsException e) {
@@ -108,15 +105,18 @@ public class StudentBean extends Bean<Student> implements Serializable{
     public void updateREST(StudentDTO studentDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
+            System.out.println("UpdateStudentRest entry" + studentDTO.getName());
             Student student = em.find(Student.class, studentDTO.getId());
+
+            System.out.println("StudentBean: teste updateRest: " + student.toString());
             if (student == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
 
-            student.getPassword();
-            student.getName();
-            student.getEmail();
-            student.getStudentNumber();
+            student.setPassword(studentDTO.getPassword());
+            student.setName(studentDTO.getName());
+            student.setEmail(studentDTO.getEmail());
+            student.setStudentNumber(studentDTO.getStudentNumber());
             em.merge(student);
 
         } catch (EntityDoesNotExistsException e) {
