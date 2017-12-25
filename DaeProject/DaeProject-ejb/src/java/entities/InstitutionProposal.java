@@ -25,7 +25,7 @@ import javax.persistence.NamedQuery;
 })
 public class InstitutionProposal extends WorkProposal {
 
-    public static enum INSTITUTION_PROPOSAL_TYPE implements Serializable {
+    public static enum InstitutionProposalType implements Serializable {
         Projeto, Estágio, Dissertação
     }
     
@@ -34,7 +34,7 @@ public class InstitutionProposal extends WorkProposal {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "PROPOSAL_TYPE")
-    private INSTITUTION_PROPOSAL_TYPE enumProposalType;
+    private InstitutionProposalType enumProposalType;
     
     @ManyToMany
     @JoinTable(name = "PROPOSAL_INSTITUTION",
@@ -43,10 +43,9 @@ public class InstitutionProposal extends WorkProposal {
     private List<Institution> institutions;
     
     public InstitutionProposal() {
-        
     }
     
-    public InstitutionProposal(String title, String scientificAreas, String objectives, int status, String supervisor, INSTITUTION_PROPOSAL_TYPE proposalType) {
+    public InstitutionProposal(String title, String scientificAreas, String objectives, int status, String supervisor, InstitutionProposalType proposalType) {
         super(title, scientificAreas, objectives, status);
         this.supervisor = supervisor;
         this.enumProposalType = proposalType;
@@ -69,11 +68,11 @@ public class InstitutionProposal extends WorkProposal {
         this.supervisor = supervisor;
     }
 
-    public INSTITUTION_PROPOSAL_TYPE getEnumInstitution() {
+    public InstitutionProposalType getEnumInstitution() {
         return enumProposalType;
     }
 
-    public void setEnumInstitution(INSTITUTION_PROPOSAL_TYPE proposalType) {
+    public void setEnumInstitution(InstitutionProposalType proposalType) {
         this.enumProposalType = proposalType;
     }
 

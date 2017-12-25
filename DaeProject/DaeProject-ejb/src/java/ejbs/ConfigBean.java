@@ -5,8 +5,9 @@ import dtos.InstitutionProposalDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
-import entities.InstitutionProposal.INSTITUTION_PROPOSAL_TYPE;
-import entities.TeacherProposal.TEACHER_PROPOSAL_TYPE;
+import entities.InstitutionProposal.InstitutionProposalType;
+import entities.TeacherProposal.TeacherProposalType;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -39,6 +40,7 @@ public class ConfigBean {
     public void populateBD() {
 
         try {
+            
             System.out.println("Inserting Students:");
             studentBean.create(new StudentDTO(1, "123123", "Zé", "ze@email.com", "111111111"));            
             studentBean.create(new StudentDTO(2, "123123", "Maria", "maria@email.com", "222222222"));
@@ -59,17 +61,17 @@ public class ConfigBean {
             teacherBean.create(new TeacherDTO(13, "t2", "t2", "t2@ipleiria.pt"));
             teacherBean.create(new TeacherDTO(14, "t3", "t3", "t3@ipleiria.pt"));
             
-            System.out.println("Inserting Teacher Proposals:");
-            teacherProposalBean.create(new TeacherProposalDTO(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));
-            teacherProposalBean.create(new TeacherProposalDTO(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
-            teacherProposalBean.create(new TeacherProposalDTO(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));            
-            teacherProposalBean.create(new TeacherProposalDTO(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
-            
             System.out.println("Inserting Institution Proposals:");     
-            institutionProposalBean.create(new InstitutionProposalDTO(1, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3, "Inácio", INSTITUTION_PROPOSAL_TYPE.Estágio));
-            institutionProposalBean.create(new InstitutionProposalDTO(2, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3, "Paulo Neves", INSTITUTION_PROPOSAL_TYPE.Dissertação));
-            institutionProposalBean.create(new InstitutionProposalDTO(3, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3, "João Andrade", INSTITUTION_PROPOSAL_TYPE.Estágio));            
-            institutionProposalBean.create(new InstitutionProposalDTO(4, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3, "Jonh", INSTITUTION_PROPOSAL_TYPE.Projeto));
+            institutionProposalBean.create(new InstitutionProposalDTO(15, "Titulo 1", "EI", "Objetivos do trabalho: ...", 3, "Inácio", InstitutionProposalType.Estágio));
+            institutionProposalBean.create(new InstitutionProposalDTO(16, "Titulo 2", "EI", "Objetivos do trabalho: ...", 3, "Paulo Neves", InstitutionProposalType.Dissertação));
+            institutionProposalBean.create(new InstitutionProposalDTO(17, "Titulo 3", "EI", "Objetivos do trabalho: ...", 3, "João Andrade", InstitutionProposalType.Estágio));            
+            institutionProposalBean.create(new InstitutionProposalDTO(18, "Titulo 4", "EI", "Objetivos do trabalho: ...", 3, "Jonh", InstitutionProposalType.Projeto));
+            
+            System.out.println("Inserting Teacher Proposals:");
+            teacherProposalBean.create(new TeacherProposalDTO(19, "Titulo 5", "EI", "Objetivos do trabalho: ...", 3, TeacherProposalType.Dissertação));
+            //teacherProposalBean.create(new TeacherProposalDTO(20, "Titulo 6", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
+            //teacherProposalBean.create(new TeacherProposalDTO(21, "Titulo 7", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));            
+            //teacherProposalBean.create(new TeacherProposalDTO(22, "Titulo 8", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
 
             /*
             studentBean.enrollStudent("1111111", 1);
@@ -92,7 +94,7 @@ public class ConfigBean {
 */  
             System.out.println("End Inserting Entities Classes");
         } catch(Exception e){
-            logger.warning(e.getMessage());
+            logger.log(Level.WARNING, "RAISED A EXCEPTION Inserting Entities: {0}", e.getMessage());
         }
     }
 }

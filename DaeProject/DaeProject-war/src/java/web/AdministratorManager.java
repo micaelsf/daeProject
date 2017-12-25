@@ -14,6 +14,7 @@ import ejbs.StudentBean;
 import ejbs.TeacherBean;
 import ejbs.WorkProposalBean;
 import exceptions.EntityDoesNotExistsException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -31,7 +32,7 @@ import utils.URILookup;
 
 @ManagedBean
 @SessionScoped
-public class AdministratorManager {
+public class AdministratorManager implements Serializable {
 
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
 
@@ -117,25 +118,21 @@ public class AdministratorManager {
         return returnedStudents;
     }
 
-    public void removeStudent(ActionEvent event) {
+    public String removeStudent(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-
-            studentBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-            /* 
+ 
             client.target(URILookup.getBaseAPI())
                     .path("/students/removeREST")
                     .path(id + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
-             */
-            //studentBean.remove(id);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
 
     //Instituition
@@ -184,16 +181,20 @@ public class AdministratorManager {
         return returnedInstitutions;
     }
 
-    public void removeInstituition(ActionEvent event) {
+    public String removeInstituition(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-            instituitionBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            client.target(URILookup.getBaseAPI())
+                    .path("/institutions/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
 
     /* TEACHERS  */
@@ -227,17 +228,21 @@ public class AdministratorManager {
         return "index?faces-redirect=true";
     }
 
-    public void removeTeacher(ActionEvent event) {
+    public String removeTeacher(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
 
-            teacherBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            client.target(URILookup.getBaseAPI())
+                    .path("/teachers/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
         } catch (NumberFormatException e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
 
     public List<TeacherDTO> getAllTeachersREST() {

@@ -32,7 +32,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(InstitutionProposalDTO proposalDTO)
-         throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
+         throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             if (em.find(InstitutionProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
@@ -44,6 +44,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                     proposalDTO.getStatus(),
                     proposalDTO.getSupervisor(),
                     proposalDTO.getInstitutionProposalType());
+            
             em.persist(proposal);
         } catch (EntityAlreadyExistsException e) {
             throw e;

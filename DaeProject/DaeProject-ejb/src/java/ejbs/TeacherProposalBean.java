@@ -11,6 +11,7 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -32,12 +33,10 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TeacherProposalDTO proposalDTO)
-         throws EntityAlreadyExistsException, EntityDoesNotExistsException, MyConstraintViolationException {
+         throws EntityAlreadyExistsException, MyConstraintViolationException {
         System.out.println("ejbs.TeacherProposalBean.create() IN");
         try {
-            System.out.println("ejbs.TeacherProposalBean.create() proposal received: " + proposalDTO.toString());
             if (em.find(TeacherProposal.class, proposalDTO.getId()) != null) {
-                System.out.println("ejbs.TeacherProposalBean.create() proposta recebida já existe!");
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
             TeacherProposal proposal = new TeacherProposal(
@@ -46,7 +45,7 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                     proposalDTO.getObjectives(), 
                     proposalDTO.getStatus(),
                     proposalDTO.getTeacherProposalType());
-            System.out.println("ejbs.TeacherProposalBean.create() -------------" + proposal.toString());
+            
             em.persist(proposal);
         } catch (EntityAlreadyExistsException e) {
             throw e;

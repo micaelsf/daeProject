@@ -7,6 +7,7 @@ package ejbs;
 
 import dtos.InstitutionDTO;
 import entities.Institution;
+import entities.Teacher;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -124,13 +125,16 @@ public class InstitutionBean extends Bean<Institution> {
             throw new EJBException(e.getMessage());
         }
     }
-
-    public void remove(int id)
+       
+    @POST
+    @Path("/removeREST/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("id") String id) 
             throws EntityDoesNotExistsException {
         try {
-            Institution institution = em.find(Institution.class, id);
+            Institution institution = em.find(Institution.class, Integer.parseInt(id));
             if (institution == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse id.");
             }
 
             em.remove(institution);

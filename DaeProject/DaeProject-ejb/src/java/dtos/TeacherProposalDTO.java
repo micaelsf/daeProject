@@ -1,6 +1,6 @@
 package dtos;
 
-import entities.TeacherProposal.TEACHER_PROPOSAL_TYPE;
+import entities.TeacherProposal.TeacherProposalType;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TeacherProposalDTO extends WorkProposalDTO {
     
-    private TEACHER_PROPOSAL_TYPE teacherProposalType;
+    private TeacherProposalType teacherProposalType;
     
     public TeacherProposalDTO() {
     }
@@ -20,17 +20,17 @@ public class TeacherProposalDTO extends WorkProposalDTO {
             String scientificAreas, 
             String objectives, 
             int status,
-            TEACHER_PROPOSAL_TYPE proposalType) {
+            TeacherProposalType proposalType) {
         
         super(id, title, scientificAreas, objectives, status);
         this.teacherProposalType = proposalType;
     }
 
-    public TEACHER_PROPOSAL_TYPE getTeacherProposalType() {
+    public TeacherProposalType getTeacherProposalType() {
         return teacherProposalType;
     }
 
-    public void setTeacherProposalType(TEACHER_PROPOSAL_TYPE teacherProposalType) {
+    public void setTeacherProposalType(TeacherProposalType teacherProposalType) {
         this.teacherProposalType = teacherProposalType;
     }
 }

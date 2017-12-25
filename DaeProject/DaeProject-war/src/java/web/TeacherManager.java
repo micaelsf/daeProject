@@ -3,7 +3,9 @@ package web;
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.StudentDTO;
+import dtos.WorkProposalDTO;
 import ejbs.StudentBean;
+import ejbs.WorkProposalBean;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
@@ -20,8 +22,8 @@ import utils.URILookup;
 
 @ManagedBean
 @SessionScoped
-public class EntityManager implements Serializable {
-/*
+public class TeacherManager implements Serializable {
+
     private Client client;
     private HttpAuthenticationFeature feature;
 
@@ -33,19 +35,22 @@ public class EntityManager implements Serializable {
 
     @EJB
     private StudentBean studentBean;
-
     private StudentDTO student;
+    
+    @EJB
+    private WorkProposalDTO newProposal;
+    private WorkProposalDTO currentProposal;
     
     private List<DocumentDTO> documents;
     private DocumentDTO document;
 
     private String filePath;
 
-    public StudentManager() {
+    public TeacherManager() {
         client = ClientBuilder.newClient();
     }
 
-    @PostConstruct
+/*    @PostConstruct
     public void initClient() {
         feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
         client.register(feature);
@@ -65,7 +70,7 @@ public class EntityManager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-
+*/
     public String uploadDocument() {
         try {
             document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
@@ -123,5 +128,5 @@ public class EntityManager implements Serializable {
     public void setFilePath(String filePath) {
         this.filePath = filePath;
     }
-*/
+
 }

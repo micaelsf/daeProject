@@ -9,8 +9,7 @@ package enums;
  *
  * @author micae
  */
-public enum EnumInstitution {
+public enum TeacherProposalType {
     PROJETO,
-    ESTÁGIO,
     DISSERTAÇÃO
 }

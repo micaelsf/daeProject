@@ -1,6 +1,7 @@
 package ejbs;
 
 import dtos.TeacherDTO;
+import entities.Student;
 import entities.Teacher;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -117,12 +118,16 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
-
-    public void remove(int id) throws EntityDoesNotExistsException {
+       
+    @POST
+    @Path("/removeREST/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("id") String id) 
+            throws EntityDoesNotExistsException {
         try {
-            Teacher teacher = em.find(Teacher.class, id);
+            Teacher teacher = em.find(Teacher.class, Integer.parseInt(id));
             if (teacher == null) {
-                throw new EntityDoesNotExistsException("There is no teacher with that username.");
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse id.");
             }
 
             em.remove(teacher);

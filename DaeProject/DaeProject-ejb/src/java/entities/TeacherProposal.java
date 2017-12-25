@@ -25,13 +25,13 @@ import javax.persistence.NamedQuery;
 })
 public class TeacherProposal extends WorkProposal {
 
-    public static enum TEACHER_PROPOSAL_TYPE implements Serializable {
+    public static enum TeacherProposalType implements Serializable {
         Projeto, Dissertação
     }
     
     @Enumerated(EnumType.STRING)
     @Column(name = "PROPOSAL_TYPE")
-    private TEACHER_PROPOSAL_TYPE enumProposalType;
+    private TeacherProposalType enumProposalType;
     
     @ManyToMany
     @JoinTable(name = "PROPOSAL_TEACHER",
@@ -43,7 +43,7 @@ public class TeacherProposal extends WorkProposal {
         
     }
     
-    public TeacherProposal(String title, String scientificAreas, String objectives, int status, TEACHER_PROPOSAL_TYPE proposalType) {
+    public TeacherProposal(String title, String scientificAreas, String objectives, int status, TeacherProposalType proposalType) {
         super(title, scientificAreas, objectives, status);
         this.teachers = new LinkedList<>();
         this.enumProposalType = proposalType;
@@ -57,11 +57,11 @@ public class TeacherProposal extends WorkProposal {
         teachers.remove(teacher);
     }
     
-    public TEACHER_PROPOSAL_TYPE getEnumInstitution() {
+    public TeacherProposalType getEnumInstitution() {
         return enumProposalType;
     }
 
-    public void setEnumInstitution(TEACHER_PROPOSAL_TYPE proposalType) {
+    public void setEnumInstitution(TeacherProposalType proposalType) {
         this.enumProposalType = proposalType;
     }
 
