@@ -7,7 +7,9 @@ package ejbs;
 
 import dtos.InstitutionDTO;
 import entities.Institution;
+import entities.InstitutionProposal;
 import exceptions.EntityDoesNotExistsException;
+import exceptions.InstitutionEnrolledException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
@@ -35,18 +37,18 @@ public class InstitutionBean extends Bean<Institution> {
     @POST
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(InstitutionDTO instituitionDTO)
+    public void create(InstitutionDTO institutionDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Institution institution = em.find(Institution.class, instituitionDTO.getId());
+            Institution institution = em.find(Institution.class, institutionDTO.getId());
             if (institution != null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
             institution = new Institution(
-                    instituitionDTO.getPassword(),
-                    instituitionDTO.getName(),
-                    instituitionDTO.getEmail()
+                    institutionDTO.getPassword(),
+                    institutionDTO.getName(),
+                    institutionDTO.getEmail()
             );
 
             em.persist(institution);
@@ -100,17 +102,17 @@ public class InstitutionBean extends Bean<Institution> {
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateREST(InstitutionDTO instituitionDTO)
+    public void updateREST(InstitutionDTO institutionDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Institution institution = em.find(Institution.class, instituitionDTO.getId());
+            Institution institution = em.find(Institution.class, institutionDTO.getId());
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
-            institution.getPassword();
-            institution.getName();
-            institution.getEmail();
+            institution.setPassword(institutionDTO.getPassword());
+            institution.setName(institutionDTO.getName());
+            institution.setEmail(institutionDTO.getEmail());
             em.merge(institution);
 
         } catch (EntityDoesNotExistsException e) {
@@ -141,6 +143,58 @@ public class InstitutionBean extends Bean<Institution> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+     public void enrollInstitution(int id, int proposalId)
+            throws EntityDoesNotExistsException, InstitutionEnrolledException {
+        try {
+
+            Institution institution = em.find(Institution.class, id);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+
+            InstitutionProposal proposal = em.find(InstitutionProposal.class, proposalId);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+
+            if (proposal.getInstitutions().contains(institution)) {
+                throw new InstitutionEnrolledException("O professor já está ligado a essa proposta.");
+            }
+
+            proposal.addInstitution(institution);
+            institution.addProposal(proposal);
+
+        } catch (EntityDoesNotExistsException | InstitutionEnrolledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    public void unrollInstitution(int id, int proposalId)
+            throws EntityDoesNotExistsException {
+        try {
+
+            Institution institution = em.find(Institution.class, id);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+
+            InstitutionProposal proposal = em.find(InstitutionProposal.class, proposalId);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+
+            proposal.removeInstitution(institution);
+            institution.removeProposal(proposal);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     public void sendEmailToInstitution(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
@@ -152,7 +206,8 @@ public class InstitutionBean extends Bean<Institution> {
             emailBean.send(
                     instituition.getEmail(),
                     "Assunto",
-                    "Olá " + instituition.getName());
+                    "Olá " + instituition.getName() + ", o estado da sua proposta foi alterado."
+            );
 
         } catch (MessagingException | EntityDoesNotExistsException e) {
             throw e;

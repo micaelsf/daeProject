@@ -86,6 +86,7 @@ public class ConfigBean {
                     "Inácio", 
                     InstitutionProposalType.Projeto
             ));
+            instituitionBean.enrollInstitution(7, 15);
             institutionProposalBean.create(new InstitutionProposalDTO(
                     16,
                     "Titulo 2", 
@@ -105,6 +106,7 @@ public class ConfigBean {
                     "Paulo Neves", 
                     InstitutionProposalType.Dissertação
             ));
+            instituitionBean.enrollInstitution(7, 16);
             institutionProposalBean.create(new InstitutionProposalDTO(
                     17,
                     "Titulo 3", 
@@ -124,6 +126,7 @@ public class ConfigBean {
                     "João Andrade", 
                     InstitutionProposalType.Estágio
             ));
+            instituitionBean.enrollInstitution(8, 17);
             
             System.out.println("Inserting Teacher Proposals");
             teacherProposalBean.create(new TeacherProposalDTO(
@@ -144,6 +147,7 @@ public class ConfigBean {
                     "Apoio fornecido pelo docente proponente",
                     TeacherProposalType.Projeto
             ));
+            teacherBean.enrollTeacher(12, 18);
             
             teacherProposalBean.create(new TeacherProposalDTO(
                     19,
@@ -163,6 +167,7 @@ public class ConfigBean {
                     "Apoio fornecido pelo estg",
                     TeacherProposalType.Dissertação
             ));
+            teacherBean.enrollTeacher(12, 19);
             
             teacherProposalBean.create(new TeacherProposalDTO(
                     20,
@@ -182,6 +187,7 @@ public class ConfigBean {
                     "Sem apoios",
                     TeacherProposalType.Dissertação
             ));
+            teacherBean.enrollTeacher(13, 20);
             
             teacherProposalBean.create(new TeacherProposalDTO(
                     21,
@@ -201,6 +207,7 @@ public class ConfigBean {
                     "Apoio fornecido pelo docente proponente",
                     TeacherProposalType.Projeto
             ));
+            teacherBean.enrollTeacher(14, 21);
             
             /*
             studentBean.enrollStudent("1111111", 1);

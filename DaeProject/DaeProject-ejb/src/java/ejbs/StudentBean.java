@@ -112,10 +112,10 @@ public class StudentBean extends Bean<Student> {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
             }
 
-            student.getPassword();
-            student.getName();
-            student.getEmail();
-            student.getStudentNumber();
+            student.setPassword(studentDTO.getPassword());
+            student.setName(studentDTO.getName());
+            student.setEmail(studentDTO.getEmail());
+            student.setStudentNumber(studentDTO.getStudentNumber());
             em.merge(student);
 
         } catch (EntityDoesNotExistsException e) {

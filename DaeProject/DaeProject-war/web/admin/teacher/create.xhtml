@@ -6,52 +6,65 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Create teacher</h1>   
+            <h1 class="page-header">Criar professor</h1>   
             <h:form>
-                <h:panelGrid columns="3">
-                    <h:outputLabel for="name" value="Name: " />
+                <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
+                        class="form-control rowMargin"
                         id="name"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: Campo de nome não pode ficar vazio."                            
+                        requiredMessage="Erro: Campo Nome não pode ser vazio."                            
                         value="#{administratorManager.newTeacher.name}">
                     </h:inputText>
                     <h:message for="name" errorStyle="color: red" />
                     
                     <h:outputLabel for="password" value="Password: " />
                     <h:inputSecret
+                        class="form-control rowMargin"
                         id="password"
                         size="20"
                         required="true"
-                        requiredMessage="Erro: Campo de password não pode ficar vazio!."
+                        requiredMessage="Erro: Campo Password não pode ser vazio!."
                         value="#{administratorManager.newTeacher.password}"/>
                     <h:message for="password" errorStyle="color: red" /> 
                 
                     <h:outputLabel for="email" value="Email: " />
                     <h:inputText
+                        class="form-control rowMargin"
                         id="email"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: Obrigatório inserir e-mail."                            
+                        requiredMessage="Erro: Campo e-mail não pode ser vazio."                            
                         value="#{administratorManager.newTeacher.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
 
-                    <br/>
-                    <br/>
-                    <h:link class="btn btn-primary pull-left" 
-                            value="Back" 
-                            outcome="index?faces-redirect=true"/>
-                    <h:commandButton
-                        class="btn btn-primary btn-md"
-                        id="submit"
-                        value="Create"
-                        binding="#{administratorManager.component}" 
-                        action="#{administratorManager.createTeacher}" />
-                    <h:message for="submit" style="color: red"/>
-                </h:panelGrid>    
+                    <h:outputLabel for="office" value="Escritório: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="office"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: Campo Escritório não pode ser vazio."                            
+                        value="#{administratorManager.newTeacher.email}" />
+                    <h:message for="office" errorStyle="color: red" />
+                </h:panelGrid>   
+                    
+                <br/>
+                <br/>
+                <h:link class="btn btn-primary pull-left" 
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+                <h:commandButton
+                    class="btn btn-primary btn-md"
+                    id="submit"
+                    value="Criar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createTeacher}" />
+                <h:message for="submit" style="color: red"/> 
             </h:form>
         </ui:define>    
     </ui:composition> 

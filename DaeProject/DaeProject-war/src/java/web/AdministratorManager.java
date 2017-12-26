@@ -6,8 +6,10 @@
 package web;
 
 import dtos.InstitutionDTO;
+import dtos.InstitutionProposalDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
+import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
 import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
@@ -263,34 +265,70 @@ public class AdministratorManager implements Serializable {
         }
         return returnedProposals;
     }
-
-    public void updateStatusWorkProposalREST(ActionEvent event) {
+    
+    public String updateProposalStatusREST() {
         try {
-            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");
-            UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
-            int id = 0; 
-            ProposalStatus status = ProposalStatus.Pendente;
-
-            if (paramAccept != null) {
-                id = Integer.parseInt(paramAccept.getValue().toString());
-                status = ProposalStatus.Aceite;;
+            String option = null;
+            if (selectOption == 1) {
+                option = "Aceite";
             }
-
-            if (paramReject != null) {
-                id = Integer.parseInt(paramReject.getValue().toString());
-                status = ProposalStatus.NãoAceite;
+            if (selectOption == 2) {
+                option = "NãoAceite";
             }
-
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/updateREST")
-                    .path(id + "")
-                    .path(status + "")
+                    .path("/proposals/updateProposalStatusREST")
+                    .path(currentProposal.getId() + "")
+                    .path(option)
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(""));
-
+                    .post(Entity.xml(""));
+            
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
+    }
+    
+    public List<InstitutionProposalDTO> getProposalsFromInstitutionREST() {
+        List<InstitutionProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/institutionProposals/all/institution")
+                    .path(currentInstituition.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<InstitutionProposalDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedProposals;
+    }
+    
+    public List<TeacherProposalDTO> getProposalsFromTeacherREST() {
+        List<TeacherProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/teacherProposals/all/teacher")
+                    .path(currentTeacher.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<TeacherProposalDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedProposals;
+    }
+    
+    public boolean isPendente(int id) {
+        System.out.println("web.AdministratorManager.isPendente() id received:" + id);
+        //return status == ProposalStatus.Pendente;
+        return true;
+    }
+    
+    public boolean isRejected() {
+        return currentProposal.getStatus() == ProposalStatus.NãoAceite;
     }
 
     public int getSelectOption() {

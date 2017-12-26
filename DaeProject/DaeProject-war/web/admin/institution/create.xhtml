@@ -6,53 +6,54 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Create Instituition</h1> 
+            <h1 class="page-header">Criar Instituição</h1> 
             <h:form>                  
-                <h:panelGrid columns="3">
-
+                <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="password" value="Password: " />
                     <h:inputSecret
+                        class="form-control rowMargin"
                         id="password"
                         size="20"
                         required="true"
-                        requiredMessage="Error: Password cannot be empty."
+                        requiredMessage="Erro: O campo Password não pode ser vazio."
                         value="#{administratorManager.newInstituition.password}"/>
                     <h:message for="password" errorStyle="color: red" />                        
 
-                    <h:outputLabel for="name" value="Name: " />
+                    <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
+                        class="form-control rowMargin"
                         id="name"
                         size="52"
                         required="true"
-                        requiredMessage="Error: Name cannot be empty."                            
+                        requiredMessage="Erro: O campo Nome não pode ser vazio."                            
                         value="#{administratorManager.newInstituition.name}" />
                     <h:message for="name" errorStyle="color: red" />
 
                     <h:outputLabel for="email" value="Email: " />
                     <h:inputText
+                        class="form-control rowMargin"
                         id="email"
                         size="52"
                         required="true"
-                        requiredMessage="Error: Email cannot be empty."                            
+                        requiredMessage="Erro: O campo Email não pode ser vazio."                            
                         value="#{administratorManager.newInstituition.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
-
-                    <br></br>
-                    <br></br>
-                    <h:link class="btn btn-primary pull-left" 
-                            value="Back" 
-                            outcome="index?faces-redirect=true"/>
-
-                    <h:commandButton
-                        class="btn btn-primary btn-md"
-                        id="submit"
-                        value="Create"
-                        binding="#{administratorManager.component}" 
-                        action="#{administratorManager.createInstituition}" />
-                    <h:message for="submit" style="color: red"/>
                 </h:panelGrid >                       
+                <br></br>
+                <br></br>
+                <h:link class="btn btn-primary pull-left" 
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+
+                <h:commandButton
+                    class="btn btn-primary btn-md"
+                    id="submit"
+                    value="Criar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createInstituition}" />
+                <h:message for="submit" style="color: red"/>
             </h:form>
         </ui:define>    
     </ui:composition> 

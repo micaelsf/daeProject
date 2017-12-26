@@ -30,9 +30,10 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "PROPOSALS",
+@Table(name = "PROPOSALS"/*,
     uniqueConstraints =
-        @UniqueConstraint(columnNames = {"TITLE"}))
+        @UniqueConstraint(columnNames = {"TITLE"})*/
+)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
     @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")

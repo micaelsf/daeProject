@@ -6,6 +6,7 @@
 package ejbs;
 
 import dtos.InstitutionProposalDTO;
+import entities.Institution;
 import entities.InstitutionProposal;
 import entities.InstitutionProposal.InstitutionProposalType;
 import exceptions.EntityAlreadyExistsException;
@@ -101,7 +102,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("/all")
+    @Path("all")
     public Collection<InstitutionProposalDTO> getAllProposals() {
         try {
             return getAll(InstitutionProposalDTO.class);
@@ -109,24 +110,25 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             throw new EJBException(e.getMessage());
         }
     }  
-/*    
+    
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("/allBibliography")
-    public Collection<String> getAllBibliographyProposalsFrom(
+    @Path("/all/institution/{id}")
+    public Collection<InstitutionProposalDTO> getAllInstitutionProposalsFrom(
             @PathParam("id") String idStr) {
-        System.out.println("ejbs.InstitutionProposalBean.getAllBibliographyProposalsFrom() arrived BEAN");
         try {
-            List<String> bibliografias = (List<String>) em.createNamedQuery("getAllBibliographies")
-                    .setParameter("proposal_id", Integer.parseInt(idStr))
-                    .getResultList();
+            Institution institution = em.find(Institution.class, Integer.parseInt(idStr));
             
-            return toDTOs(bibliografias, String.class);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe uma instituição com este ID");
+            }
+            
+            return toDTOs(institution.getProposals(), InstitutionProposalDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-  */
+  
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
