@@ -14,6 +14,8 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -39,14 +41,33 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             if (em.find(InstitutionProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
-            System.out.println("ejbs.InstitutionProposalBean.create() proposal type at bean: " + proposalDTO.getInstitutionProposalType());
-            System.out.println("ejbs.InstitutionProposalBean.create() status at bean: " + proposalDTO.getStatus());
+            
+            List<String> bibliography = new LinkedList<>();
+            bibliography.add(proposalDTO.getBibliography1());
+            bibliography.add(proposalDTO.getBibliography2());
+            bibliography.add(proposalDTO.getBibliography3());
+            bibliography.add(proposalDTO.getBibliography4());
+            bibliography.add(proposalDTO.getBibliography5());
+            
             InstitutionProposal proposal = new InstitutionProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
                     proposalDTO.getObjectives(),
+                    proposalDTO.getWorkResume(),
+                    //bibliography,
+                    proposalDTO.getBibliography1(),
+                    proposalDTO.getBibliography2(),
+                    proposalDTO.getBibliography3(),
+                    proposalDTO.getBibliography4(),
+                    proposalDTO.getBibliography5(),
+                    proposalDTO.getWorkPlan(),
+                    proposalDTO.getWorkLocality(),
+                    proposalDTO.getSuccessRequirements(),
+                    proposalDTO.getBudget(),
+                    proposalDTO.getSupport(),
                     proposalDTO.getSupervisor(),
-                    proposalDTO.getInstitutionProposalType());
+                    proposalDTO.getInstitutionProposalType()
+            );
             
             em.persist(proposal);
         } catch (EntityAlreadyExistsException e) {
@@ -106,15 +127,32 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("all")
+    @Path("/all")
     public Collection<InstitutionProposalDTO> getAllProposals() {
         try {
             return getAll(InstitutionProposalDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
+    }  
+/*    
+    @GET 
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @Path("/allBibliography")
+    public Collection<String> getAllBibliographyProposalsFrom(
+            @PathParam("id") String idStr) {
+        System.out.println("ejbs.InstitutionProposalBean.getAllBibliographyProposalsFrom() arrived BEAN");
+        try {
+            List<String> bibliografias = (List<String>) em.createNamedQuery("getAllBibliographies")
+                    .setParameter("proposal_id", Integer.parseInt(idStr))
+                    .getResultList();
+            
+            return toDTOs(bibliografias, String.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
     }
-  
+  */
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -125,11 +163,31 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
-
+            
+            /*List<String> bibliography = new LinkedList<>();
+            bibliography.add(proposalDTO.getBibliography1());
+            bibliography.add(proposalDTO.getBibliography2());
+            bibliography.add(proposalDTO.getBibliography3());
+            bibliography.add(proposalDTO.getBibliography4());
+            bibliography.add(proposalDTO.getBibliography5());
+            */
             proposal.setTitle(proposalDTO.getTitle());
             proposal.setScientificAreas(proposalDTO.getScientificAreas());
-            proposal.setStatus(proposalDTO.getStatus());
+            proposal.setObjectives(proposalDTO.getObjectives());
+            proposal.setWorkResume(proposalDTO.getWorkResume());
+            //bibliography;
+            proposal.setBibliography1(proposalDTO.getBibliography1());
+            proposal.setBibliography2(proposalDTO.getBibliography2());
+            proposal.setBibliography3(proposalDTO.getBibliography3());
+            proposal.setBibliography4(proposalDTO.getBibliography4());
+            proposal.setBibliography5(proposalDTO.getBibliography5());
+            proposal.setWorkPlan(proposalDTO.getWorkPlan());
+            proposal.setWorkLocality(proposalDTO.getWorkLocality());
+            proposal.setSuccessRequirements(proposalDTO.getSuccessRequirements());
+            proposal.setBudget(proposalDTO.getBudget());
+            proposal.setSupport(proposalDTO.getSupport());
             proposal.setSupervisor(proposalDTO.getSupervisor());
+            proposal.setEnumProposalType(proposalDTO.getInstitutionProposalType());
             
             em.merge(proposal);
         } catch (EntityDoesNotExistsException e) {

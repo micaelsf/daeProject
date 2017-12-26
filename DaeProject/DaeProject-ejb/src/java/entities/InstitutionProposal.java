@@ -45,8 +45,42 @@ public class InstitutionProposal extends WorkProposal {
     public InstitutionProposal() {
     }
     
-    public InstitutionProposal(String title, String scientificAreas, String objectives, String supervisor, InstitutionProposalType proposalType) {
-        super(title, scientificAreas, objectives);
+    public InstitutionProposal(
+            String title, 
+            String scientificAreas, 
+            String objectives, 
+            String workResume, 
+            //List<String> bibliography, 
+            String bibliography1, 
+            String bibliography2, 
+            String bibliography3, 
+            String bibliography4, 
+            String bibliography5, 
+            String workPlan, 
+            String workLocality, 
+            String successRequirements,
+            float budget,
+            String support,
+            String supervisor, 
+            InstitutionProposalType proposalType
+    ) {
+        super(
+                title, 
+                scientificAreas, 
+                objectives, 
+                workResume, 
+                //bibliography, 
+                bibliography1, 
+                bibliography2, 
+                bibliography3, 
+                bibliography4, 
+                bibliography5,
+                workPlan, 
+                workLocality, 
+                successRequirements, 
+                budget, 
+                support
+        );
         this.supervisor = supervisor;
         this.enumProposalType = proposalType;
         this.institutions = new LinkedList<>();
@@ -68,20 +102,20 @@ public class InstitutionProposal extends WorkProposal {
         this.supervisor = supervisor;
     }
 
-    public InstitutionProposalType getEnumInstitution() {
-        return enumProposalType;
-    }
-
-    public void setEnumInstitution(InstitutionProposalType proposalType) {
-        this.enumProposalType = proposalType;
-    }
-
     public List<Institution> getInstitutions() {
         return institutions;
     }
 
     public void setInstitutions(List<Institution> institutions) {
         this.institutions = institutions;
+    }
+
+    public InstitutionProposalType getEnumProposalType() {
+        return enumProposalType;
+    }
+
+    public void setEnumProposalType(InstitutionProposalType enumProposalType) {
+        this.enumProposalType = enumProposalType;
     }
     
 }

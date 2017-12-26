@@ -36,23 +36,15 @@ public class AdministratorManager implements Serializable {
 
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
 
-    @EJB
-    private StudentBean studentBean;
     private StudentDTO newStudent;
     private StudentDTO currentStudent;
 
-    @EJB
-    private InstitutionBean instituitionBean;
     private InstitutionDTO newInstituition;
     private InstitutionDTO currentInstituition;
 
-    @EJB
-    private TeacherBean teacherBean;
     private TeacherDTO newTeacher;
     private TeacherDTO currentTeacher;
 
-    @EJB
-    private WorkProposalBean proposalBean;
     private WorkProposalDTO newProposal;
     private WorkProposalDTO currentProposal;
 

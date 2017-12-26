@@ -6,6 +6,7 @@ import dtos.InstitutionProposalDTO;
 import entities.InstitutionProposal.InstitutionProposalType;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
@@ -87,7 +88,7 @@ public class InstitutionManager implements Serializable {
         return "index?faces-redirect=true";
     }
 */
-        /* PROPOSAL */
+    /* PROPOSAL */
     public InstitutionProposalType[] getAllTypes() {
         return InstitutionProposalType.values();
     }
@@ -120,7 +121,27 @@ public class InstitutionManager implements Serializable {
         }
         return returnedProposals;
     }
-
+/*    
+    public List<String> getAllProposalsBibliographyREST() {
+        List<String> returnedBibliography;
+        try {
+            System.out.println("web.InstitutionManager.getAllProposalsBibliographyREST() current id:" + currentProposal.getId());
+            returnedBibliography = client.target(URILookup.getBaseAPI())
+                    .path("/institutionProposals/allBibliography")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<String>>() {
+                    });
+            for(String s: returnedBibliography) {
+                System.out.println("web.InstitutionManager.getAllProposalsBibliographyREST() biblio found:" + s);
+            }
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedBibliography;
+    }
+*/
     public String updateProposalREST() {
         try {
             client.target(URILookup.getBaseAPI())

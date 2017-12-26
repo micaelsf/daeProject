@@ -2,6 +2,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/skeleton.xhtml"> 
@@ -28,7 +29,41 @@
                 <h:outputText 
                     id="objectives"
                     value="#{institutionManager.currentProposal.objectives}"/>
-
+                
+                <h:outputLabel for="workResume" value="Resumo do trabalho: " />
+                <h:outputText 
+                    id="workResume"
+                    value="#{institutionManager.currentProposal.workResume}"/>
+                
+                <h:outputLabel for="workPlan" value="Plano de trabalho: " />
+                <h:outputText 
+                    id="workPlan"
+                    value="#{institutionManager.currentProposal.workPlan}"/>
+                
+                <h:outputLabel for="workLocality" value="Localidade do trabalho: " />
+                <h:outputText 
+                    id="workLocality"
+                    value="#{institutionManager.currentProposal.workLocality}"/>
+                
+                <h:outputLabel for="successRequirements" value="Requisitos fundamentais: " />
+                <h:outputText 
+                    id="successRequirements"
+                    value="#{institutionManager.currentProposal.successRequirements}"/>
+                
+                <h:outputLabel for="budget" value="Orçamento: " />
+                <h:outputText 
+                    id="budget"
+                    value="#{institutionManager.currentProposal.budget} €"/>
+                
+                <h:outputLabel for="support" value="Apoios: " />
+                <h:outputText 
+                    id="support"
+                    value="#{institutionManager.currentProposal.support}"/>
+                
+                <h:outputLabel for="bibliography" value="Bibliografia: " />
+                <h:outputText 
+                    id="bibliography"
+                    value="#{institutionManager.currentProposal.bibliographyToString}"/>
                 
                 <h:outputLabel for="status" value="Estado: " />
                 <h:outputText 

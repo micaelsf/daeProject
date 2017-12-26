@@ -8,6 +8,8 @@ import dtos.TeacherProposalDTO;
 import entities.InstitutionProposal.InstitutionProposalType;
 import entities.TeacherProposal.TeacherProposalType;
 import entities.WorkProposal.ProposalStatus;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -42,7 +44,7 @@ public class ConfigBean {
 
         try {
             
-            System.out.println("Inserting Students:");
+            System.out.println("Inserting Students");
             studentBean.create(new StudentDTO(1, "123123", "Zé", "ze@email.com", "111111111"));            
             studentBean.create(new StudentDTO(2, "123123", "Maria", "maria@email.com", "222222222"));
             studentBean.create(new StudentDTO(3, "123123", "Joana", "joana@email.com", "333333333"));
@@ -50,26 +52,96 @@ public class ConfigBean {
             studentBean.create(new StudentDTO(5, "123123", "Bruno", "bruno@email.com", "555555555"));
             studentBean.create(new StudentDTO(6, "123123", "Micael", "micael@email.com", "666666666"));
             
-            System.out.println("Inserting Institutions:");
+            System.out.println("Inserting Institutions");
             instituitionBean.create(new InstitutionDTO(7, "123123", "CompanyA", "companya@email.com"));
             instituitionBean.create(new InstitutionDTO(8, "123123", "CompanyB", "companyb@email.com"));
             instituitionBean.create(new InstitutionDTO(9, "123123", "CompanyC", "companyc@email.com"));
             instituitionBean.create(new InstitutionDTO(10, "123123", "CompanyD", "companyd@email.com"));
             instituitionBean.create(new InstitutionDTO(11, "123123", "CompanyF", "companyf@email.com"));
             
-            System.out.println("Inserting Teachers:");
+            System.out.println("Inserting Teachers");
             teacherBean.create(new TeacherDTO(12, "t1", "t1", "t1@ipleiria.pt"));
             teacherBean.create(new TeacherDTO(13, "t2", "t2", "t2@ipleiria.pt"));
             teacherBean.create(new TeacherDTO(14, "t3", "t3", "t3@ipleiria.pt"));
             
-            System.out.println("Inserting Institution Proposals:");     
-            institutionProposalBean.create(new InstitutionProposalDTO(15, "Titulo 1", "EI", "Objetivos do trabalho: ...", "Inácio", InstitutionProposalType.Estágio));
-            institutionProposalBean.create(new InstitutionProposalDTO(16, "Titulo 2", "EI", "Objetivos do trabalho: ...", "Paulo Neves", InstitutionProposalType.Dissertação));
-            institutionProposalBean.create(new InstitutionProposalDTO(17, "Titulo 3", "EI", "Objetivos do trabalho: ...", "João Andrade", InstitutionProposalType.Estágio));            
-            institutionProposalBean.create(new InstitutionProposalDTO(18, "Titulo 4", "EI", "Objetivos do trabalho: ...", "Jonh", InstitutionProposalType.Projeto));
+            System.out.println("Inserting Institution Proposals");
+            institutionProposalBean.create(new InstitutionProposalDTO(
+                    15,
+                    "Titulo 1", 
+                    "EI", 
+                    "Objetivos do trabalho: ...", 
+                    "O trabalho resume-se a ...",
+                    "http://www.website.com",
+                    "http://www.website-1.com",
+                    "http://www.website-2.com",
+                    "http://www.website-3.com",
+                    "enunciado.pdf",
+                    "Plano de trabalho será dividido em 3 fases: ...",
+                    "ESTG",
+                    "Sólidos conhecimentos em web design, php, JavaScript e framework VUE",
+                    200,
+                    "Apoio fornecido pelo docente proponente",
+                    "Inácio", 
+                    InstitutionProposalType.Projeto
+            ));
+            institutionProposalBean.create(new InstitutionProposalDTO(
+                    16,
+                    "Titulo 2", 
+                    "EI", 
+                    "Objetivos do trabalho: ...", 
+                    "O trabalho resume-se a ...",
+                    "http://www.website.com",
+                    "http://www.website-1.com",
+                    "http://www.website-2.com",
+                    "http://www.website-3.com",
+                    "enunciado.pdf",
+                    "Plano de trabalho será dividido em 2 fases: ...",
+                    "ESTG",
+                    "Sólidos conhecimentos em POO e Android Studio",
+                    400,
+                    "Apoio fornecido pelo docente proponente",
+                    "Paulo Neves", 
+                    InstitutionProposalType.Dissertação
+            ));
+            institutionProposalBean.create(new InstitutionProposalDTO(
+                    17,
+                    "Titulo 3", 
+                    "EI", 
+                    "Objetivos do trabalho: ...", 
+                    "O trabalho resume-se a ...",
+                    "http://www.website.com",
+                    "http://www.website-1.com",
+                    "http://www.website-2.com",
+                    "http://www.website-3.com",
+                    "enunciado.pdf",
+                    "Plano de trabalho será dividido em 3 fases: ...",
+                    "ESTG",
+                    "Sólidos conhecimento em integração de sistemas, micro serviços e C#",
+                    800,
+                    "Apoio fornecido pela empresa",
+                    "João Andrade", 
+                    InstitutionProposalType.Estágio
+            ));
             
-            System.out.println("Inserting Teacher Proposals:");
-            teacherProposalBean.create(new TeacherProposalDTO(19, "Titulo 5", "EI", "Objetivos do trabalho: ...", TeacherProposalType.Dissertação));
+            System.out.println("Inserting Teacher Proposals");
+            teacherProposalBean.create(new TeacherProposalDTO(
+                    18,
+                    "Titulo 1", 
+                    "EI", 
+                    "Objetivos do trabalho: ...", 
+                    "O trabalho resume-se a ...",
+                    "http://www.website.com",
+                    "http://www.website-1.com",
+                    "http://www.website-2.com",
+                    "http://www.website-3.com",
+                    "enunciado.pdf",
+                    "Plano de trabalho será dividido em 3 fases: ...",
+                    "ESTG",
+                    "Sólidos conhecimentos em web design, php, JavaScript e framework VUE",
+                    200,
+                    "Apoio fornecido pelo docente proponente",
+                    TeacherProposalType.Projeto
+            ));
             //teacherProposalBean.create(new TeacherProposalDTO(20, "Titulo 6", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));
             //teacherProposalBean.create(new TeacherProposalDTO(21, "Titulo 7", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Dissertação));            
             //teacherProposalBean.create(new TeacherProposalDTO(22, "Titulo 8", "EI", "Objetivos do trabalho: ...", 3, TEACHER_PROPOSAL_TYPE.Projeto));

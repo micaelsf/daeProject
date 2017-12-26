@@ -12,8 +12,9 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.io.Serializable;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -40,11 +41,32 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             if (em.find(TeacherProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
+            
+            List<String> bibliography = new LinkedList<>();
+            bibliography.add(proposalDTO.getBibliography1());
+            bibliography.add(proposalDTO.getBibliography2());
+            bibliography.add(proposalDTO.getBibliography3());
+            bibliography.add(proposalDTO.getBibliography4());
+            bibliography.add(proposalDTO.getBibliography5());
+            
             TeacherProposal proposal = new TeacherProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
-                    proposalDTO.getObjectives(), 
-                    proposalDTO.getTeacherProposalType());
+                    proposalDTO.getObjectives(),
+                    proposalDTO.getWorkResume(),
+                    //bibliography,
+                    proposalDTO.getBibliography1(),
+                    proposalDTO.getBibliography2(),
+                    proposalDTO.getBibliography3(),
+                    proposalDTO.getBibliography4(),
+                    proposalDTO.getBibliography5(),
+                    proposalDTO.getWorkPlan(),
+                    proposalDTO.getWorkLocality(),
+                    proposalDTO.getSuccessRequirements(),
+                    proposalDTO.getBudget(),
+                    proposalDTO.getSupport(),
+                    proposalDTO.getTeacherProposalType()
+            );
             
             em.persist(proposal);
         } catch (EntityAlreadyExistsException e) {

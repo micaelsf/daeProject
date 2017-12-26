@@ -22,6 +22,7 @@ import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -30,7 +31,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PROPOSALS")
 @Inheritance(strategy = InheritanceType.JOINED)
-@NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
+@NamedQueries({
+    @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title"),
+    //@NamedQuery(name = "getAllBibliographies",  query = "SELECT b.bibliography FROM WorkProposal b WHERE b.id = :proposal_id")
+})
 public class WorkProposal implements Serializable {
     
     public static enum ProposalStatus implements Serializable {
@@ -60,13 +64,28 @@ public class WorkProposal implements Serializable {
     @Column(nullable = true)
     private String workResume;
     
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String objectives;
     
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<String> bibliography;
+    @Column(nullable = true)
+    private String bibliography1;
     
-    @Column(name = "WORK_PLAN", nullable = true)
+    @Column(nullable = true)
+    private String bibliography2;
+    
+    @Column(nullable = true)
+    private String bibliography3;
+    
+    @Column(nullable = true)
+    private String bibliography4;
+    
+    @Column(nullable = true)
+    private String bibliography5;
+    
+    //@ElementCollection(fetch = FetchType.EAGER)
+    //private List<String> bibliography;
+    
+    @Column(name = "WORK_PLAN", nullable = false)
     private String workPlan;
     
     @Column(name = "WORK_LOCALITY", nullable = true)
@@ -85,17 +104,53 @@ public class WorkProposal implements Serializable {
     @Column(nullable = false)
     private ProposalStatus status;
     
+    @Column(name = "REJECT_REASON", nullable = true)
+    private String rejectReason;
+    
     public WorkProposal() {
         
     }
     
-    public WorkProposal(String title, String scientificAreas, String objectives) {
+    public WorkProposal(
+            String title, 
+            String scientificAreas, 
+            String objectives, 
+            String workResume, 
+            //List<String> bibliography, 
+            String bibliography1,
+            String bibliography2,
+            String bibliography3,
+            String bibliography4,
+            String bibliography5,
+            String workPlan, 
+            String workLocality, 
+            String successRequirements,
+            float budget,
+            String support
+    ) {
         this.title = title;
         this.scientificAreas = scientificAreas;        
-        this.objectives = objectives;
+        this.objectives = objectives;        
+        this.workResume = workResume;  
+        this.bibliography1 = bibliography1;       
+        this.bibliography2 = bibliography2;       
+        this.bibliography3 = bibliography3;       
+        this.bibliography4 = bibliography4;       
+        this.bibliography5 = bibliography5;
+        this.workPlan = workPlan;       
+        this.workLocality = workLocality;       
+        this.successRequirements = successRequirements;
+        this.budget = budget;
+        this.support = support;
         this.status = ProposalStatus.Pendente;
+        
+        
         this.studentsApply = new LinkedList<>();
-        this.bibliography = new LinkedList<>();
+        //this.bibliography = new LinkedList<>();
+        
+        /*for (String s: (List<String>) bibliography) {
+            this.bibliography.add(s);
+        }*/
     }
      
     public void addStudentApply(Student student) {
@@ -105,7 +160,7 @@ public class WorkProposal implements Serializable {
     public void removeStudentApply(Student student) {
         studentsApply.remove(student);
     }
-    
+/*    
     public void addBibliography(String b) {
         bibliography.add(b);
     }
@@ -113,6 +168,7 @@ public class WorkProposal implements Serializable {
     public void removeBibliography(String b) {
         bibliography.remove(b);
     }
+*/
     public int getId() {
         return id;
     }
@@ -168,7 +224,7 @@ public class WorkProposal implements Serializable {
     public void setObjectives(String objectives) {
         this.objectives = objectives;
     }
-
+/*
     public List<String> getBibliography() {
         return bibliography;
     }
@@ -176,7 +232,7 @@ public class WorkProposal implements Serializable {
     public void setBibliography(List<String> bibliography) {
         this.bibliography = bibliography;
     }
-
+*/
     public String getWorkPlan() {
         return workPlan;
     }
@@ -224,4 +280,53 @@ public class WorkProposal implements Serializable {
     public void setStatus(ProposalStatus status) {
         this.status = status;
     }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
+
+    public String getBibliography1() {
+        return bibliography1;
+    }
+
+    public void setBibliography1(String bibliography1) {
+        this.bibliography1 = bibliography1;
+    }
+
+    public String getBibliography2() {
+        return bibliography2;
+    }
+
+    public void setBibliography2(String bibliography2) {
+        this.bibliography2 = bibliography2;
+    }
+
+    public String getBibliography3() {
+        return bibliography3;
+    }
+
+    public void setBibliography3(String bibliography3) {
+        this.bibliography3 = bibliography3;
+    }
+
+    public String getBibliography4() {
+        return bibliography4;
+    }
+
+    public void setBibliography4(String bibliography4) {
+        this.bibliography4 = bibliography4;
+    }
+
+    public String getBibliography5() {
+        return bibliography5;
+    }
+
+    public void setBibliography5(String bibliography5) {
+        this.bibliography5 = bibliography5;
+    }
+    
 }

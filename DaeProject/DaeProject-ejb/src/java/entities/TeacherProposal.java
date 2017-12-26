@@ -40,13 +40,45 @@ public class TeacherProposal extends WorkProposal {
     private List<Teacher> teachers;
         
     public TeacherProposal() {
-        
     }
     
-    public TeacherProposal(String title, String scientificAreas, String objectives, TeacherProposalType proposalType) {
-        super(title, scientificAreas, objectives);
-        this.teachers = new LinkedList<>();
+    public TeacherProposal(
+            String title, 
+            String scientificAreas, 
+            String objectives, 
+            String workResume, 
+            //List<String> bibliography, 
+            String bibliography1, 
+            String bibliography2, 
+            String bibliography3, 
+            String bibliography4, 
+            String bibliography5, 
+            String workPlan, 
+            String workLocality, 
+            String successRequirements,
+            float budget,
+            String support,
+            TeacherProposalType proposalType
+    ) {
+        super(
+                title, 
+                scientificAreas, 
+                objectives, 
+                workResume, 
+                //bibliography, 
+                bibliography1, 
+                bibliography2, 
+                bibliography3, 
+                bibliography4, 
+                bibliography5,
+                workPlan, 
+                workLocality, 
+                successRequirements, 
+                budget, 
+                support
+        );
         this.enumProposalType = proposalType;
+        this.teachers = new LinkedList<>();
     }
     
     public void addTeacher(Teacher teacher) {

@@ -11,7 +11,8 @@
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText
-                        class="form-control"
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
                         id="name"
                         size="52"
                         required="true"
@@ -22,7 +23,8 @@
                     
                     <h:outputLabel for="password" value="Password: " />
                     <h:inputSecret
-                        class="form-control"
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
                         id="password"
                         size="20"
                         required="true"
@@ -32,7 +34,8 @@
                 
                     <h:outputLabel for="email" value="Email: " />
                     <h:inputText
-                        class="form-control"
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
                         id="email"
                         size="52"
                         required="true"
@@ -44,12 +47,15 @@
 
                     <h:outputLabel for="studentNumber" value="Número de estudante: " />
                     <h:inputText 
-                        class="form-control"
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
                         id="studentNumber"
-                        size="10"
+                        maxlength="10"
                         required="true"
-                        requiredMessage="Erro: O número de estudante não pode ser vazio."                            
-                        value="#{administratorManager.newStudent.studentNumber}" />
+                        requiredMessage="Erro: O número de estudante não pode ser vazio."
+                        converter="javax.faces.Integer" 
+                        converterMessage="Número inválido!"
+                        value="#{administratorManager.newStudent.studentNumber}"  />  
                     <h:message for="studentNumber" errorStyle="color: red" />
 
                 </h:panelGrid>    
