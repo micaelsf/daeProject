@@ -30,7 +30,7 @@ public class TeacherProposal extends WorkProposal {
     }
     
     @Enumerated(EnumType.STRING)
-    @Column(name = "PROPOSAL_TYPE")
+    @Column(nullable = false, name = "PROPOSAL_TYPE")
     private TeacherProposalType enumProposalType;
     
     @ManyToMany
@@ -88,14 +88,6 @@ public class TeacherProposal extends WorkProposal {
     public void removeTeacher(Teacher teacher) {
         teachers.remove(teacher);
     }
-    
-    public TeacherProposalType getEnumInstitution() {
-        return enumProposalType;
-    }
-
-    public void setEnumInstitution(TeacherProposalType proposalType) {
-        this.enumProposalType = proposalType;
-    }
 
     public List<Teacher> getTeachers() {
         return teachers;
@@ -103,6 +95,14 @@ public class TeacherProposal extends WorkProposal {
 
     public void setTeachers(List<Teacher> teachers) {
         this.teachers = teachers;
+    }
+
+    public TeacherProposalType getEnumProposalType() {
+        return enumProposalType;
+    }
+
+    public void setEnumProposalType(TeacherProposalType enumProposalType) {
+        this.enumProposalType = enumProposalType;
     }
     
     

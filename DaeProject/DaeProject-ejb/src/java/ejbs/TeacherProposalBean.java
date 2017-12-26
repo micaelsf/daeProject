@@ -7,14 +7,13 @@ package ejbs;
 
 import dtos.TeacherProposalDTO;
 import entities.TeacherProposal;
+import entities.TeacherProposal.TeacherProposalType;
 import entities.WorkProposal.ProposalStatus;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -41,14 +40,14 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             if (em.find(TeacherProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
-            
+            /*
             List<String> bibliography = new LinkedList<>();
             bibliography.add(proposalDTO.getBibliography1());
             bibliography.add(proposalDTO.getBibliography2());
             bibliography.add(proposalDTO.getBibliography3());
             bibliography.add(proposalDTO.getBibliography4());
             bibliography.add(proposalDTO.getBibliography5());
-            
+            */
             TeacherProposal proposal = new TeacherProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
@@ -65,7 +64,7 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                     proposalDTO.getSuccessRequirements(),
                     proposalDTO.getBudget(),
                     proposalDTO.getSupport(),
-                    proposalDTO.getTeacherProposalType()
+                    TeacherProposalType.valueOf(proposalDTO.getProposalType())
             );
             
             em.persist(proposal);
@@ -148,7 +147,19 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
 
             proposal.setTitle(proposalDTO.getTitle());
             proposal.setScientificAreas(proposalDTO.getScientificAreas());
-            proposal.setStatus(proposalDTO.getStatus());
+            proposal.setObjectives(proposalDTO.getObjectives());
+            proposal.setWorkResume(proposalDTO.getWorkResume());
+            proposal.setBibliography1(proposalDTO.getBibliography1());
+            proposal.setBibliography2(proposalDTO.getBibliography2());
+            proposal.setBibliography3(proposalDTO.getBibliography3());
+            proposal.setBibliography4(proposalDTO.getBibliography4());
+            proposal.setBibliography5(proposalDTO.getBibliography5());
+            proposal.setWorkPlan(proposalDTO.getWorkPlan());
+            proposal.setWorkLocality(proposalDTO.getWorkLocality());
+            proposal.setSuccessRequirements(proposalDTO.getSuccessRequirements());
+            proposal.setBudget(proposalDTO.getBudget());
+            proposal.setSupport(proposalDTO.getSupport());
+            proposal.setEnumProposalType(TeacherProposalType.valueOf(proposalDTO.getProposalType()));
             
             em.merge(proposal);
         } catch (EntityDoesNotExistsException e) {

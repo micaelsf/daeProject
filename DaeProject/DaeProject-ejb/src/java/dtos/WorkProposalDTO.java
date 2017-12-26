@@ -2,7 +2,12 @@ package dtos;
 
 import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
+@XmlRootElement(name = "WorkProposal")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class WorkProposalDTO implements Serializable {
     
     protected int id;        
@@ -20,7 +25,9 @@ public class WorkProposalDTO implements Serializable {
     protected String successRequirements;  
     protected float budget;
     protected String support;
+    protected String supervisor;
     protected ProposalStatus status;
+    protected String proposalType;
 
     public WorkProposalDTO() {
     }    
@@ -40,7 +47,9 @@ public class WorkProposalDTO implements Serializable {
             String workLocality,  
             String successRequirements,  
             float budget,  
-            String support
+            String support,  
+            String supervisor,
+            String proposalType
     ) {
         this.id = id;        
         this.title = title;        
@@ -56,8 +65,11 @@ public class WorkProposalDTO implements Serializable {
         this.workLocality = workLocality;        
         this.successRequirements = successRequirements;        
         this.budget = budget;        
-        this.support = support;
-        this.status = ProposalStatus.Pendente;
+        this.support = support;     
+        this.supervisor = supervisor;
+        this.proposalType = proposalType;
+        
+        this.status = ProposalStatus.Pendente; 
     }
     
     public void reset() {
@@ -76,8 +88,26 @@ public class WorkProposalDTO implements Serializable {
         setSuccessRequirements(null);
         setBudget(0);
         setSupport(null);
-        setStatus(null);
+        setStatus(null);        
+        setSupervisor(null);    
+        setProposalType(null);
     }    
+
+    public String getProposalType() {
+        return proposalType;
+    }
+
+    public void setProposalType(String proposalType) {
+        this.proposalType = proposalType;
+    }
+
+    public String getSupervisor() {
+        return supervisor != null ? supervisor : "N/A";
+    }
+
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
+    }
 
     public String getTitle() {
         return title;

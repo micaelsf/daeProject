@@ -11,8 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TeacherProposalDTO extends WorkProposalDTO implements Serializable {
     
-    private TeacherProposalType teacherProposalType;
-    
     public TeacherProposalDTO() {
     }
 
@@ -49,22 +47,15 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
                 workLocality, 
                 successRequirements, 
                 budget, 
-                support
+                support,
+                "N/A",
+                proposalType.toString()
         );
-        this.teacherProposalType = proposalType;
     }
     
     @Override
     public void reset() {
         super.reset();
-        setTeacherProposalType(null);  
     } 
     
-    public TeacherProposalType getTeacherProposalType() {
-        return teacherProposalType;
-    }
-
-    public void setTeacherProposalType(TeacherProposalType teacherProposalType) {
-        this.teacherProposalType = teacherProposalType;
-    }
 }

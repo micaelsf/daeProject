@@ -2,20 +2,20 @@ package web;
 
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
-import dtos.StudentDTO;
-import dtos.WorkProposalDTO;
-import ejbs.StudentBean;
-import ejbs.WorkProposalBean;
+import dtos.TeacherProposalDTO;
+import entities.TeacherProposal.TeacherProposalType;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
-import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
+import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import utils.URILookup;
@@ -33,21 +33,18 @@ public class TeacherManager implements Serializable {
     @ManagedProperty(value = "#{uploadManager}")
     private UploadManager uploadManager;
 
-    @EJB
-    private StudentBean studentBean;
-    private StudentDTO student;
-    
-    @EJB
-    private WorkProposalDTO newProposal;
-    private WorkProposalDTO currentProposal;
+    private TeacherProposalDTO newProposal;
+    private TeacherProposalDTO currentProposal;
     
     private List<DocumentDTO> documents;
     private DocumentDTO document;
 
     private String filePath;
-
+    private UIComponent component;
+    
     public TeacherManager() {
         client = ClientBuilder.newClient();
+        newProposal = new TeacherProposalDTO();
     }
 
 /*    @PostConstruct
@@ -71,6 +68,7 @@ public class TeacherManager implements Serializable {
         }
     }
 */
+    /*
     public String uploadDocument() {
         try {
             document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
@@ -88,7 +86,71 @@ public class TeacherManager implements Serializable {
 
         return "index?faces-redirect=true";
     }
+*/
+    /* PROPOSAL */
+    public TeacherProposalType[] getAllTypes() {
+        return TeacherProposalType.values();
+    }
+    
+    public String createProposal() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/teacherProposals/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newProposal));
+            newProposal.reset();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
 
+    public List<TeacherProposalDTO> getAllProposalsREST() {
+        List<TeacherProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/teacherProposals/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<TeacherProposalDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedProposals;
+    }
+    
+    public String updateProposalREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/teacherProposals/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentProposal));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public void removeProposal(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+
+            client.target(URILookup.getBaseAPI())
+                    .path("/teacherProposals/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+        }
+    }
+
+    
     public UserManager getUserManager() {
         return userManager;
     }
@@ -105,14 +167,6 @@ public class TeacherManager implements Serializable {
         this.uploadManager = uploadManager;
     }
 
-    public StudentDTO getStudent() {
-        return student;
-    }
-
-    public void setStudent(StudentDTO student) {
-        this.student = student;
-    }
-
     public DocumentDTO getDocument() {
         return document;
     }
@@ -127,6 +181,30 @@ public class TeacherManager implements Serializable {
 
     public void setFilePath(String filePath) {
         this.filePath = filePath;
+    }
+
+    public TeacherProposalDTO getNewProposal() {
+        return newProposal;
+    }
+
+    public void setNewProposal(TeacherProposalDTO newProposal) {
+        this.newProposal = newProposal;
+    }
+
+    public TeacherProposalDTO getCurrentProposal() {
+        return currentProposal;
+    }
+
+    public void setCurrentProposal(TeacherProposalDTO currentProposal) {
+        this.currentProposal = currentProposal;
+    }
+
+    public UIComponent getComponent() {
+        return component;
+    }
+
+    public void setComponent(UIComponent component) {
+        this.component = component;
     }
 
 }

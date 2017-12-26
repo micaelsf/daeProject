@@ -27,12 +27,15 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "PROPOSALS")
+@Table(name = "PROPOSALS",
+    uniqueConstraints =
+        @UniqueConstraint(columnNames = {"TITLE"}))
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-    @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title"),
+    @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
     //@NamedQuery(name = "getAllBibliographies",  query = "SELECT b.bibliography FROM WorkProposal b WHERE b.id = :proposal_id")
 })
 public class WorkProposal implements Serializable {
@@ -61,7 +64,7 @@ public class WorkProposal implements Serializable {
     @PrimaryKeyJoinColumn(name="ID") //PrimaryKeyJoinColumn instead of JoinColumn because of conflicts while writing ID
     private Student student;
     
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String workResume;
     
     @Column(nullable = false)
@@ -88,16 +91,16 @@ public class WorkProposal implements Serializable {
     @Column(name = "WORK_PLAN", nullable = false)
     private String workPlan;
     
-    @Column(name = "WORK_LOCALITY", nullable = true)
+    @Column(name = "WORK_LOCALITY", nullable = false)
     private String workLocality;
     
-    @Column(name = "SUCCESS_REQUIREMENTS", nullable = true)
+    @Column(name = "SUCCESS_REQUIREMENTS", nullable = false)
     private String successRequirements;
     
-    @Column(nullable = true)
+    @Column(nullable = false)
     private float budget;
     
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String support;
     
     @Enumerated(EnumType.STRING)
@@ -108,7 +111,6 @@ public class WorkProposal implements Serializable {
     private String rejectReason;
     
     public WorkProposal() {
-        
     }
     
     public WorkProposal(

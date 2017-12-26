@@ -7,9 +7,14 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h2>Id da Proposta de Trabalho: #{institutionManager.currentProposal.id}</h2>
-            <h3>Tipo: #{institutionManager.currentProposal.institutionProposalType}</h3>
+            <h2>Estado da proposta: <b>#{institutionManager.currentProposal.status}</b></h2>
+            <h3>Tipo: #{institutionManager.currentProposal.proposalType}</h3>
             <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="id" value="Id: " />
+                <h:outputText 
+                    id="id"
+                    value="#{institutionManager.currentProposal.id}"/>
+                
                 <h:outputLabel for="supervisor" value="Supervisor: " />
                 <h:outputText 
                     id="supervisor"
@@ -64,11 +69,6 @@
                 <h:outputText 
                     id="bibliography"
                     value="#{institutionManager.currentProposal.bibliographyToString}"/>
-                
-                <h:outputLabel for="status" value="Estado: " />
-                <h:outputText 
-                    id="status"
-                    value="#{institutionManager.currentProposal.status}"/>
             </p:panelGrid>
             <br/>
             <br/>

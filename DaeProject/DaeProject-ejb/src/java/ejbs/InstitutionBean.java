@@ -7,18 +7,14 @@ package ejbs;
 
 import dtos.InstitutionDTO;
 import entities.Institution;
-import entities.Teacher;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.io.Serializable;
 import java.util.Collection;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.mail.MessagingException;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

@@ -43,7 +43,8 @@ public class TeacherBean extends Bean<Teacher> {
             teacher = new Teacher(
                     teacherDTO.getPassword(),
                     teacherDTO.getName(),
-                    teacherDTO.getEmail()
+                    teacherDTO.getEmail(),
+                    teacherDTO.getOffice()
             );
 
             em.persist(teacher);

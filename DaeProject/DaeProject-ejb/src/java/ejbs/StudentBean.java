@@ -12,7 +12,6 @@ import entities.Student;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import javax.ejb.EJB;

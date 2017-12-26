@@ -6,8 +6,19 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Id da Proposta de Trabalho:#{administratorManager.currentProposal.id}</h1>
+            <h2>Estado da proposta: <b>#{administratorManager.currentProposal.status}</b></h2>
+            <h3>Tipo: #{administratorManager.currentProposal.proposalType}</h3>
             <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="id" value="Id: " />
+                <h:outputText 
+                    id="id"
+                    value="#{administratorManager.currentProposal.id}"/>
+                
+                <h:outputLabel for="supervisor" value="Supervisor: " />
+                <h:outputText 
+                    id="supervisor"
+                    value="#{administratorManager.currentProposal.supervisor}"/>
+                
                 <h:outputLabel for="title" value="Titulo: " />
                 <h:outputText 
                     id="title"
@@ -22,12 +33,41 @@
                 <h:outputText 
                     id="objectives"
                     value="#{administratorManager.currentProposal.objectives}"/>
-
                 
-                <h:outputLabel for="status" value="Estado: " />
+                <h:outputLabel for="workResume" value="Resumo do trabalho: " />
                 <h:outputText 
-                    id="status"
-                    value="#{administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
+                    id="workResume"
+                    value="#{administratorManager.currentProposal.workResume}"/>
+                
+                <h:outputLabel for="workPlan" value="Plano de trabalho: " />
+                <h:outputText 
+                    id="workPlan"
+                    value="#{administratorManager.currentProposal.workPlan}"/>
+                
+                <h:outputLabel for="workLocality" value="Localidade do trabalho: " />
+                <h:outputText 
+                    id="workLocality"
+                    value="#{administratorManager.currentProposal.workLocality}"/>
+                
+                <h:outputLabel for="successRequirements" value="Requisitos fundamentais: " />
+                <h:outputText 
+                    id="successRequirements"
+                    value="#{administratorManager.currentProposal.successRequirements}"/>
+                
+                <h:outputLabel for="budget" value="Orçamento: " />
+                <h:outputText 
+                    id="budget"
+                    value="#{administratorManager.currentProposal.budget} €"/>
+                
+                <h:outputLabel for="support" value="Apoios: " />
+                <h:outputText 
+                    id="support"
+                    value="#{administratorManager.currentProposal.support}"/>
+                
+                <h:outputLabel for="bibliography" value="Bibliografia: " />
+                <h:outputText 
+                    id="bibliography"
+                    value="#{administratorManager.currentProposal.bibliographyToString}"/>
             </p:panelGrid>
             <br/>
             <br/>

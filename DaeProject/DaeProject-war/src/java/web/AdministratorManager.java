@@ -9,15 +9,10 @@ import dtos.InstitutionDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.WorkProposalDTO;
-import ejbs.InstitutionBean;
-import ejbs.StudentBean;
-import ejbs.TeacherBean;
-import ejbs.WorkProposalBean;
-import exceptions.EntityDoesNotExistsException;
+import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -273,16 +268,17 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");
             UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
-            int id = 0, status = 3;
+            int id = 0; 
+            ProposalStatus status = ProposalStatus.Pendente;
 
             if (paramAccept != null) {
                 id = Integer.parseInt(paramAccept.getValue().toString());
-                status = 1;
+                status = ProposalStatus.Aceite;;
             }
 
             if (paramReject != null) {
                 id = Integer.parseInt(paramReject.getValue().toString());
-                status = 2;
+                status = ProposalStatus.NãoAceite;
             }
 
             client.target(URILookup.getBaseAPI())
