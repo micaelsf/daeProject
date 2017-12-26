@@ -5,10 +5,9 @@
  */
 package ejbs;
 
-import dtos.TeacherProposalDTO;
-import entities.TeacherProposal;
-import entities.TeacherProposal.TeacherProposalType;
-import entities.WorkProposal.ProposalStatus;
+import dtos.InstitutionProposalDTO;
+import entities.InstitutionProposal;
+import entities.InstitutionProposal.InstitutionProposalType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -27,17 +26,16 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 @Stateless
-@Path("/teacherProposals")
-public class TeacherProposalBean extends Bean<TeacherProposal> {
+@Path("/institutionProposals")
+public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @POST
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(TeacherProposalDTO proposalDTO)
+    public void create(InstitutionProposalDTO proposalDTO)
          throws EntityAlreadyExistsException, MyConstraintViolationException {
-        System.out.println("ejbs.TeacherProposalBean.create() IN");
         try {
-            if (em.find(TeacherProposal.class, proposalDTO.getId()) != null) {
+            if (em.find(InstitutionProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
             /*
@@ -48,7 +46,7 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             bibliography.add(proposalDTO.getBibliography4());
             bibliography.add(proposalDTO.getBibliography5());
             */
-            TeacherProposal proposal = new TeacherProposal(
+            InstitutionProposal proposal = new InstitutionProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
                     proposalDTO.getObjectives(),
@@ -64,7 +62,8 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                     proposalDTO.getSuccessRequirements(),
                     proposalDTO.getBudget(),
                     proposalDTO.getSupport(),
-                    TeacherProposalType.valueOf(proposalDTO.getProposalType())
+                    proposalDTO.getSupervisor(),
+                    InstitutionProposalType.valueOf(proposalDTO.getProposalType())
             );
             
             em.persist(proposal);
@@ -76,14 +75,14 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             throw new EJBException(e.getMessage());
         }
     }
-                  
+                
     @POST 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
     @Path("/removeREST/{id}")
     public void remove(@PathParam("id") String id) 
         throws EntityDoesNotExistsException {
         try {
-            TeacherProposal proposal = em.find(TeacherProposal.class, Integer.parseInt(id));
+            InstitutionProposal proposal = em.find(InstitutionProposal.class, Integer.parseInt(id));
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
@@ -95,60 +94,62 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
         }
     }
     
-    @PUT 
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("/updateStatusREST/{id}/{status}")
-    public void updateStatusWorkProposalREST(
-            @PathParam("id") String idStr,
-            @PathParam("status") ProposalStatus status) 
-        throws EntityDoesNotExistsException {
-        try {
-            TeacherProposal proposal = em.find(TeacherProposal.class, Integer.parseInt(idStr));
-            if (proposal == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
-            }
-            
-            proposal.setStatus(status);
-            em.merge(proposal);
-
-        } catch (EntityDoesNotExistsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-    
     @Override
-    protected Collection<TeacherProposal> getAll() {
-        return em.createNamedQuery("getAllTeacherProposals").getResultList();
+    protected Collection<InstitutionProposal> getAll() {
+        return em.createNamedQuery("getAllInstitutionProposals").getResultList();
     }
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("all")
-    public Collection<TeacherProposalDTO> getAllProposals() {
+    @Path("/all")
+    public Collection<InstitutionProposalDTO> getAllProposals() {
         try {
-            return getAll(TeacherProposalDTO.class);
+            return getAll(InstitutionProposalDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }  
+/*    
+    @GET 
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @Path("/allBibliography")
+    public Collection<String> getAllBibliographyProposalsFrom(
+            @PathParam("id") String idStr) {
+        System.out.println("ejbs.InstitutionProposalBean.getAllBibliographyProposalsFrom() arrived BEAN");
+        try {
+            List<String> bibliografias = (List<String>) em.createNamedQuery("getAllBibliographies")
+                    .setParameter("proposal_id", Integer.parseInt(idStr))
+                    .getResultList();
+            
+            return toDTOs(bibliografias, String.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-    
+  */
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateREST(TeacherProposalDTO proposalDTO)
+    public void updateREST(InstitutionProposalDTO proposalDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            TeacherProposal proposal = em.find(TeacherProposal.class, proposalDTO.getId());
+            InstitutionProposal proposal = em.find(InstitutionProposal.class, proposalDTO.getId());
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
-
+            
+            /*List<String> bibliography = new LinkedList<>();
+            bibliography.add(proposalDTO.getBibliography1());
+            bibliography.add(proposalDTO.getBibliography2());
+            bibliography.add(proposalDTO.getBibliography3());
+            bibliography.add(proposalDTO.getBibliography4());
+            bibliography.add(proposalDTO.getBibliography5());
+            */
             proposal.setTitle(proposalDTO.getTitle());
             proposal.setScientificAreas(proposalDTO.getScientificAreas());
             proposal.setObjectives(proposalDTO.getObjectives());
             proposal.setWorkResume(proposalDTO.getWorkResume());
+            //bibliography;
             proposal.setBibliography1(proposalDTO.getBibliography1());
             proposal.setBibliography2(proposalDTO.getBibliography2());
             proposal.setBibliography3(proposalDTO.getBibliography3());
@@ -159,8 +160,10 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             proposal.setSuccessRequirements(proposalDTO.getSuccessRequirements());
             proposal.setBudget(proposalDTO.getBudget());
             proposal.setSupport(proposalDTO.getSupport());
-            proposal.setEnumProposalType(TeacherProposalType.valueOf(proposalDTO.getProposalType()));
+            proposal.setSupervisor(proposalDTO.getSupervisor());
+            proposal.setEnumProposalType(InstitutionProposalType.valueOf(proposalDTO.getProposalType()));
             
+                    
             em.merge(proposal);
         } catch (EntityDoesNotExistsException e) {
             throw e;

@@ -9,13 +9,9 @@
         <ui:define name="main">
             <h1 class="page-header">Propostas de trabalho</h1>
             <em:dt title="Propostas" 
-                   headers="#{['Id', 'Titulo', 'Áreas Científica', 'Objetivos']}" 
-                   props="#{['id', 'title', 'scientificAreas', 'objectives']}" 
-                   list="#{administratorManager.allWorkProposalsREST}"> 
-                <p:column headerText="Estado"> 
-                    <h:outputText class="center-text"
-                                  value="${administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
-                </p:column> 
+                   headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Objetivos', 'Estado']}" 
+                   props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'objectives', 'status']}" 
+                   list="#{institutionManager.allProposalsREST}"> 
                 <p:column headerText="Ações">
                     <h:form class="center-text"> 
                             <h:commandLink 
@@ -24,7 +20,7 @@
                                 title="Detalhes"
                                 action="show?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentProposal}" 
+                                    target="#{institutionManager.currentProposal}" 
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp;
                             <h:commandLink 
@@ -33,14 +29,14 @@
                                 title="Editar"
                                 action="edit?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentProposal}" 
+                                    target="#{institutionManager.currentProposal}" 
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp; 
                             <h:commandLink 
                                 class="fa fa-trash fa-fw"
                                 value=" " 
                                 title="Remover"
-                                actionListener="#{administratorManager.removeProposal}"> 
+                                actionListener="#{institutionManager.removeProposal}"> 
                                 <f:param name="id" 
                                     id="id" 
                                     value="#{object.id}" /> 

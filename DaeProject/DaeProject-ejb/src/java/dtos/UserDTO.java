@@ -25,6 +25,7 @@ public class UserDTO implements Serializable{
     }
     
     public void reset() {
+        setId(0);
         setPassword(null);
         setName(null);
         setEmail(null);

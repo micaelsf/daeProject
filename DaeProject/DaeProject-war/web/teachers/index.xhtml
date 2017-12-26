@@ -1,19 +1,18 @@
-<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html" 
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
-    <ui:composition template="/templates/admin.xhtml"> 
+    <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Teachers</h1>
-            <em:dt title="Profesores" 
-                   headers="#{['Id', 'Nome', 'Email']}" 
-                   props="#{['id', 'name', 'email']}" 
-                   list="#{administratorManager.allTeachersREST}"> 
-                <p:column headerText="Ações"> 
+            <h1 class="page-header">Propostas de trabalho</h1>
+             <em:dt title="Propostas" 
+                   headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Objetivos', 'Estado']}" 
+                   props="#{['proposalType', 'title', 'scientificAreas', 'objectives', 'status']}" 
+                   list="#{teacherManager.allProposalsREST}"> 
+                <p:column headerText="Ações">
                     <h:form class="center-text"> 
                             <h:commandLink 
                                 class="fa fa-eye fa-fw"
@@ -21,7 +20,7 @@
                                 title="Detalhes"
                                 action="show?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentTeacher}" 
+                                    target="#{teacherManager.currentProposal}" 
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp;
                             <h:commandLink 
@@ -30,14 +29,14 @@
                                 title="Editar"
                                 action="edit?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentTeacher}" 
+                                    target="#{teacherManager.currentProposal}" 
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp; 
                             <h:commandLink 
                                 class="fa fa-trash fa-fw"
                                 value=" " 
                                 title="Remover"
-                                actionListener="#{administratorManager.removeTeacher}"> 
+                                actionListener="#{teacherManager.removeProposal}"> 
                                 <f:param name="id" 
                                     id="id" 
                                     value="#{object.id}" /> 
@@ -47,8 +46,7 @@
             </em:dt>
             <br/>
             <br/>
-            <h:link class="btn btn-primary pull-left" value="Criar Professor" outcome="create"/>
+            <h:link class="btn btn-primary pull-left" value="Criar Proposta de trabalho" outcome="create"/>
         </ui:define>
     </ui:composition>
 </html>
-

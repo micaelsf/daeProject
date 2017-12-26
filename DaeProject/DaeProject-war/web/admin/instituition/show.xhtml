@@ -7,25 +7,25 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Show instituition with id:#{administratorManager.currentInstituition.id}</h1>
+            <h1 class="page-header">Show institution with id:#{administratorManager.currentInstitution.id}</h1>
             <p:panelGrid columns="2" class="table table-striped">
                 <h:outputLabel for="name" value="Name: " />
                 <h:outputText 
                     id="name"
-                    value="#{administratorManager.currentInstituition.name}"/>
+                    value="#{administratorManager.currentInstitution.name}"/>
 
                 <h:outputLabel for="email" value="Email: " />
                 <h:outputText 
                     id="email"
-                    value="#{administratorManager.currentInstituition.email}"/>
+                    value="#{administratorManager.currentInstitution.email}"/>
 
             </p:panelGrid>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/instituition/index"/>
-            <p:commandLink class="btn btn-primary btn-md" value="Edit" action="admin/instituition/edit?faces-redirect=true">
+            <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/institution/index"/>
+            <p:commandLink class="btn btn-primary btn-md" value="Edit" action="admin/institution/edit?faces-redirect=true">
                 <f:setPropertyActionListener 
-                    target="#{administratorManager.currentInstituition}" 
+                    target="#{administratorManager.currentInstitution}" 
                     value="#{object}" />
             </p:commandLink>
                 

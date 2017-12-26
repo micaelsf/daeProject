@@ -1,4 +1,8 @@
+<<<<<<< HEAD
+/nbproject/private/*
+=======
 /nbproject/private/
+>>>>>>> 900d366b690cbb5a7a6f63f810d9a01c62529b2c
 build/
 nbbuild/
 dist/

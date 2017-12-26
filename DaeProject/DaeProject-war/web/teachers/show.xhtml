@@ -1,78 +1,71 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui">
-    <ui:composition template="/templates/admin.xhtml"> 
+    <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h2>Estado da proposta: <b>#{administratorManager.currentProposal.status}</b></h2>
-            <h3>Tipo: #{administratorManager.currentProposal.proposalType}</h3>
+            <h2>Estado da proposta: <b>#{teacherManager.currentProposal.status}</b></h2>
+            <h3>Tipo: #{teacherManager.currentProposal.proposalType}</h3>
             <p:panelGrid columns="2" class="table table-striped">
                 <h:outputLabel for="id" value="Id: " />
                 <h:outputText 
                     id="id"
-                    value="#{administratorManager.currentProposal.id}"/>
-                
-                <h:outputLabel for="supervisor" value="Supervisor: " />
-                <h:outputText 
-                    id="supervisor"
-                    value="#{administratorManager.currentProposal.supervisor}"/>
-                
+                    value="#{teacherManager.currentProposal.id}"/>
                 <h:outputLabel for="title" value="Titulo: " />
                 <h:outputText 
                     id="title"
-                    value="#{administratorManager.currentProposal.title}"/>
+                    value="#{teacherManager.currentProposal.title}"/>
 
                 <h:outputLabel for="scientificAreas" value="Áreas científicas: " />
                 <h:outputText 
                     id="scientificAreas"
-                    value="#{administratorManager.currentProposal.scientificAreas}"/>
+                    value="#{teacherManager.currentProposal.scientificAreas}"/>
                 
                 <h:outputLabel for="objectives" value="Objetivos: " />
                 <h:outputText 
                     id="objectives"
-                    value="#{administratorManager.currentProposal.objectives}"/>
+                    value="#{teacherManager.currentProposal.objectives}"/>
                 
                 <h:outputLabel for="workResume" value="Resumo do trabalho: " />
                 <h:outputText 
                     id="workResume"
-                    value="#{administratorManager.currentProposal.workResume}"/>
+                    value="#{teacherManager.currentProposal.workResume}"/>
                 
                 <h:outputLabel for="workPlan" value="Plano de trabalho: " />
                 <h:outputText 
                     id="workPlan"
-                    value="#{administratorManager.currentProposal.workPlan}"/>
+                    value="#{teacherManager.currentProposal.workPlan}"/>
                 
                 <h:outputLabel for="workLocality" value="Localidade do trabalho: " />
                 <h:outputText 
                     id="workLocality"
-                    value="#{administratorManager.currentProposal.workLocality}"/>
+                    value="#{teacherManager.currentProposal.workLocality}"/>
                 
                 <h:outputLabel for="successRequirements" value="Requisitos fundamentais: " />
                 <h:outputText 
                     id="successRequirements"
-                    value="#{administratorManager.currentProposal.successRequirements}"/>
+                    value="#{teacherManager.currentProposal.successRequirements}"/>
                 
                 <h:outputLabel for="budget" value="Orçamento: " />
                 <h:outputText 
                     id="budget"
-                    value="#{administratorManager.currentProposal.budget} €"/>
+                    value="#{teacherManager.currentProposal.budget} €"/>
                 
                 <h:outputLabel for="support" value="Apoios: " />
                 <h:outputText 
                     id="support"
-                    value="#{administratorManager.currentProposal.support}"/>
+                    value="#{teacherManager.currentProposal.support}"/>
                 
                 <h:outputLabel for="bibliography" value="Bibliografia: " />
                 <h:outputText 
                     id="bibliography"
-                    value="#{administratorManager.currentProposal.bibliographyToString}"/>
+                    value="#{teacherManager.currentProposal.bibliographyToString}"/>
             </p:panelGrid>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/proposal/index"/>
-                
+            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/teachers/index"/>
         </ui:define>
     </ui:composition>
 </html>

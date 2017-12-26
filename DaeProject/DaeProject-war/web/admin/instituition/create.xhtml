@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Create Instituition</h1> 
+            <h1 class="page-header">Create Institution</h1> 
             <h:form>                  
                 <h:panelGrid columns="3">
 
@@ -16,7 +16,7 @@
                         size="20"
                         required="true"
                         requiredMessage="Error: Password cannot be empty."
-                        value="#{administratorManager.newInstituition.password}"/>
+                        value="#{administratorManager.newInstitution.password}"/>
                     <h:message for="password" errorStyle="color: red" />                        
 
                     <h:outputLabel for="name" value="Name: " />
@@ -25,7 +25,7 @@
                         size="52"
                         required="true"
                         requiredMessage="Error: Name cannot be empty."                            
-                        value="#{administratorManager.newInstituition.name}" />
+                        value="#{administratorManager.newInstitution.name}" />
                     <h:message for="name" errorStyle="color: red" />
 
                     <h:outputLabel for="email" value="Email: " />
@@ -34,7 +34,7 @@
                         size="52"
                         required="true"
                         requiredMessage="Error: Email cannot be empty."                            
-                        value="#{administratorManager.newInstituition.email}" >
+                        value="#{administratorManager.newInstitution.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
@@ -50,7 +50,7 @@
                         id="submit"
                         value="Create"
                         binding="#{administratorManager.component}" 
-                        action="#{administratorManager.createInstituition}" />
+                        action="#{administratorManager.createInstitution}" />
                     <h:message for="submit" style="color: red"/>
                 </h:panelGrid >                       
             </h:form>

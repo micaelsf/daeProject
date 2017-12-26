@@ -10,14 +10,14 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-@XmlRootElement(name = "Instituition")
+@XmlRootElement(name = "Institution")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class InstituitionDTO extends UserDTO implements Serializable{
+public class InstitutionDTO extends UserDTO implements Serializable{
 
-    public InstituitionDTO() {
+    public InstitutionDTO() {
     }
 
-    public InstituitionDTO(
+    public InstitutionDTO(
             int id,
             String password,
             String name,

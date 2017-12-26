@@ -5,18 +5,14 @@
  */
 package web;
 
-import dtos.InstituitionDTO;
+import dtos.InstitutionDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.WorkProposalDTO;
-import ejbs.InstituitionBean;
-import ejbs.StudentBean;
-import ejbs.TeacherBean;
-import ejbs.WorkProposalBean;
-import exceptions.EntityDoesNotExistsException;
+import entities.WorkProposal.ProposalStatus;
+import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
-import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -31,43 +27,33 @@ import utils.URILookup;
 
 @ManagedBean
 @SessionScoped
-public class AdministratorManager {
+public class AdministratorManager implements Serializable {
 
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
 
-    @EJB
-    private StudentBean studentBean;
     private StudentDTO newStudent;
     private StudentDTO currentStudent;
 
-    @EJB
-    private InstituitionBean instituitionBean;
-    private InstituitionDTO newInstituition;
-    private InstituitionDTO currentInstituition;
-
-    @EJB
-    private TeacherBean teacherBean;
+    private InstitutionDTO newInstitution;
+    private InstitutionDTO currentInstitution;
 
     private TeacherDTO newTeacher;
     private TeacherDTO currentTeacher;
 
-    @EJB
-    private WorkProposalBean proposalBean;
     private WorkProposalDTO newProposal;
     private WorkProposalDTO currentProposal;
 
     private UIComponent component;
     private Client client;
 
-    private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
-
     private int selectOption;
 
     //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
     //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
+    //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
     public AdministratorManager() {
         newStudent = new StudentDTO();
-        newInstituition = new InstituitionDTO();
+        newInstitution = new InstitutionDTO();
         newTeacher = new TeacherDTO();
         newProposal = new WorkProposalDTO();
         client = ClientBuilder.newClient();
@@ -89,7 +75,6 @@ public class AdministratorManager {
 
     public String updateStudentREST() {
         try {
-            //client.target(baseUri)
             client.target(URILookup.getBaseAPI())
                     .path("/students/updateREST")
                     .request(MediaType.APPLICATION_XML)
@@ -119,34 +104,30 @@ public class AdministratorManager {
         return returnedStudents;
     }
 
-    public void removeStudent(ActionEvent event) {
+    public String removeStudent(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-
-            studentBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
-            /* 
+ 
             client.target(URILookup.getBaseAPI())
                     .path("/students/removeREST")
                     .path(id + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
-             */
-            //studentBean.remove(id);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
 
-    //Instituition
-    public String createInstituition() {
+    //Institution
+    public String createInstitution() {
         try {
             client.target(URILookup.getBaseAPI())
-                    .path("/instituitions/createREST")
+                    .path("/institutions/createREST")
                     .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newInstituition)
+                    .post(Entity.xml(newInstitution)
                     );
 
         } catch (Exception e) {
@@ -156,12 +137,12 @@ public class AdministratorManager {
         return "index?faces-redirect=true";
     }
 
-    public String updateInstituitionREST() {
+    public String updateInstitutionREST() {
         try {
             client.target(URILookup.getBaseAPI())
-                    .path("/instituitions/updateREST")
+                    .path("/institutions/updateREST")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(currentInstituition));
+                    .put(Entity.xml(currentInstitution));
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
@@ -170,32 +151,36 @@ public class AdministratorManager {
         return "index?faces-redirect=true";
     }
 
-    public List<InstituitionDTO> getAllInstituitionsREST() {
-        List<InstituitionDTO> returnedInstituitions;
+    public List<InstitutionDTO> getAllInstitutionsREST() {
+        List<InstitutionDTO> returnedInstitutions;
         try {
-            returnedInstituitions = client.target(URILookup.getBaseAPI())
-                    .path("/instituitions/all")
+            returnedInstitutions = client.target(URILookup.getBaseAPI())
+                    .path("/institutions/all")
                     .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<InstituitionDTO>>() {
+                    .get(new GenericType<List<InstitutionDTO>>() {
                     });
-            System.out.println(returnedInstituitions);
+            System.out.println(returnedInstitutions);
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
-        return returnedInstituitions;
+        return returnedInstitutions;
     }
 
-    public void removeInstituition(ActionEvent event) {
+    public String removeInstitution(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-            instituitionBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            client.target(URILookup.getBaseAPI())
+                    .path("/institutions/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
 
     /* TEACHERS  */
@@ -229,17 +214,21 @@ public class AdministratorManager {
         return "index?faces-redirect=true";
     }
 
-    public void removeTeacher(ActionEvent event) {
+    public String removeTeacher(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
 
-            teacherBean.remove(id);
-        } catch (EntityDoesNotExistsException e) {
-            FacesExceptionHandler.handleException(e, e.getMessage(), logger);
+            client.target(URILookup.getBaseAPI())
+                    .path("/teachers/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
         } catch (NumberFormatException e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
 
     public List<TeacherDTO> getAllTeachersREST() {
@@ -259,20 +248,6 @@ public class AdministratorManager {
     }
 
     /* PROPOSAL */
-    public String createWorkProposal() {
-        try {
-            client.target(URILookup.getBaseAPI())
-                    .path("/proposals/createREST")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newProposal));
-            newProposal.reset();
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
-        }
-        return "index?faces-redirect=true";
-    }
-
     public List<WorkProposalDTO> getAllWorkProposalsREST() {
         List<WorkProposalDTO> returnedProposals;
         try {
@@ -288,33 +263,21 @@ public class AdministratorManager {
         return returnedProposals;
     }
 
-    public String updateWorkProposalREST() {
-        try {
-            client.target(URILookup.getBaseAPI())
-                    .path("/proposals/updateREST")
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(currentProposal));
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
-        }
-        return "index?faces-redirect=true";
-    }
-
     public void updateStatusWorkProposalREST(ActionEvent event) {
         try {
             UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");
             UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
-            int id = 0, status = 3;
+            int id = 0; 
+            ProposalStatus status = ProposalStatus.Pendente;
 
             if (paramAccept != null) {
                 id = Integer.parseInt(paramAccept.getValue().toString());
-                status = 1;
+                status = ProposalStatus.Aceite;;
             }
 
             if (paramReject != null) {
                 id = Integer.parseInt(paramReject.getValue().toString());
-                status = 2;
+                status = ProposalStatus.NãoAceite;
             }
 
             client.target(URILookup.getBaseAPI())
@@ -329,23 +292,6 @@ public class AdministratorManager {
         }
     }
 
-    public void removeProposal(ActionEvent event) {
-        try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
-
-            client.target(URILookup.getBaseAPI())
-                    .path("/proposals/removeREST")
-                    .path(id + "")
-                    .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(""));
-
-            //studentBean.remove(id);
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-        }
-    }
-
     public int getSelectOption() {
         return selectOption;
     }
@@ -355,21 +301,21 @@ public class AdministratorManager {
     }
 
     /////////////// GETTERS & SETTERS ///////////////// 
-    //instituition
-    public InstituitionDTO getCurrentInstituition() {
-        return currentInstituition;
+    //institution
+    public InstitutionDTO getCurrentInstitution() {
+        return currentInstitution;
     }
 
-    public void setCurrentInstituition(InstituitionDTO currentInstituition) {
-        this.currentInstituition = currentInstituition;
+    public void setCurrentInstitution(InstitutionDTO currentInstitution) {
+        this.currentInstitution = currentInstitution;
     }
 
-    public InstituitionDTO getNewInstituition() {
-        return newInstituition;
+    public InstitutionDTO getNewInstitution() {
+        return newInstitution;
     }
 
-    public void setNewInstituition(InstituitionDTO newInstituition) {
-        this.newInstituition = newInstituition;
+    public void setNewInstitution(InstitutionDTO newInstitution) {
+        this.newInstitution = newInstitution;
     }
 
     //student

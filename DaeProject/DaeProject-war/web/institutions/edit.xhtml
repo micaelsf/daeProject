@@ -1,0 +1,196 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/skeleton.xhtml"> 
+        <ui:define name="main">
+            <h1 class="page-header">Editar Proposta de Trabalho</h1> 
+            <br/>
+            <h3 class="page-header">Tipo de Proposta: #{institutionManager.currentProposal.proposalType}</h3>
+            <h:form>
+                <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="supervisor" value="Supervisor: " />
+                    <h:inputText 
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="supervisor"
+                        size="50"
+                        required="true"
+                        requiredMessage="Erro: O campo Supervisor não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.supervisor}">
+                    </h:inputText>
+                    <h:message for="supervisor" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="title" value="Titulo: " />
+                    <h:inputText 
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="title"
+                        size="50"
+                        required="true"
+                        requiredMessage="Erro: O campo Título não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.title}">
+                    </h:inputText>
+                    <h:message for="title" errorStyle="color: red" />
+
+                    <h:outputLabel for="scientificAreas" value="Areas Científicas: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="scientificAreas"
+                        size="128"
+                        required="true"
+                        requiredMessage="Erro: O campo Areas Científicas não pode ser vazia."
+                        value="#{institutionManager.currentProposal.scientificAreas}"/>
+                    <h:message for="scientificAreas" errorStyle="color: red" /> 
+
+                    <h:outputLabel for="objective" value="Objetivos: " />
+                    <h:inputTextarea
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="objective"
+                        rows="3"
+                        required="true"
+                        requiredMessage="Erro: O campo Objetivos não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.objectives}" />
+                    <h:message for="objective" errorStyle="color: red" />
+
+                    <h:outputLabel for="workResume" value="Resumo do trabalho: " />
+                    <h:inputTextarea
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="workResume"
+                        rows="2"
+                        required="true"
+                        requiredMessage="Erro: O campo Resumo do trabalho não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.workResume}" />
+                    <h:message for="workResume" errorStyle="color: red" />
+
+                    <h:outputLabel for="workPlan" value="Plano de trabalho: " />
+                    <h:inputTextarea
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="workPlan"
+                        rows="3"
+                        required="true"
+                        requiredMessage="Erro: O campo Plano de trabalho não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.workPlan}" />
+                    <h:message for="workPlan" errorStyle="color: red" />
+
+                    <h:outputLabel for="workLocality" value="Localidade do trabalho: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="workLocality"
+                        size="100"
+                        required="true"
+                        requiredMessage="Erro: O campo Localidade do trabalho não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.workLocality}" />
+                    <h:message for="workLocality" errorStyle="color: red" />
+
+                    <h:outputLabel for="successRequirements" value="Requisitos fundamentais: " />
+                    <h:inputTextarea
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="successRequirements"
+                        rows="3"
+                        required="true"
+                        requiredMessage="Erro: O campo Requisitos fundamentais não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.successRequirements}" />
+                    <h:message for="successRequirements" errorStyle="color: red" />
+
+                    <h:outputLabel for="budget" value="Orçamento €: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="budget"
+                        maxlength="16"
+                        required="true"
+                        requiredMessage="Erro: O campo Orçamento não pode ser vazio." 
+                        converter="javax.faces.Float" 
+                        converterMessage="Número inválido!"
+                        value="#{institutionManager.currentProposal.budget}"/>  
+                    <h:message for="budget" errorStyle="color: red" />
+
+                    <h:outputLabel for="support" value="Apoios: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="support"
+                        size="255"
+                        required="true"
+                        requiredMessage="Erro: O campo Apoios não pode ser vazio."                            
+                        value="#{institutionManager.currentProposal.support}" />
+                    <h:message for="support" errorStyle="color: red" />
+                    
+                    <h:outputLabel value="Bibliografia: " />
+                    <h:inputText
+                        class="form-control"
+                        style="max-width: 50%"
+                        id="bibliography1"
+                        size="255"
+                        required="false"                            
+                        value="#{institutionManager.currentProposal.bibliography1}" />
+                    <h:message for="bibliography1" errorStyle="color: red" />
+                    
+                    <h:outputLabel value=" " />
+                    <h:inputText
+                        class="form-control"
+                        style="max-width: 50%"
+                        id="bibliography2"
+                        size="255"
+                        required="false"                            
+                        value="#{institutionManager.currentProposal.bibliography2}" />
+                    <h:message for="bibliography2" errorStyle="color: red" />
+                    
+                    <h:outputLabel value=" " />
+                    <h:inputText
+                        class="form-control"
+                        style="max-width: 50%"
+                        id="bibliography3"
+                        size="255"
+                        required="false"                            
+                        value="#{institutionManager.currentProposal.bibliography3}" />
+                    <h:message for="bibliography3" errorStyle="color: red" />
+                    
+                    <h:outputLabel value=" " />
+                    <h:inputText
+                        class="form-control"
+                        style="max-width: 50%"
+                        id="bibliography4"
+                        size="255"
+                        required="false"                            
+                        value="#{institutionManager.currentProposal.bibliography4}" />
+                    <h:message for="bibliography4" errorStyle="color: red" />
+                    
+                    <h:outputLabel value=" " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="bibliography5"
+                        size="255"
+                        required="false"                            
+                        value="#{institutionManager.currentProposal.bibliography5}" />
+                    <h:message for="bibliography5" errorStyle="color: red" />
+                    
+                </h:panelGrid>    
+                <br/>
+                <br/>
+                <h:link class="btn btn-primary pull-left" 
+                        style="margin-right: 15px"
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+                <h:commandButton
+                    class="btn btn-primary btn-md"
+                    id="submit"
+                    value="Atualizar"
+                    binding="#{institutionManager.component}" 
+                    action="#{institutionManager.updateProposalREST()}" />
+                    <h:message for="submit" style="color: red"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+</html>
+

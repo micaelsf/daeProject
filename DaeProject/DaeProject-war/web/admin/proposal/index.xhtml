@@ -10,18 +10,14 @@
         <ui:define name="main">
             <h1 class="page-header">Propostas de trabalho</h1>
             <em:dt title="Propostas" 
-                   headers="#{['Id', 'Titulo', 'Áreas Científica', 'Objetivos']}" 
-                   props="#{['id', 'title', 'scientificAreas', 'objectives']}" 
+                   headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Objetivos', 'Estado']}" 
+                   props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'objectives', 'status']}" 
                    list="#{administratorManager.allWorkProposalsREST}"> 
-                <p:column headerText="Estado"> 
-                    <h:outputText class="center-text"
-                                  value="#{administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
-                </p:column> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
                             <h:commandLink 
-                                class="fa fa-eye fa-fw"
-                                value=" " 
+                                class="btn btn-default btn-sm"
+                                value="Detalhes" 
                                 title="Detalhes"
                                 action="show?faces-redirect=true"> 
                                 <f:setPropertyActionListener 
@@ -30,7 +26,7 @@
                             </h:commandLink> &nbsp;
                             
                             <h:commandLink
-                                class="btn btn-success btn-md"
+                                class="btn btn-success btn-sm"
                                 value="Aceitar" 
                                 title="Aceitar"
                                 actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
@@ -40,7 +36,7 @@
                             </h:commandLink> &nbsp;
                             
                             <h:commandLink 
-                                class="btn btn-danger btn-md"
+                                class="btn btn-danger btn-sm"
                                 value="Rejeitar" 
                                 title="Rejeitar"
                                 actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 

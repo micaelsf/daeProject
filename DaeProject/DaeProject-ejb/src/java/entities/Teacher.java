@@ -6,22 +6,25 @@
 package entities;
 
 import entities.UserGroup.GROUP;
+import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
 
-public class Teacher extends User {
+public class Teacher extends User implements Serializable {
 
-    @NotNull(message = "O nome do professor não pode ser null")
-
+    @Column(nullable = false)
+    private String office;
+    
     protected Teacher() {
     }
 
-    public Teacher(String password, String name, String email) {
+    public Teacher(String password, String name, String email, String office) {
         super(password, GROUP.Teacher, name, email);
+        this.office = office;
     }
 
     @Override
@@ -30,4 +33,13 @@ public class Teacher extends User {
                 + ", nome=" + name
                 + ", e-mail=" + email + "}";
     }
+
+    public String getOffice() {
+        return office;
+    }
+
+    public void setOffice(String office) {
+        this.office = office;
+    }
+    
 }

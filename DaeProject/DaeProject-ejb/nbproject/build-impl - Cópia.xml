@@ -793,6 +793,22 @@ exists or setup the property manually. For example like this:
     </target>
     <target depends="compile,-library-inclusion-in-archive-weblogic,-library-inclusion-in-archive-by-user" name="library-inclusion-in-archive"/>
     <target if="is.jars.in.ejbjar" name="-library-inclusion-in-archive-by-user">
+<<<<<<< HEAD
+        <copyfiles files="${libs.javaee-endorsed-api-7.0_2.classpath}" todir="${build.classes.dir}"/>
+        <copyfiles files="${file.reference.modelmapper-1.1.0.jar}" todir="${build.classes.dir}"/>
+    </target>
+    <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
+        <basename file="${libs.javaee-endorsed-api-7.0_2.classpath}" property="manifest.libs.javaee-endorsed-api-7.0_2.classpath"/>
+        <basename file="${file.reference.modelmapper-1.1.0.jar}" property="manifest.file.reference.modelmapper-1.1.0.jar"/>
+        <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update">
+            <attribute name="Extension-List" value="jar-1 jar-2 "/>
+            <attribute name="jar-1-Extension-Name" value="${manifest.libs.javaee-endorsed-api-7.0_2.classpath}"/>
+            <attribute name="jar-2-Extension-Name" value="${manifest.file.reference.modelmapper-1.1.0.jar}"/>
+        </manifest>
+    </target>
+    <target depends="compile" name="library-inclusion-in-manifest">
+        <copyfiles files="${libs.javaee-endorsed-api-7.0_2.classpath}" todir="${dist.ear.dir}/lib"/>
+=======
         <copyfiles files="${file.reference.modelmapper-1.1.0.jar}" todir="${build.classes.dir}"/>
     </target>
     <target if="is.server.weblogic" name="-library-inclusion-in-archive-weblogic">
@@ -803,6 +819,7 @@ exists or setup the property manually. For example like this:
         </manifest>
     </target>
     <target depends="compile" name="library-inclusion-in-manifest">
+>>>>>>> 1bd4ecbf0a84ebc3d35f738143483ff37655ca0a
         <copyfiles files="${file.reference.modelmapper-1.1.0.jar}" todir="${dist.ear.dir}/lib"/>
         <manifest file="${build.ear.classes.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>

@@ -20,29 +20,32 @@ import javax.persistence.NamedQuery;
 
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "getAllTeacherProposals",
-            query = "SELECT tp FROM TeacherProposal tp ORDER BY tp.title")
+    @NamedQuery(name = "getAllInstitutionProposals",
+            query = "SELECT ip FROM InstitutionProposal ip ORDER BY ip.title")
 })
-public class TeacherProposal extends WorkProposal {
+public class InstitutionProposal extends WorkProposal {
 
-    public static enum TeacherProposalType implements Serializable {
-        Projeto, Dissertação;
+    public static enum InstitutionProposalType implements Serializable {
+        Projeto, Estágio, Dissertação;
     }
     
+    @Column(nullable = false)
+    private String supervisor;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "PROPOSAL_TYPE")
-    private TeacherProposalType enumProposalType;
+    private InstitutionProposalType enumProposalType;
     
     @ManyToMany
-    @JoinTable(name = "PROPOSAL_TEACHER",
+    @JoinTable(name = "PROPOSAL_INSTITUTION",
             joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<Teacher> teachers;
-        
-    public TeacherProposal() {
+    private List<Institution> institutions;
+    
+    public InstitutionProposal() {
     }
     
-    public TeacherProposal(
+    public InstitutionProposal(
             String title, 
             String scientificAreas, 
             String objectives, 
@@ -58,7 +61,8 @@ public class TeacherProposal extends WorkProposal {
             String successRequirements,
             float budget,
             String support,
-            TeacherProposalType proposalType
+            String supervisor, 
+            InstitutionProposalType proposalType
     ) {
         super(
                 title, 
@@ -77,33 +81,41 @@ public class TeacherProposal extends WorkProposal {
                 budget, 
                 support
         );
+        this.supervisor = supervisor;
         this.enumProposalType = proposalType;
-        this.teachers = new LinkedList<>();
+        this.institutions = new LinkedList<>();
     }
     
-    public void addTeacher(Teacher teacher) {
-        teachers.add(teacher);
+    public void addInstitution(Institution institution) {
+        institutions.add(institution);
     }
 
-    public void removeTeacher(Teacher teacher) {
-        teachers.remove(teacher);
+    public void removeInstitution(Institution institution) {
+        institutions.remove(institution);
+    }
+    
+    public String getSupervisor() {
+        return supervisor;
     }
 
-    public List<Teacher> getTeachers() {
-        return teachers;
+    public void setSupervisor(String supervisor) {
+        this.supervisor = supervisor;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
+    public List<Institution> getInstitutions() {
+        return institutions;
     }
 
-    public TeacherProposalType getEnumProposalType() {
+    public void setInstitutions(List<Institution> institutions) {
+        this.institutions = institutions;
+    }
+
+    public InstitutionProposalType getEnumProposalType() {
         return enumProposalType;
     }
 
-    public void setEnumProposalType(TeacherProposalType enumProposalType) {
+    public void setEnumProposalType(InstitutionProposalType enumProposalType) {
         this.enumProposalType = enumProposalType;
     }
-    
     
 }

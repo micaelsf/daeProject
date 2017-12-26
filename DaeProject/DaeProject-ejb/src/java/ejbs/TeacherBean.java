@@ -41,7 +41,8 @@ public class TeacherBean extends Bean<Teacher> {
             teacher = new Teacher(
                     teacherDTO.getPassword(),
                     teacherDTO.getName(),
-                    teacherDTO.getEmail()
+                    teacherDTO.getEmail(),
+                    teacherDTO.getOffice()
             );
 
             em.persist(teacher);
@@ -114,12 +115,16 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
-
-    public void remove(int id) throws EntityDoesNotExistsException {
+       
+    @POST
+    @Path("/removeREST/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("id") String id) 
+            throws EntityDoesNotExistsException {
         try {
-            Teacher teacher = em.find(Teacher.class, id);
+            Teacher teacher = em.find(Teacher.class, Integer.parseInt(id));
             if (teacher == null) {
-                throw new EntityDoesNotExistsException("There is no teacher with that username.");
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse id.");
             }
 
             em.remove(teacher);

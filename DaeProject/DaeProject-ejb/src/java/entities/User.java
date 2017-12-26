@@ -32,10 +32,10 @@ public class User implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @NotNull(message = "Necessário preencher o campo da Password!")
+    @Column(nullable = false)
     protected String password;
 
-    @NotNull(message = "Necessário preeencher o campo de nome!")
+    @Column(nullable = false)
     protected String name;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "user")

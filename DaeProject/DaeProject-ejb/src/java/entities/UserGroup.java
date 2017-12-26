@@ -12,10 +12,10 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "USERS_GROUPS")
-public class UserGroup {
+public class UserGroup implements Serializable {
 
-    public static enum GROUP implements Serializable {
-        Administrator, Teacher, Student, Instituition
+    public static enum GROUP {
+        Administrator, Teacher, Student, Institution
     }
 
     @Id

@@ -105,10 +105,7 @@ public class StudentBean extends Bean<Student> {
     public void updateREST(StudentDTO studentDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            System.out.println("UpdateStudentRest entry" + studentDTO.getName());
             Student student = em.find(Student.class, studentDTO.getId());
-
-            System.out.println("StudentBean: teste updateRest: " + student.toString());
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
@@ -123,6 +120,26 @@ public class StudentBean extends Bean<Student> {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @POST
+    @Path("/removeREST/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void remove(@PathParam("id") String id) 
+            throws EntityDoesNotExistsException {
+        try {
+            Student student = em.find(Student.class, Integer.parseInt(id));
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
+            }
+
+            em.remove(student);
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -186,24 +203,7 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
-
-    public void remove(int id)
-            throws EntityDoesNotExistsException {
-        try {
-            Student student = em.find(Student.class, id);
-            if (student == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
-            }
-
-            em.remove(student);
-
-        } catch (EntityDoesNotExistsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-
+    
     public void sendEmailToStudent(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
             Student student = em.find(Student.class, id);
