@@ -32,8 +32,8 @@ public class Teacher extends User implements Serializable {
     protected Teacher() {
     }
 
-    public Teacher(String password, String name, String email, String office) {
-        super(password, GROUP.Teacher, name, email);
+    public Teacher(String password, String name, String email, String office, String city, String address) {
+        super(password, GROUP.Teacher, name, email, city, address);
         this.office = office;
         
         proposals = new LinkedList<>();

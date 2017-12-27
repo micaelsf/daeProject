@@ -9,6 +9,16 @@
         <ui:define name="main">
             <h1 class="page-header">Dados do estudante com número de estudante: #{administratorManager.currentStudent.studentNumber}</h1>
             <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="courseName" value="Curso: " />
+                <h:outputText 
+                    id="courseName"
+                    value="#{administratorManager.currentStudent.courseName}"/>
+                
+                <h:outputLabel for="created_at" value="Criado em: " />
+                <h:outputText 
+                    id="created_at"
+                    value="#{administratorManager.currentStudent.created_at}"/>
+                
                 <h:outputLabel for="id" value="Id: " />
                 <h:outputText 
                     id="id"
@@ -23,6 +33,16 @@
                 <h:outputText 
                     id="email"
                     value="#{administratorManager.currentStudent.email}"/>
+
+                <h:outputLabel for="city" value="Cidade: " />
+                <h:outputText 
+                    id="city"
+                    value="#{administratorManager.currentStudent.city}"/> 
+                
+                <h:outputLabel for="address" value="Morada: " />
+                <h:outputText 
+                    id="address"
+                    value="#{administratorManager.currentStudent.address}"/> 
 
             </p:panelGrid>
             <br/>

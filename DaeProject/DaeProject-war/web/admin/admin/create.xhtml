@@ -16,7 +16,7 @@
                         id="name"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: O nome não pode ser vazio."                            
+                        requiredMessage="Erro: O campo Nome não pode ser vazio."                            
                         value="#{administratorManager.newAdmin.name}">
                     </h:inputText>
                     <h:message for="name" errorStyle="color: red" />
@@ -28,7 +28,7 @@
                         id="password"
                         size="20"
                         required="true"
-                        requiredMessage="Erro: A password não pode ser vazia."
+                        requiredMessage="Erro: O campo Password não pode ser vazio."
                         value="#{administratorManager.newAdmin.password}"/>
                     <h:message for="password" errorStyle="color: red" /> 
                 
@@ -39,11 +39,35 @@
                         id="email"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: O email não pode ser vazio."                            
+                        requiredMessage="Erro: O campo Email não pode ser vazio."                            
                         value="#{administratorManager.newAdmin.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="city" value="Cidade: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="city"
+                        size="30"
+                        required="true"
+                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.city}">
+                    </h:inputText>
+                    <h:message for="city" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="address" value="Morada: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="address"
+                        size="100"
+                        required="true"
+                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.address}">
+                    </h:inputText>
+                    <h:message for="address" errorStyle="color: red" />
                 </h:panelGrid>    
 
                 <br/>

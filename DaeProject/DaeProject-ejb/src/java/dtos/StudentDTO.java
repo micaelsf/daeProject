@@ -16,6 +16,8 @@ public class StudentDTO extends UserDTO implements Serializable {
     
   
     private String studentNumber;
+    private int courseId;
+    private String courseName;
    
     public StudentDTO(){
     }
@@ -25,15 +27,39 @@ public class StudentDTO extends UserDTO implements Serializable {
             String password,
             String name,
             String email,
-            String studentNumber) {
-        super(id, password, name, email);
+            String studentNumber, 
+            String city, 
+            String address,
+            int courseId,
+            String courseName
+    ) {
+        super(id, password, name, email, city, address);
         this.studentNumber = studentNumber;
+        this.courseId = courseId;
+        this.courseName = courseName;
     }
     
     @Override
     public void reset() {
         super.reset();
         this.studentNumber = null;
+        this.courseId = 0;
+    }
+
+    public String getCourseName() {
+        return courseName;
+    }
+
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
+    }
+
+    public int getCourseId() {
+        return courseId;
+    }
+
+    public void setCourseId(int courseId) {
+        this.courseId = courseId;
     }
 
     public String getStudentNumber() {

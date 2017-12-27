@@ -2,6 +2,7 @@ package ejbs;
 
 import dtos.TeacherDTO;
 import entities.Teacher;
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -31,23 +32,25 @@ public class TeacherBean extends Bean<Teacher> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TeacherDTO teacherDTO)
-            throws EntityDoesNotExistsException, MyConstraintViolationException {
+            throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             Teacher teacher = em.find(Teacher.class, teacherDTO.getId());
             if (teacher != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
+                throw new EntityAlreadyExistsException("Já existe um professor com esse nome.");
             }
 
             teacher = new Teacher(
                     teacherDTO.getPassword(),
                     teacherDTO.getName(),
                     teacherDTO.getEmail(),
-                    teacherDTO.getOffice()
+                    teacherDTO.getOffice(),
+                    teacherDTO.getCity(),
+                    teacherDTO.getAddress()
             );
 
             em.persist(teacher);
 
-        } catch (EntityDoesNotExistsException e) {
+        } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -107,6 +110,8 @@ public class TeacherBean extends Bean<Teacher> {
             teacher.setPassword(teacherDTO.getPassword());
             teacher.setName(teacherDTO.getName());
             teacher.setEmail(teacherDTO.getEmail());
+            teacher.setCity(teacherDTO.getCity());
+            teacher.setAddress(teacherDTO.getAddress());
             em.merge(teacher);
 
         } catch (EntityDoesNotExistsException e) {

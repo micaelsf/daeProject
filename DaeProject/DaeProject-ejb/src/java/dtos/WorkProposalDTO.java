@@ -2,6 +2,9 @@ package dtos;
 
 import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -32,6 +35,7 @@ public class WorkProposalDTO implements Serializable {
     protected String comments;
     protected boolean progressStatus;
     protected int proponentID;
+    protected String created_at;
 
     public WorkProposalDTO() {
     }    
@@ -79,6 +83,10 @@ public class WorkProposalDTO implements Serializable {
         this.comments = " ";
         this.progressStatus = false;
         this.status = ProposalStatus.Pendente; 
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        this.created_at = dateFormat.format(cal.getTime());
     }
     
     public void reset() {
@@ -102,6 +110,14 @@ public class WorkProposalDTO implements Serializable {
         setProposalType(null); 
         setProponentID(0);
     }    
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
 
     public String getComments() {
         return comments;

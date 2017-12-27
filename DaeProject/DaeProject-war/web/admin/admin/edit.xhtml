@@ -44,6 +44,30 @@
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="city" value="Cidade: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="city"
+                        size="30"
+                        required="true"
+                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        value="#{administratorManager.currentAdmin.city}">
+                    </h:inputText>
+                    <h:message for="city" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="address" value="Morada: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="address"
+                        size="100"
+                        required="true"
+                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        value="#{administratorManager.currentAdmin.address}">
+                    </h:inputText>
+                    <h:message for="address" errorStyle="color: red" />
                 </h:panelGrid>   
                 <br/>
                 <br/>

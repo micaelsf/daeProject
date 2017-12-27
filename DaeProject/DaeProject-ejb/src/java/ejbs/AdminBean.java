@@ -4,6 +4,7 @@ import dtos.AdminDTO;
 import dtos.TeacherDTO;
 import entities.Admin;
 import entities.Teacher;
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -33,22 +34,24 @@ public class AdminBean extends Bean<Admin> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(AdminDTO adminDTO)
-            throws EntityDoesNotExistsException, MyConstraintViolationException {
+            throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             Admin admin = em.find(Admin.class, adminDTO.getId());
             if (admin != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum admin com esse nome.");
+                throw new EntityAlreadyExistsException("Já existe um admin com esse nome.");
             }
 
             admin = new Admin(
                     adminDTO.getPassword(),
                     adminDTO.getName(),
-                    adminDTO.getEmail()
+                    adminDTO.getEmail(),
+                    adminDTO.getCity(),
+                    adminDTO.getAddress()
             );
 
             em.persist(admin);
 
-        } catch (EntityDoesNotExistsException e) {
+        } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -108,6 +111,8 @@ public class AdminBean extends Bean<Admin> {
             admin.setPassword(adminDTO.getPassword());
             admin.setName(adminDTO.getName());
             admin.setEmail(adminDTO.getEmail());
+            admin.setCity(adminDTO.getCity());
+            admin.setAddress(adminDTO.getAddress());
             em.merge(admin);
 
         } catch (EntityDoesNotExistsException e) {

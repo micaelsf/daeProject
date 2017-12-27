@@ -1,6 +1,7 @@
 package ejbs;
 
 import dtos.AdminDTO;
+import dtos.CourseDTO;
 import dtos.InstitutionDTO;
 import dtos.InstitutionProposalDTO;
 import dtos.StudentDTO;
@@ -19,7 +20,10 @@ import javax.ejb.Startup;
 @Startup
 public class ConfigBean {
 
-    private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");    
+    private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");   
+    
+    @EJB
+    private CourseBean courseBean;
     
     @EJB
     private AdminBean adminBean;
@@ -41,31 +45,204 @@ public class ConfigBean {
 
     @PostConstruct
     public void populateBD() {
-
         try {
+            
+            System.out.println("Inserting Courses");
+            courseBean.create(new CourseDTO(1, "EI"));
+            courseBean.create(new CourseDTO(2, "IS"));
+            courseBean.create(new CourseDTO(3, "JDM"));
+            courseBean.create(new CourseDTO(4, "SIS"));
+            courseBean.create(new CourseDTO(5, "MEI-CM"));
+            courseBean.create(new CourseDTO(6, "MGSIM"));
+            
             System.out.println("Inserting Admins");
-            adminBean.create(new AdminDTO(1, "123123", "admin", "admin@email.com"));            
-            adminBean.create(new AdminDTO(2, "123123", "admin_2", "admin_2@email.com"));
+            adminBean.create(
+                    new AdminDTO(
+                            1, 
+                            "123123", 
+                            "admin", 
+                            "admin@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );            
+            adminBean.create(
+                    new AdminDTO(
+                            2, 
+                            "123123", 
+                            "admin_2", 
+                            "admin_2@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
             
             System.out.println("Inserting Students");
-            studentBean.create(new StudentDTO(3, "123123", "Zé", "ze@email.com", "111111111"));            
-            studentBean.create(new StudentDTO(4, "123123", "Maria", "maria@email.com", "222222222"));
-            studentBean.create(new StudentDTO(5, "123123", "Joana", "joana@email.com", "333333333"));
-            studentBean.create(new StudentDTO(6, "123123", "André", "andre@email.com", "444444444"));
-            studentBean.create(new StudentDTO(7, "123123", "Bruno", "bruno@email.com", "555555555"));
-            studentBean.create(new StudentDTO(8, "123123", "Micael", "micael@email.com", "666666666"));
+            studentBean.create(
+                    new StudentDTO(
+                            3, 
+                            "123123", 
+                            "Zé", 
+                            "ze@email.com", 
+                            "111111111",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx", 
+                            4, 
+                            "SIS"
+                    )
+            );            
+            studentBean.create(
+                    new StudentDTO(
+                            4, 
+                            "123123", 
+                            "Maria", 
+                            "maria@email.com",
+                            "222222222",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx", 
+                            1, 
+                            "EI"
+                    )
+            );
+            studentBean.create(
+                    new StudentDTO(
+                            5, 
+                            "123123", 
+                            "Joana", 
+                            "joana@email.com", 
+                            "333333333",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx", 
+                            1, 
+                            "EI"
+                    )
+            );
+            studentBean.create(
+                    new StudentDTO(
+                            6, 
+                            "123123", 
+                            "André", 
+                            "andre@email.com", 
+                            "444444444",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx", 
+                            2, 
+                            "IS"
+                    )
+            );
+            studentBean.create(
+                    new StudentDTO(
+                            7, 
+                            "123123", 
+                            "Bruno", 
+                            "bruno@email.com", 
+                            "555555555",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx", 
+                            3, 
+                            "JDM"
+                    )
+            );
+            studentBean.create(
+                    new StudentDTO(
+                            8, 
+                            "123123", 
+                            "Micael", 
+                            "micael@email.com", 
+                            "666666666",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx", 
+                            1, 
+                            "EI"
+                    )
+            );
             
             System.out.println("Inserting Institutions");
-            instituitionBean.create(new InstitutionDTO(9, "123123", "CompanyA", "companya@email.com"));
-            instituitionBean.create(new InstitutionDTO(10, "123123", "CompanyB", "companyb@email.com"));
-            instituitionBean.create(new InstitutionDTO(12, "123123", "CompanyC", "companyc@email.com"));
-            instituitionBean.create(new InstitutionDTO(13, "123123", "CompanyD", "companyd@email.com"));
-            instituitionBean.create(new InstitutionDTO(13, "123123", "CompanyF", "companyf@email.com"));
+            instituitionBean.create(
+                    new InstitutionDTO(
+                            9, 
+                            "123123", 
+                            "CompanyA", 
+                            "companya@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
+            instituitionBean.create(
+                    new InstitutionDTO(
+                            10, 
+                            "123123", 
+                            "CompanyB", 
+                            "companyb@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
+            instituitionBean.create(
+                    new InstitutionDTO(
+                            12, 
+                            "123123", 
+                            "CompanyC", 
+                            "companyc@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
+            instituitionBean.create(
+                    new InstitutionDTO(
+                            13, 
+                            "123123", 
+                            "CompanyD", 
+                            "companyd@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
+            instituitionBean.create(
+                    new InstitutionDTO(
+                            13, 
+                            "123123", 
+                            "CompanyF", 
+                            "companyf@email.com",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
             
             System.out.println("Inserting Teachers");
-            teacherBean.create(new TeacherDTO(14, "123", "mic", "micaelsf@sapo.pt", "DS02-XX"));
-            teacherBean.create(new TeacherDTO(15, "t2", "t2", "t2@ipleiria.pt", "DS02-XX"));
-            teacherBean.create(new TeacherDTO(16, "t3", "t3", "t3@ipleiria.pt", "DS02-XX"));
+            teacherBean.create(
+                    new TeacherDTO(
+                            14, 
+                            "123", 
+                            "mic", 
+                            "micaelsf@sapo.pt", 
+                            "DS02-XX",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
+            teacherBean.create(
+                    new TeacherDTO(
+                            15, 
+                            "t2", 
+                            "t2", 
+                            "t2@ipleiria.pt", 
+                            "DS02-XX",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
+            teacherBean.create(
+                    new TeacherDTO(
+                            16, 
+                            "t3", 
+                            "t3", 
+                            "t3@ipleiria.pt", 
+                            "DS02-XX",
+                            "Leiria",
+                            "Rua xxxx, 2400-xxx"
+                    )
+            );
             
             System.out.println("Inserting Institution Proposals");
             institutionProposalBean.create(new InstitutionProposalDTO(

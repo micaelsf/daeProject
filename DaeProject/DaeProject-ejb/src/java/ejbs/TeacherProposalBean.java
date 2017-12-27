@@ -79,10 +79,8 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                     teacher
             );
             
+            teacher.addProposal(proposal);
             em.persist(proposal);
-            
-            //enroll this new proposal created to proposals list at Teacher
-            enrollProposal(proposalDTO.getProponentID(), proposalDTO.getId());
             
         } catch (EntityAlreadyExistsException | EntityDoesNotExistsException e) {
             throw e;

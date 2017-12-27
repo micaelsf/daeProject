@@ -11,6 +11,7 @@
                 <h:panelGrid columns="3">
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
+                        class="form-control rowMargin"
                         id="name"
                         size="52"
                         required="true"
@@ -39,6 +40,30 @@
                         requiredMessage="Erro: Campo Escritório não pode ser vazio."                            
                         value="#{administratorManager.currentTeacher.office}" />
                     <h:message for="office" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="city" value="Cidade: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="city"
+                        size="30"
+                        required="true"
+                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        value="#{administratorManager.currentTeacher.city}">
+                    </h:inputText>
+                    <h:message for="city" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="address" value="Morada: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="address"
+                        size="100"
+                        required="true"
+                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        value="#{administratorManager.currentTeacher.address}">
+                    </h:inputText>
+                    <h:message for="address" errorStyle="color: red" />
                 </h:panelGrid>   
 
                 <br/>

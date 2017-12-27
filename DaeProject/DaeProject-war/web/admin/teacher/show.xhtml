@@ -10,6 +10,11 @@
         <ui:define name="main">
             <h2 class="page-header">Dados do Professor com id:#{administratorManager.currentTeacher.id}</h2>
             <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="created_at" value="Criado em: " />
+                <h:outputText 
+                    id="created_at"
+                    value="#{administratorManager.currentTeacher.created_at}"/>
+                
                 <h:outputLabel for="name" value="Nome: " />
                 <h:outputText 
                     id="name"
@@ -24,6 +29,16 @@
                 <h:outputText 
                     id="office"
                     value="#{administratorManager.currentTeacher.office}"/>
+
+                <h:outputLabel for="city" value="Cidade: " />
+                <h:outputText 
+                    id="city"
+                    value="#{administratorManager.currentTeacher.city}"/> 
+                
+                <h:outputLabel for="address" value="Morada: " />
+                <h:outputText 
+                    id="address"
+                    value="#{administratorManager.currentTeacher.address}"/> 
 
             </p:panelGrid>
             <br/>

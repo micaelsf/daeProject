@@ -33,8 +33,8 @@ public class Institution extends User implements Serializable{
     public Institution() {
     }
 
-    public Institution(String password, String name, String email) {
-        super(password, GROUP.Institution, name, email);
+    public Institution(String password, String name, String email, String city, String address) {
+        super(password, GROUP.Institution, name, email, city, address);
         
         proposals = new LinkedList<>();
     }

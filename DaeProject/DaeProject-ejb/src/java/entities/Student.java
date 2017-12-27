@@ -11,7 +11,9 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
@@ -20,13 +22,19 @@ import javax.persistence.OneToOne;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllStudents",
-            query = "SELECT s FROM Student s ORDER BY s.name")
+            query = "SELECT s FROM Student s ORDER BY s.name"),
+    @NamedQuery(name = "getAllStudentsCourse",
+            query = "SELECT s FROM Student s WHERE s.course.id = :courseId ORDER BY s.name")
 })
 public class Student extends User{
 
     @Column(nullable = false)
     private String studentNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "COURSE_ID")
+    private Course course;
+    
     @OneToMany(mappedBy = "student")
     public List<Document> documents;
 
@@ -40,8 +48,9 @@ public class Student extends User{
         documents = new LinkedList<>();
     }
 
-    public Student(String password, String name, String email, String studentNumber) {
-        super(password, GROUP.Student, name, email);
+    public Student(String password, String name, String email, String studentNumber, String city, String address, Course course) {
+        super(password, GROUP.Student, name, email, city, address);
+        this.course = course;
         this.studentNumber = studentNumber;
 
         documents = new LinkedList<>();
@@ -50,6 +59,14 @@ public class Student extends User{
 
     public void addProposalApply(WorkProposal workProp) {
         workProposalsApply.add(workProp);
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public void removeProposalApply(WorkProposal workProp) {

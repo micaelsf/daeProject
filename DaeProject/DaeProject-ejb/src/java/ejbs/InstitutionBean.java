@@ -7,6 +7,7 @@ package ejbs;
 
 import dtos.InstitutionDTO;
 import entities.Institution;
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -36,22 +37,24 @@ public class InstitutionBean extends Bean<Institution> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(InstitutionDTO institutionDTO)
-            throws EntityDoesNotExistsException, MyConstraintViolationException {
+            throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             Institution institution = em.find(Institution.class, institutionDTO.getId());
             if (institution != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+                throw new EntityAlreadyExistsException("Já existe uma instituição com esse nome.");
             }
 
             institution = new Institution(
                     institutionDTO.getPassword(),
                     institutionDTO.getName(),
-                    institutionDTO.getEmail()
+                    institutionDTO.getEmail(),
+                    institutionDTO.getCity(),
+                    institutionDTO.getAddress()
             );
 
             em.persist(institution);
 
-        } catch (EntityDoesNotExistsException e) {
+        } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -111,6 +114,8 @@ public class InstitutionBean extends Bean<Institution> {
             institution.setPassword(institutionDTO.getPassword());
             institution.setName(institutionDTO.getName());
             institution.setEmail(institutionDTO.getEmail());
+            institution.setCity(institutionDTO.getCity());
+            institution.setAddress(institutionDTO.getAddress());
             em.merge(institution);
 
         } catch (EntityDoesNotExistsException e) {

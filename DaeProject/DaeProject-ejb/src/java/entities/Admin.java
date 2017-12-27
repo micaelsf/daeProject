@@ -21,7 +21,7 @@ public class Admin extends User {
     public Admin() {
     }
 
-    public Admin(String password, String name, String email) {
-        super(password, GROUP.Administrator, name, email);
+    public Admin(String password, String name, String email, String city, String address) {
+        super(password, GROUP.Administrator, name, email, city, address);
     }
 }

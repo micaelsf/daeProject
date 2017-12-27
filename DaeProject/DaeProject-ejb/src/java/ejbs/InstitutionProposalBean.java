@@ -43,7 +43,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             }
             
             // just to test create new proposal until authentication is not implemented
-            if (proposalDTO.getProponentID()== 0) {
+            if (proposalDTO.getProponentID() == 0) {
                 proposalDTO.setProponentID(10);
             }
             
@@ -80,10 +80,8 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                     institution
             );
             
+            institution.addProposal(proposal);
             em.persist(proposal);
-            
-            //enroll this new proposal created to proposals list at Institution
-            enrollProposal(proposalDTO.getProponentID(), proposal.getId());
             
         } catch (EntityAlreadyExistsException | EntityDoesNotExistsException e) {
             throw e;

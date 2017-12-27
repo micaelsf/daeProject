@@ -6,10 +6,12 @@
 package entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +29,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "PROPOSALS"/*,
@@ -104,6 +105,12 @@ public class WorkProposal implements Serializable {
     @Column(nullable = false)
     private String support;
     
+    @Column(nullable = false)
+    private String created_at;
+    
+    @Column(nullable = true)
+    private String published_at;
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProposalStatus status;
@@ -163,6 +170,10 @@ public class WorkProposal implements Serializable {
         /*for (String s: (List<String>) bibliography) {
             this.bibliography.add(s);
         }*/
+                
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        this.created_at = dateFormat.format(cal.getTime());
     }
      
     public void addStudentApply(Student student) {
@@ -181,6 +192,22 @@ public class WorkProposal implements Serializable {
         bibliography.remove(b);
     }
 */
+
+    public String getPublished_at() {
+        return published_at;
+    }
+
+    public void setPublished_at(String published_at) {
+        this.published_at = published_at;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
 
     public String getComments() {
         return comments;
