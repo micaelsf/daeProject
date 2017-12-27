@@ -21,9 +21,16 @@ import javax.persistence.OneToOne;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllStudents",
-            query = "SELECT s FROM Student s ORDER BY s.name")
+            query = "SELECT s FROM Student s ORDER BY s.name")    ,
+
 })
-public class Student extends User implements Serializable{
+
+/*   
+@NamedQuery(name = "getAllProposals", 
+            query = "SELECT wp FROM Student wp WHERE wp.id = :workProposalId ORDER BY wp.id")
+*/
+
+public class Student extends User implements Serializable {
 
     //@NotNull(message = "Student number must not be empty")
     @Column(nullable = false)

@@ -9,6 +9,7 @@ import dtos.DocumentDTO;
 import dtos.StudentDTO;
 import entities.Document;
 import entities.Student;
+import entities.WorkProposal;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -124,11 +125,11 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @POST
     @Path("/removeREST/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("id") String id)
             throws EntityDoesNotExistsException {
         try {
             Student student = em.find(Student.class, Integer.parseInt(id));
@@ -203,7 +204,7 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     public void sendEmailToStudent(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
             Student student = em.find(Student.class, id);
