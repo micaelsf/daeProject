@@ -275,9 +275,12 @@ public class AdministratorManager implements Serializable {
             if (selectOption == 2) {
                 option = "NãoAceite";
             }
+
             client.target(URILookup.getBaseAPI())
                     .path("/proposals/updateProposalStatusREST")
                     .path(currentProposal.getId() + "")
+                    .path(currentProposal.getRejectReason() + "")
+                    .path(currentProposal.getComments() + "")
                     .path(option)
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));

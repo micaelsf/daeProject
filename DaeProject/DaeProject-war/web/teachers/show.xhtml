@@ -64,11 +64,17 @@
                     id="bibliography"
                     value="#{teacherManager.currentProposal.bibliographyToString}"/>
                 
-                <c:if test="#{administratorManager.rejected}">
-                    <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                <c:if test="#{!teacherManager.isPendente(administratorManager.currentProposal.status)}">
+                    <c:if test="#{teacherManager.rejected}">
+                        <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                        <h:outputText 
+                            id="rejectedReason"
+                            value="#{teacherManager.currentProposal.rejectReason}"/>
+                    </c:if>
+                    <h:outputLabel for="comments" value="Cometários: " />
                     <h:outputText 
-                        id="rejectedReason"
-                        value="#{institutionManager.currentProposal.rejectReason}"/>
+                        id="comments" 
+                        value="#{teacherManager.currentProposal.comments}"/>
                 </c:if>
             </p:panelGrid>
             <br/>

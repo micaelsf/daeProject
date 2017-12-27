@@ -71,11 +71,17 @@
                     id="bibliography"
                     value="#{institutionManager.currentProposal.bibliographyToString}"/>
                 
-                <c:if test="#{administratorManager.rejected}">
-                    <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                <c:if test="#{!institutionManager.isPendente(administratorManager.currentProposal.status)}">
+                    <c:if test="#{institutionManager.rejected}">
+                        <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                        <h:outputText 
+                            id="rejectedReason"
+                            value="#{institutionManager.currentProposal.rejectReason}"/>
+                    </c:if>
+                    <h:outputLabel for="comments" value="Cometários: " />
                     <h:outputText 
-                        id="rejectedReason"
-                        value="#{institutionManager.currentProposal.rejectReason}"/>
+                        id="comments" 
+                        value="#{institutionManager.currentProposal.comments}"/>
                 </c:if>
             </p:panelGrid>
             <br/>

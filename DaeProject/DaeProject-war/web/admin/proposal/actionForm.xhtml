@@ -15,7 +15,7 @@
                 <c:when test="#{administratorManager.isPendente(administratorManager.currentProposal.status)}">.
                     <h:form>
                         <h:panelGrid columns="3" columnClasses="columnWidth">
-                            <h:outputLabel for="reason" value="Motivo: " />
+                            <h:outputLabel for="reason" value="Em caso de rejeição, indique o Motivo: " />
                             <h:inputText
                                 class="form-control rowMargin"
                                 style="max-width: 50%"
@@ -24,6 +24,16 @@
                                 required="false"                           
                                 value="#{administratorManager.currentProposal.rejectReason}" />
                             <h:message for="reason" errorStyle="color: red" />
+                            
+                            <h:outputLabel for="comments" value="Observações: " />
+                            <h:inputTextarea
+                                class="form-control rowMargin"
+                                style="max-width: 50%"
+                                id="comments"
+                                rows="3"
+                                required="false"                           
+                                value="#{administratorManager.currentProposal.comments}" />
+                            <h:message for="comments" errorStyle="color: red" />
 
                             <h:outputLabel for="actionStatus" value="Ação: " />
                             <h:selectOneMenu 

@@ -110,6 +110,12 @@ public class WorkProposal implements Serializable {
     @Column(name = "REJECT_REASON", nullable = true)
     private String rejectReason;
     
+    @Column(nullable = true)
+    private String comments;
+    
+    @Column(name = "PROGRESS_STATUS", nullable = false)
+    private boolean progressStatus; // true: proposal is ended can be published
+    
     public WorkProposal() {
     }
     
@@ -144,8 +150,11 @@ public class WorkProposal implements Serializable {
         this.successRequirements = successRequirements;
         this.budget = budget;
         this.support = support;
-        this.status = ProposalStatus.Pendente;
         
+        this.rejectReason = " ";
+        this.comments = " ";
+        this.progressStatus = false;
+        this.status = ProposalStatus.Pendente;
         
         this.studentsApply = new LinkedList<>();
         //this.bibliography = new LinkedList<>();
@@ -171,6 +180,23 @@ public class WorkProposal implements Serializable {
         bibliography.remove(b);
     }
 */
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public boolean isProgressStatus() {
+        return progressStatus;
+    }
+
+    public void setProgressStatus(boolean progressStatus) {
+        this.progressStatus = progressStatus;
+    }
+    
     public int getId() {
         return id;
     }

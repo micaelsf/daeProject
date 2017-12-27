@@ -4,6 +4,7 @@ import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.InstitutionProposalDTO;
 import entities.InstitutionProposal.InstitutionProposalType;
+import entities.WorkProposal;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -150,7 +151,14 @@ public class InstitutionManager implements Serializable {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
-
+    
+    public boolean isPendente(WorkProposal.ProposalStatus status) {
+        return status == WorkProposal.ProposalStatus.Pendente;
+    }
+    
+    public boolean isRejected() {
+        return currentProposal.getStatus() == WorkProposal.ProposalStatus.NãoAceite;
+    }
     
     public UserManager getUserManager() {
         return userManager;

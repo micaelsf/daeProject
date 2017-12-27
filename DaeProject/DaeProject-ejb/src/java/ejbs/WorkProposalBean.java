@@ -50,27 +50,33 @@ public class WorkProposalBean extends Bean<WorkProposal> {
     
     @POST 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("updateProposalStatusREST/{id}/{status}")
+    @Path("updateProposalStatusREST/{id}/{rejectReason}/{comments}/{status}")
     public void acceptProposal(
             @PathParam("id") String id,
-            @PathParam("status") String status) 
+            @PathParam("rejectReason") String rejectReason,
+            @PathParam("comments") String comments,
+            @PathParam("status") String status
+    ) 
         throws EntityDoesNotExistsException {
         try {
+
             WorkProposal proposal = em.find(WorkProposal.class, Integer.parseInt(id));
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
             
+            proposal.setRejectReason(rejectReason);
+            proposal.setComments(comments);
             proposal.setStatus(ProposalStatus.valueOf(status));
             em.merge(proposal);
             
             // send notification email
             if (proposal instanceof InstitutionProposal) {
                 InstitutionProposal institutionProposal = (InstitutionProposal) proposal;
-                institutionBean.sendEmailToInstitution(institutionProposal.getInstitution().getId());
+                //institutionBean.sendEmailToInstitution(institutionProposal.getInstitution().getId());
             } else {
                 TeacherProposal teacherProposal = (TeacherProposal) proposal;
-                teacherBean.sendEmailToTeacher(teacherProposal.getTeacher().getId());
+                //teacherBean.sendEmailToTeacher(teacherProposal.getTeacher().getId());
             }
             
         } catch (EntityDoesNotExistsException e) {
