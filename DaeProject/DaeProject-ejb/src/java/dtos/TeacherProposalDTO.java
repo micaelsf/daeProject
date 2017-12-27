@@ -2,7 +2,6 @@ package dtos;
 
 import entities.TeacherProposal.TeacherProposalType;
 import java.io.Serializable;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,6 +9,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "TeacherProposal")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TeacherProposalDTO extends WorkProposalDTO implements Serializable {
+    
+    private int teacherId;
     
     public TeacherProposalDTO() {
     }
@@ -30,7 +31,8 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
             String successRequirements,  
             float budget,  
             String support,  
-            TeacherProposalType proposalType
+            TeacherProposalType proposalType,
+            int teacherId
     ) {
         super(
                 id, 
@@ -51,11 +53,20 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
                 "N/A",
                 proposalType.toString()
         );
+        this.teacherId = teacherId;
     }
     
     @Override
     public void reset() {
         super.reset();
     } 
+
+    public int getTeacherId() {
+        return teacherId;
+    }
+
+    public void setTeacherId(int teacherId) {
+        this.teacherId = teacherId;
+    }
     
 }

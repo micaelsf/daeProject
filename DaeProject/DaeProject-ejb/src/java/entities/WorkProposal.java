@@ -37,7 +37,6 @@ import javax.persistence.UniqueConstraint;
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
     @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
-    //@NamedQuery(name = "getAllBibliographies",  query = "SELECT b.bibliography FROM WorkProposal b WHERE b.id = :proposal_id")
 })
 public class WorkProposal implements Serializable {
     

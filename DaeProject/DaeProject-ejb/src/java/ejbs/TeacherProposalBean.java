@@ -12,8 +12,10 @@ import entities.TeacherProposal.TeacherProposalType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
+import exceptions.TeacherEnrolledException;
 import exceptions.Utils;
 import java.util.Collection;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -34,10 +36,20 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TeacherProposalDTO proposalDTO)
-         throws EntityAlreadyExistsException, MyConstraintViolationException {
+         throws EntityAlreadyExistsException, MyConstraintViolationException, EntityDoesNotExistsException {
         try {
             if (em.find(TeacherProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
+            }
+            
+            // just to test create new proposal until authentication is not implemented
+            if (proposalDTO.getTeacherId() == 0) {
+                proposalDTO.setTeacherId(12);
+            }
+            
+            Teacher teacher = em.find(Teacher.class, proposalDTO.getTeacherId());
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
             }
             /*
             List<String> bibliography = new LinkedList<>();
@@ -63,11 +75,16 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
                     proposalDTO.getSuccessRequirements(),
                     proposalDTO.getBudget(),
                     proposalDTO.getSupport(),
-                    TeacherProposalType.valueOf(proposalDTO.getProposalType())
+                    TeacherProposalType.valueOf(proposalDTO.getProposalType()),
+                    teacher
             );
             
             em.persist(proposal);
-        } catch (EntityAlreadyExistsException e) {
+            
+            //enroll this new proposal created to proposals list at Teacher
+            enrollProposal(proposalDTO.getTeacherId(), proposalDTO.getId());
+            
+        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -164,4 +181,60 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+       
+    public void enrollProposal(int teacherId, int proposalId)
+            throws EntityDoesNotExistsException, TeacherEnrolledException {
+        try {
+
+            TeacherProposal proposal = em.find(TeacherProposal.class, proposalId);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+
+            Teacher teacher = em.find(Teacher.class, teacherId);
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+            
+            if (teacher.getProposals().contains(proposal)) {
+                throw new TeacherEnrolledException("O professor já contém essa Proposta.");
+            } 
+            
+            teacher.addProposal(proposal);
+
+        } catch (EntityDoesNotExistsException | TeacherEnrolledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    public void unrollProposal(int teacherId, int proposalId)
+            throws EntityDoesNotExistsException, TeacherEnrolledException {
+        try {
+
+            TeacherProposal proposal = em.find(TeacherProposal.class, proposalId);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+            
+            Teacher teacher = em.find(Teacher.class, teacherId);
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+            
+            if (teacher.getProposals().contains(proposal)) {
+                throw new TeacherEnrolledException("O professor já contém essa Proposta.");
+            } 
+
+            teacher.removeProposal(proposal);
+
+        } catch (EntityDoesNotExistsException | TeacherEnrolledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
 }

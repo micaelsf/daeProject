@@ -120,28 +120,8 @@ public class InstitutionManager implements Serializable {
             return null;
         }
         return returnedProposals;
-    }
-/*    
-    public List<String> getAllProposalsBibliographyREST() {
-        List<String> returnedBibliography;
-        try {
-            System.out.println("web.InstitutionManager.getAllProposalsBibliographyREST() current id:" + currentProposal.getId());
-            returnedBibliography = client.target(URILookup.getBaseAPI())
-                    .path("/institutionProposals/allBibliography")
-                    .path(currentProposal.getId() + "")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<String>>() {
-                    });
-            for(String s: returnedBibliography) {
-                System.out.println("web.InstitutionManager.getAllProposalsBibliographyREST() biblio found:" + s);
-            }
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
-        }
-        return returnedBibliography;
-    }
-*/
+    } 
+    
     public String updateProposalREST() {
         try {
             client.target(URILookup.getBaseAPI())

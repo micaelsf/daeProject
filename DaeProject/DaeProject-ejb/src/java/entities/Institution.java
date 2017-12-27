@@ -9,10 +9,12 @@ import entities.UserGroup.GROUP;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -21,9 +23,12 @@ import javax.validation.constraints.NotNull;
             query = "SELECT s FROM Institution s ORDER BY s.name")
 })
 public class Institution extends User implements Serializable{
-
-    @ManyToMany(mappedBy = "institutions")
+    
+    @OneToMany(mappedBy = "institution", cascade = CascadeType.REMOVE)
     private List<InstitutionProposal> proposals;
+    
+    //@ManyToMany(mappedBy = "institutions")
+    //private List<InstitutionProposal> proposals;
     
     public Institution() {
     }

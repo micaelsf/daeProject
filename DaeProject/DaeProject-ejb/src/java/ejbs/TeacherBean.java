@@ -2,12 +2,8 @@ package ejbs;
 
 import dtos.TeacherDTO;
 import entities.Teacher;
-import entities.TeacherProposal;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
-import exceptions.ProposalNotInTeacherException;
-import exceptions.TeacherEnrolledException;
-import exceptions.TeacherNotInProposalException;
 import exceptions.Utils;
 import java.util.Collection;
 import javax.ejb.EJB;
@@ -141,59 +137,7 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
-    
-    public void enrollTeacher(int id, int proposalId)
-            throws EntityDoesNotExistsException, TeacherEnrolledException {
-        try {
-
-            Teacher teacher = em.find(Teacher.class, id);
-            if (teacher == null) {
-                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
-            }
-
-            TeacherProposal proposal = em.find(TeacherProposal.class, proposalId);
-            if (proposal == null) {
-                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
-            }
-
-            if (proposal.getTeachers().contains(teacher)) {
-                throw new TeacherEnrolledException("O professor já está ligado a essa proposta.");
-            }
-
-            proposal.addTeacher(teacher);
-            teacher.addProposal(proposal);
-
-        } catch (EntityDoesNotExistsException | TeacherEnrolledException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-    
-    public void unrollTeacher(int id, int proposalId)
-            throws EntityDoesNotExistsException {
-        try {
-
-            Teacher teacher = em.find(Teacher.class, id);
-            if (teacher == null) {
-                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
-            }
-
-            TeacherProposal proposal = em.find(TeacherProposal.class, proposalId);
-            if (proposal == null) {
-                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
-            }
-
-            proposal.removeTeacher(teacher);
-            teacher.removeProposal(proposal);
-
-        } catch (EntityDoesNotExistsException e) {
-            throw e;
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-
+ 
     public void sendEmailToTeacher(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
             Teacher teacher = em.find(Teacher.class, id);

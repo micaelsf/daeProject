@@ -15,6 +15,7 @@ import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -40,11 +41,15 @@ public class InstitutionProposal extends WorkProposal {
     @Column(nullable = false, name = "PROPOSAL_TYPE")
     private InstitutionProposalType enumProposalType;
     
-    @ManyToMany
+   /* @ManyToMany
     @JoinTable(name = "PROPOSAL_INSTITUTION",
             joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<Institution> institutions;
+    private List<Institution> institutions;*/
+    
+    @ManyToOne
+    @JoinColumn(name = "INSTITUTION_ID")
+    private Institution institution;
     
     public InstitutionProposal() {
     }
@@ -66,7 +71,8 @@ public class InstitutionProposal extends WorkProposal {
             float budget,
             String support,
             String supervisor, 
-            InstitutionProposalType proposalType
+            InstitutionProposalType proposalType,
+            Institution institution
     ) {
         super(
                 title, 
@@ -87,9 +93,10 @@ public class InstitutionProposal extends WorkProposal {
         );
         this.supervisor = supervisor;
         this.enumProposalType = proposalType;
-        this.institutions = new LinkedList<>();
+        this.institution = institution;
+        //this.institutions = new LinkedList<>();
     }
-    
+/*    
     public void addInstitution(Institution institution) {
         institutions.add(institution);
     }
@@ -97,7 +104,7 @@ public class InstitutionProposal extends WorkProposal {
     public void removeInstitution(Institution institution) {
         institutions.remove(institution);
     }
-    
+*/    
     public String getSupervisor() {
         return supervisor;
     }
@@ -106,12 +113,12 @@ public class InstitutionProposal extends WorkProposal {
         this.supervisor = supervisor;
     }
 
-    public List<Institution> getInstitutions() {
-        return institutions;
+    public Institution getInstitution() {
+        return institution;
     }
 
-    public void setInstitutions(List<Institution> institutions) {
-        this.institutions = institutions;
+    public void setInstitutions(Institution institution) {
+        this.institution = institution;
     }
 
     public InstitutionProposalType getEnumProposalType() {

@@ -9,10 +9,12 @@ import entities.UserGroup.GROUP;
 import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
 @NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
@@ -21,8 +23,11 @@ public class Teacher extends User implements Serializable {
     @Column(nullable = false)
     private String office;
     
-    @ManyToMany(mappedBy = "teachers")
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
     private List<TeacherProposal> proposals;
+    
+    //@ManyToMany(mappedBy = "teachers")
+    //private List<TeacherProposal> proposals;
     
     protected Teacher() {
     }

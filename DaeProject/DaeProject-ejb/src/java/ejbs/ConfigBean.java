@@ -84,9 +84,10 @@ public class ConfigBean {
                     200,
                     "Apoio fornecido pelo docente proponente",
                     "Inácio", 
-                    InstitutionProposalType.Projeto
+                    InstitutionProposalType.Projeto,
+                    7
             ));
-            instituitionBean.enrollInstitution(7, 15);
+            
             institutionProposalBean.create(new InstitutionProposalDTO(
                     16,
                     "Titulo 2", 
@@ -104,9 +105,10 @@ public class ConfigBean {
                     400,
                     "Apoio fornecido pelo docente proponente",
                     "Paulo Neves", 
-                    InstitutionProposalType.Dissertação
+                    InstitutionProposalType.Dissertação,
+                    7
             ));
-            instituitionBean.enrollInstitution(7, 16);
+            
             institutionProposalBean.create(new InstitutionProposalDTO(
                     17,
                     "Titulo 3", 
@@ -124,9 +126,9 @@ public class ConfigBean {
                     800,
                     "Apoio fornecido pela empresa",
                     "João Andrade", 
-                    InstitutionProposalType.Estágio
+                    InstitutionProposalType.Estágio,
+                    8
             ));
-            instituitionBean.enrollInstitution(8, 17);
             
             System.out.println("Inserting Teacher Proposals");
             teacherProposalBean.create(new TeacherProposalDTO(
@@ -145,9 +147,9 @@ public class ConfigBean {
                     "Sólidos conhecimentos em web design, php, JavaScript e framework VUE",
                     200,
                     "Apoio fornecido pelo docente proponente",
-                    TeacherProposalType.Projeto
+                    TeacherProposalType.Projeto,
+                    12
             ));
-            teacherBean.enrollTeacher(12, 18);
             
             teacherProposalBean.create(new TeacherProposalDTO(
                     19,
@@ -165,9 +167,9 @@ public class ConfigBean {
                     "Sólidos conhecimentos em integração de sistemas",
                     200,
                     "Apoio fornecido pelo estg",
-                    TeacherProposalType.Dissertação
+                    TeacherProposalType.Dissertação,
+                    12
             ));
-            teacherBean.enrollTeacher(12, 19);
             
             teacherProposalBean.create(new TeacherProposalDTO(
                     20,
@@ -185,9 +187,9 @@ public class ConfigBean {
                     "Sólidos conhecimentos na Framework VUE",
                     200,
                     "Sem apoios",
-                    TeacherProposalType.Dissertação
+                    TeacherProposalType.Dissertação,
+                    13
             ));
-            teacherBean.enrollTeacher(13, 20);
             
             teacherProposalBean.create(new TeacherProposalDTO(
                     21,
@@ -205,9 +207,9 @@ public class ConfigBean {
                     "Sólidos conhecimentos em web design, php e JavaScript",
                     200,
                     "Apoio fornecido pelo docente proponente",
-                    TeacherProposalType.Projeto
+                    TeacherProposalType.Projeto,
+                    14
             ));
-            teacherBean.enrollTeacher(14, 21);
             
             /*
             studentBean.enrollStudent("1111111", 1);
