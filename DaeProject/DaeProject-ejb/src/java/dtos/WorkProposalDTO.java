@@ -29,6 +29,7 @@ public class WorkProposalDTO implements Serializable {
     protected ProposalStatus status;
     protected String proposalType;
     protected String rejectReason;
+    protected int proponentID;
 
     public WorkProposalDTO() {
     }    
@@ -50,7 +51,8 @@ public class WorkProposalDTO implements Serializable {
             float budget,  
             String support,  
             String supervisor,
-            String proposalType
+            String proposalType,
+            int proponentID
     ) {
         this.id = id;        
         this.title = title;        
@@ -69,6 +71,7 @@ public class WorkProposalDTO implements Serializable {
         this.support = support;     
         this.supervisor = supervisor;
         this.proposalType = proposalType;
+        this.proponentID = proponentID;
         
         this.rejectReason = null;
         this.status = ProposalStatus.Pendente; 
@@ -92,9 +95,17 @@ public class WorkProposalDTO implements Serializable {
         setSupport(null);
         setStatus(null);        
         setSupervisor(null);    
-        setProposalType(null);  
-        setRejectReason(null);
+        setProposalType(null); 
+        setProponentID(0);
     }    
+    
+    public int getProponentID() {
+        return proponentID;
+    }
+
+    public void setProponentID(int proponentID) {
+        this.proponentID = proponentID;
+    }
 
     public String getRejectReason() {
         return rejectReason;

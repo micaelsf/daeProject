@@ -9,8 +9,8 @@
         <ui:define name="main">
             <h1 class="page-header">Propostas de trabalho</h1>
              <em:dt title="Propostas" 
-                   headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Objetivos', 'Estado']}" 
-                   props="#{['proposalType', 'title', 'scientificAreas', 'objectives', 'status']}" 
+                   headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                   props="#{['proposalType', 'title', 'scientificAreas', 'status']}" 
                    list="#{teacherManager.allProposalsREST}"> 
                 <p:column headerText="Ações">
                     <h:form class="center-text"> 

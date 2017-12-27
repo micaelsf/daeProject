@@ -43,11 +43,11 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             }
             
             // just to test create new proposal until authentication is not implemented
-            if (proposalDTO.getTeacherId() == 0) {
-                proposalDTO.setTeacherId(12);
+            if (proposalDTO.getProponentID() == 0) {
+                proposalDTO.setProponentID(12);
             }
             
-            Teacher teacher = em.find(Teacher.class, proposalDTO.getTeacherId());
+            Teacher teacher = em.find(Teacher.class, proposalDTO.getProponentID());
             if (teacher == null) {
                 throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
             }
@@ -82,7 +82,7 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             em.persist(proposal);
             
             //enroll this new proposal created to proposals list at Teacher
-            enrollProposal(proposalDTO.getTeacherId(), proposalDTO.getId());
+            enrollProposal(proposalDTO.getProponentID(), proposalDTO.getId());
             
         } catch (EntityAlreadyExistsException | EntityDoesNotExistsException e) {
             throw e;

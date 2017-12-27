@@ -10,8 +10,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class TeacherProposalDTO extends WorkProposalDTO implements Serializable {
     
-    private int teacherId;
-    
     public TeacherProposalDTO() {
     }
 
@@ -51,22 +49,13 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
                 budget, 
                 support,
                 "N/A",
-                proposalType.toString()
+                proposalType.toString(),
+                teacherId
         );
-        this.teacherId = teacherId;
     }
     
     @Override
     public void reset() {
         super.reset();
     } 
-
-    public int getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(int teacherId) {
-        this.teacherId = teacherId;
-    }
-    
 }
