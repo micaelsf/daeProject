@@ -4,48 +4,65 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2>Estado da proposta: <b>#{administratorManager.currentProposal.status}</b></h2>
             <h3>Tipo: #{administratorManager.currentProposal.proposalType}</h3>
-            <h:form>
-                <h:panelGrid columns="3" columnClasses="columnWidth">
-                    <h:outputLabel for="reason" value="Motivo: " />
-                    <h:inputText
-                        class="form-control rowMargin"
-                        style="max-width: 50%"
-                        id="reason"
-                        size="255"
-                        required="false"                           
-                        value="#{administratorManager.currentProposal.rejectReason}" />
-                    <h:message for="reason" errorStyle="color: red" />
-                    
-                    <h:outputLabel for="actionStatus" value="Ação: " />
-                    <h:selectOneMenu 
-                        class="form-control rowMargin"
-                        style="max-width: 15%"
-                        id="actionStatus"
-                        value = "#{administratorManager.selectOption}"> 
-                        <f:selectItem itemValue="1" itemLabel="Aceitar Proposta" />
-                        <f:selectItem itemValue="2" itemLabel="Rejeitar Proposta" />
-                    </h:selectOneMenu> 
-                </h:panelGrid>
-                <br/>
-                <br/>
-                <h:link class="btn btn-primary pull-left" 
+            
+            <c:choose>
+                <c:when test="#{administratorManager.isPendente(administratorManager.currentProposal.status)}">.
+                    <h:form>
+                        <h:panelGrid columns="3" columnClasses="columnWidth">
+                            <h:outputLabel for="reason" value="Motivo: " />
+                            <h:inputText
+                                class="form-control rowMargin"
+                                style="max-width: 50%"
+                                id="reason"
+                                size="255"
+                                required="false"                           
+                                value="#{administratorManager.currentProposal.rejectReason}" />
+                            <h:message for="reason" errorStyle="color: red" />
+
+                            <h:outputLabel for="actionStatus" value="Ação: " />
+                            <h:selectOneMenu 
+                                class="form-control rowMargin"
+                                style="max-width: 15%"
+                                id="actionStatus"
+                                value = "#{administratorManager.selectOption}"> 
+                                <f:selectItem itemValue="1" itemLabel="Aceitar Proposta" />
+                                <f:selectItem itemValue="2" itemLabel="Rejeitar Proposta" />
+                            </h:selectOneMenu> 
+                        </h:panelGrid>
+                        <br/>
+                        <br/>
+                        <h:link class="btn btn-primary pull-left" 
+                                style="margin-right: 15px"
+                                value="Voltar" 
+                                outcome="index?faces-redirect=true"/>
+                        <h:commandButton
+                            class="btn btn-primary btn-md"
+                            id="submit"
+                            value="Submeter"
+                            binding="#{administratorManager.component}" 
+                            action="#{administratorManager.updateProposalStatusREST}" />
+                        <h:message for="submit" style="color: red"/>
+                    </h:form>
+                </c:when>
+
+                <c:otherwise>
+                    <br/>
+                    <br/>
+                    <h3>Esta Proposta já foi avaliada, já não é possivel alterar o seu estado.</h3>
+                    <br/>
+                    <br/>
+                    <h:link class="btn btn-primary pull-left" 
                         style="margin-right: 15px"
                         value="Voltar" 
                         outcome="index?faces-redirect=true"/>
-                <h:commandButton
-                    class="btn btn-primary btn-md"
-                    id="submit"
-                    value="Submeter"
-                    binding="#{administratorManager.component}" 
-                    action="#{administratorManager.updateProposalStatusREST}" />
-                <h:message for="submit" style="color: red"/>
-            </h:form>
-                
+                </c:otherwise>
+            </c:choose>
         </ui:define>
     </ui:composition>
 </html>

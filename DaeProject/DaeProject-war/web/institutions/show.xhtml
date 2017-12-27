@@ -4,7 +4,8 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
             <h2>Estado da proposta: <b>#{institutionManager.currentProposal.status}</b></h2>
@@ -69,6 +70,13 @@
                 <h:outputText 
                     id="bibliography"
                     value="#{institutionManager.currentProposal.bibliographyToString}"/>
+                
+                <c:if test="#{administratorManager.rejected}">
+                    <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                    <h:outputText 
+                        id="rejectedReason"
+                        value="#{institutionManager.currentProposal.rejectReason}"/>
+                </c:if>
             </p:panelGrid>
             <br/>
             <br/>

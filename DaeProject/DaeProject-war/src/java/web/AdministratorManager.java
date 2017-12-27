@@ -321,10 +321,8 @@ public class AdministratorManager implements Serializable {
         return returnedProposals;
     }
     
-    public boolean isPendente(int id) {
-        System.out.println("web.AdministratorManager.isPendente() id received:" + id);
-        //return status == ProposalStatus.Pendente;
-        return true;
+    public boolean isPendente(ProposalStatus status) {
+        return status == ProposalStatus.Pendente;
     }
     
     public boolean isRejected() {

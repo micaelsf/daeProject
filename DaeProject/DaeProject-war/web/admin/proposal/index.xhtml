@@ -26,17 +26,15 @@
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp;
                             
-                            <c:if test="#{administratorManager.isPendente(object.id)}">
-                                <h:commandLink 
-                                    class="btn btn-default btn-sm"
-                                    value="Aceitar / Rejeitar" 
-                                    title="Aceitar/Rejeitar Proposta"
-                                    action="actionForm?faces-redirect=true"> 
-                                    <f:setPropertyActionListener 
-                                        target="#{administratorManager.currentProposal}" 
-                                        value="#{object}" /> 
-                                </h:commandLink> &nbsp;
-                            </c:if>
+                            <h:commandLink 
+                                class="btn btn-default btn-sm"
+                                value="Aceitar / Rejeitar" 
+                                title="Aceitar/Rejeitar Proposta"
+                                action="actionForm?faces-redirect=true"> 
+                                <f:setPropertyActionListener 
+                                    target="#{administratorManager.currentProposal}" 
+                                    value="#{object}" /> 
+                            </h:commandLink> &nbsp;
                     </h:form> 
                 </p:column> 
             </em:dt>
