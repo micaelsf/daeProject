@@ -69,7 +69,7 @@ public class StudentManager implements Serializable {
         return returnedProposals;
     }
 
-    public List<WorkProposal> allStudentWorkProposalsREST() {
+    public List<WorkProposal> getAllStudentWorkProposalsREST() {
         List<WorkProposal> returnedProposals;
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
@@ -85,27 +85,31 @@ public class StudentManager implements Serializable {
         return returnedProposals;
     }
 
-    public String enrollStudent() {
+    public void enrollStudent(ActionEvent event) {
         try {
+            System.out.println("StudentManager -> EnrollStudent");
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+
+            System.out.println("StudentManager -> EnrollStudent -> current student" + currentStudent);
+            System.out.println("StudentManager -> EnrollStudent -> currentProposal" + id);
 
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/enrollStudentREST")
+                    .path("/proposals/enrollStudent")
                     .path(Integer.toString(currentStudent.getId()))
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(Integer.toString(currentProposal.getId())));
+                    .path(Integer.toString(currentProposal.getId()))
+                    .request(MediaType.APPLICATION_XML);
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
         }
-        return "index?faces-redirect=true";
     }
 
     public String unrollStudent() {
         try {
 
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/unrollStudentREST")
+                    .path("/proposals/unrollStudent")
                     .path(Integer.toString(currentStudent.getId()))
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(Integer.toString(currentProposal.getId())));

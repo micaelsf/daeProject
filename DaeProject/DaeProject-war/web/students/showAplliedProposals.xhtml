@@ -11,7 +11,7 @@
             <em:dt title="Propostas" 
                    headers="#{['Id', 'Titulo', 'Áreas Científica', 'Objetivos']}" 
                    props="#{['id', 'title', 'scientificAreas', 'objectives']}" 
-                   list="#{studentManager.allStudentWorkProposalsREST}"> 
+                   list="#{studentManager.allStudentWorkProposalsREST}">
                 <p:column headerText="Ações">
                     <h:form class="center-text"> 
                         <h:commandLink 
@@ -37,7 +37,7 @@
             </em:dt>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/students/index"/>
+            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="index"/>
         </ui:define>
     </ui:composition>
 </html>
