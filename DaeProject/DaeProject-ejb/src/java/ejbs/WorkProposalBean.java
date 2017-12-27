@@ -6,6 +6,8 @@
 package ejbs;
 
 import dtos.WorkProposalDTO;
+import entities.InstitutionProposal;
+import entities.TeacherProposal;
 import entities.WorkProposal;
 import entities.WorkProposal.ProposalStatus;
 import exceptions.EntityDoesNotExistsException;
@@ -62,6 +64,14 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             proposal.setStatus(ProposalStatus.valueOf(status));
             em.merge(proposal);
             
+            // send notification email
+            if (proposal instanceof InstitutionProposal) {
+                InstitutionProposal institutionProposal = (InstitutionProposal) proposal;
+                institutionBean.sendEmailToInstitution(institutionProposal.getInstitution().getId());
+            } else {
+                TeacherProposal teacherProposal = (TeacherProposal) proposal;
+                teacherBean.sendEmailToTeacher(teacherProposal.getTeacher().getId());
+            }
             
         } catch (EntityDoesNotExistsException e) {
             throw e;

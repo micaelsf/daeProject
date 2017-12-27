@@ -8,10 +8,7 @@ package rest;
 import javax.ws.rs.ApplicationPath;
 import javax.ws.rs.core.Application;
 
-/**
- *
- * @author micae
- */
+
 @ApplicationPath("/webapi")
 public class CCPManagementApplication extends Application{
     

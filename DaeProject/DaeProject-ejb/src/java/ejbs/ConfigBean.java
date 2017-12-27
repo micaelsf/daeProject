@@ -62,7 +62,7 @@ public class ConfigBean {
             instituitionBean.create(new InstitutionDTO(11, "123123", "CompanyF", "companyf@email.com"));
             
             System.out.println("Inserting Teachers");
-            teacherBean.create(new TeacherDTO(12, "t1", "t1", "t1@ipleiria.pt", "DS02-XX"));
+            teacherBean.create(new TeacherDTO(12, "123", "mic", "micaelsf@sapo.pt", "DS02-XX"));
             teacherBean.create(new TeacherDTO(13, "t2", "t2", "t2@ipleiria.pt", "DS02-XX"));
             teacherBean.create(new TeacherDTO(14, "t3", "t3", "t3@ipleiria.pt", "DS02-XX"));
             
