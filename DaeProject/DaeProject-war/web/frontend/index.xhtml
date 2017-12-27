@@ -2,11 +2,35 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h1>Landing Page</h1>
+            <h3>Bem vindo á plataforma de apoio à gestão de mestrados</h3>
+            <h4>Abaixo poderá consultar os trabalhos de mestrado já finalizados</h4>
+            <br/>
+            <br/>
+            <h3>List de trabalhos</h3>
+             <em:dt  
+                   headers="#{['Tipo', 'Titulo', 'Áreas Científicas']}" 
+                   props="#{['proposalType', 'title', 'scientificAreas']}" 
+                   list="#{mainPageManager.allEndedWorkProposalsREST}"> 
+                <p:column headerText="Ações">
+                    <h:form class="center-text"> 
+                            <h:commandLink 
+                                class="fa fa-eye fa-fw"
+                                value=" " 
+                                title="Detalhes"
+                                action="show?faces-redirect=true"> 
+                                <f:setPropertyActionListener 
+                                    target="#{mainPageManager.currentProposal}" 
+                                    value="#{object}" /> 
+                            </h:commandLink> &nbsp;
+                    </h:form> 
+                </p:column> 
+            </em:dt>
         </ui:define>
     </ui:composition>
 </html>

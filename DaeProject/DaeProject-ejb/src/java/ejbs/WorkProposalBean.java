@@ -48,6 +48,17 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
     
+    @GET 
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @Path("allEndedProposals")
+    public Collection<WorkProposalDTO> getAllEndedProposals() {
+        try {
+            return em.createNamedQuery("getAllEndedProposals").getResultList();
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @POST 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
     @Path("updateProposalStatusREST/{id}/{rejectReason}/{comments}/{status}")

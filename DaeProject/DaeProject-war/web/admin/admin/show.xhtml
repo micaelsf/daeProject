@@ -7,23 +7,18 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Dados do estudante com número de estudante: #{administratorManager.currentStudent.studentNumber}</h1>
+            <h1 class="page-header">Admin com id: #{administratorManager.currentAdmin.id}</h1>
             <p:panelGrid columns="2" class="table table-striped">
-                <h:outputLabel for="id" value="Id: " />
-                <h:outputText 
-                    id="id"
-                    value="#{administratorManager.currentStudent.id}"/>
-                
                 <h:outputLabel for="name" value="Nome: " />
                 <h:outputText 
                     id="name"
-                    value="#{administratorManager.currentStudent.name}"/>
+                    value="#{administratorManager.currentAdmin.name}"/>
 
                 <h:outputLabel for="email" value="Email: " />
                 <h:outputText 
                     id="email"
-                    value="#{administratorManager.currentStudent.email}"/>
-
+                    value="#{administratorManager.currentAdmin.email}"/>
+                
             </p:panelGrid>
             <br/>
             <br/>
@@ -31,7 +26,7 @@
             <p:link class="btn btn-primary btn-md" 
                     style="margin-right: 15px"
                     value="Voltar" 
-                    outcome="/admin/student/index"/>
+                    outcome="/admin/admin/index"/>
                 
         </ui:define>
     </ui:composition>

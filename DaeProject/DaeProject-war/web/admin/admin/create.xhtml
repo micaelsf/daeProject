@@ -2,22 +2,22 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Editar estudante com id: #{administratorManager.currentStudent.id}</h1>   
+            <h1 class="page-header">Criar Admin</h1>   
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="name" value="Nome: " />
-                    <h:inputText 
+                    <h:inputText
                         class="form-control rowMargin"
                         style="max-width: 50%"
                         id="name"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: O campo Nome não pode ser vazio."                            
-                        value="#{administratorManager.currentStudent.name}">
+                        requiredMessage="Erro: O nome não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.name}">
                     </h:inputText>
                     <h:message for="name" errorStyle="color: red" />
                     
@@ -28,8 +28,8 @@
                         id="password"
                         size="20"
                         required="true"
-                        requiredMessage="Erro: O campo Password não pode ser vazio."
-                        value="#{administratorManager.currentStudent.password}"/>
+                        requiredMessage="Erro: A password não pode ser vazia."
+                        value="#{administratorManager.newAdmin.password}"/>
                     <h:message for="password" errorStyle="color: red" /> 
                 
                     <h:outputLabel for="email" value="Email: " />
@@ -39,25 +39,16 @@
                         id="email"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: O campo Email não pode ser vazio."                            
-                        value="#{administratorManager.currentStudent.email}" >
+                        requiredMessage="Erro: O email não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
+                </h:panelGrid>    
 
-                    <h:outputLabel for="studentNumber" value="Número de estudante: " />
-                    <h:inputText 
-                        class="form-control rowMargin"
-                        style="max-width: 50%"
-                        id="studentNumber"
-                        size="10"
-                        required="true"
-                        requiredMessage="Erro: O campo Número de estudante não pode ser vazio."                            
-                        value="#{administratorManager.currentStudent.studentNumber}" />
-                    <h:message for="name" errorStyle="color: red" />
-                </h:panelGrid>   
                 <br/>
                 <br/>
+
                 <h:link styleClass="btn btn-primary" 
                         style="margin-right: 15px"
                         value="Voltar" 
@@ -65,8 +56,9 @@
                 <h:commandButton
                     styleClass="btn btn-primary"
                     id="submit"
-                    value="Atualizar"
-                    action="#{administratorManager.updateStudentREST()}" />
+                    value="Criar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createAdmin}" />
                 <h:message for="submit" style="color: red"/>
             </h:form>
         </ui:define>    

@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Editar estudante com id: #{administratorManager.currentStudent.id}</h1>   
+            <h1 class="page-header">Editar admin com id: #{administratorManager.currentAdmin.id}</h1>   
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="name" value="Nome: " />
@@ -17,7 +17,7 @@
                         size="52"
                         required="true"
                         requiredMessage="Erro: O campo Nome não pode ser vazio."                            
-                        value="#{administratorManager.currentStudent.name}">
+                        value="#{administratorManager.currentAdmin.name}">
                     </h:inputText>
                     <h:message for="name" errorStyle="color: red" />
                     
@@ -29,7 +29,7 @@
                         size="20"
                         required="true"
                         requiredMessage="Erro: O campo Password não pode ser vazio."
-                        value="#{administratorManager.currentStudent.password}"/>
+                        value="#{administratorManager.currentAdmin.password}"/>
                     <h:message for="password" errorStyle="color: red" /> 
                 
                     <h:outputLabel for="email" value="Email: " />
@@ -40,21 +40,10 @@
                         size="52"
                         required="true"
                         requiredMessage="Erro: O campo Email não pode ser vazio."                            
-                        value="#{administratorManager.currentStudent.email}" >
+                        value="#{administratorManager.currentAdmin.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    
                     <h:message for="email" errorStyle="color: red" />
-
-                    <h:outputLabel for="studentNumber" value="Número de estudante: " />
-                    <h:inputText 
-                        class="form-control rowMargin"
-                        style="max-width: 50%"
-                        id="studentNumber"
-                        size="10"
-                        required="true"
-                        requiredMessage="Erro: O campo Número de estudante não pode ser vazio."                            
-                        value="#{administratorManager.currentStudent.studentNumber}" />
-                    <h:message for="name" errorStyle="color: red" />
                 </h:panelGrid>   
                 <br/>
                 <br/>
@@ -66,7 +55,7 @@
                     styleClass="btn btn-primary"
                     id="submit"
                     value="Atualizar"
-                    action="#{administratorManager.updateStudentREST()}" />
+                    action="#{administratorManager.updateAdminREST()}" />
                 <h:message for="submit" style="color: red"/>
             </h:form>
         </ui:define>    

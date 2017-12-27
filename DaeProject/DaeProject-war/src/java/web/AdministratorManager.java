@@ -5,6 +5,7 @@
  */
 package web;
 
+import dtos.AdminDTO;
 import dtos.InstitutionDTO;
 import dtos.InstitutionProposalDTO;
 import dtos.StudentDTO;
@@ -33,6 +34,9 @@ public class AdministratorManager implements Serializable {
 
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
 
+    private AdminDTO newAdmin;
+    private AdminDTO currentAdmin;
+    
     private StudentDTO newStudent;
     private StudentDTO currentStudent;
 
@@ -53,6 +57,7 @@ public class AdministratorManager implements Serializable {
     //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
     //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
     //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
+    
     public AdministratorManager() {
         newStudent = new StudentDTO();
         newInstituition = new InstitutionDTO();
@@ -60,7 +65,71 @@ public class AdministratorManager implements Serializable {
         newProposal = new WorkProposalDTO();
         client = ClientBuilder.newClient();
     }
+    
+    // admins
+    public String createAdmin() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/admins/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newAdmin));
+            newAdmin.reset();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
 
+    public String updateAdminREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/admins/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentAdmin));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public List<AdminDTO> getAllAdminsREST() {
+        List<AdminDTO> returnedAdmins;
+        try {
+            System.out.println("getAllStudents Metodo erro");
+            returnedAdmins = client.target(URILookup.getBaseAPI())
+                    .path("/admins/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<AdminDTO>>() {
+                    });
+            System.out.println(returnedAdmins);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedAdmins;
+    }
+
+    public String removeAdmin(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+ 
+            client.target(URILookup.getBaseAPI())
+                    .path("/admins/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    // students
     public String createStudent() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -339,8 +408,25 @@ public class AdministratorManager implements Serializable {
     public void setSelectOption(int selectOption) {
         this.selectOption = selectOption;
     }
+    
 
-    /////////////// GETTERS & SETTERS ///////////////// 
+    /////////////// GETTERS & SETTERS /////////////////
+    //admins
+    public AdminDTO getNewAdmin() {
+        return newAdmin;
+    }
+
+    public void setNewAdmin(AdminDTO newAdmin) {
+        this.newAdmin = newAdmin;
+    }
+
+    public AdminDTO getCurrentAdmin() {
+        return currentAdmin;
+    }
+    public void setCurrentAdmin(AdminDTO currentAdmin) {    
+        this.currentAdmin = currentAdmin;
+    }
+
     //instituition
     public InstitutionDTO getCurrentInstituition() {
         return currentInstituition;
