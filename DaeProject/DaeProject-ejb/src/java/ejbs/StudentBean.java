@@ -7,8 +7,10 @@ package ejbs;
 
 import dtos.DocumentDTO;
 import dtos.StudentDTO;
+import entities.Admin;
 import entities.Course;
 import entities.Document;
+import entities.PublicProof;
 import entities.Student;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
@@ -214,7 +216,7 @@ public class StudentBean extends Bean<Student> {
     public Student getStudentByNumber(String number)
             throws EntityDoesNotExistsException {
         try {
-            Student student = (Student) em.createNamedQuery("getAllStudentByNumber")
+            Student student = (Student) em.createNamedQuery("getStudentByNumber")
                     .setParameter("number", number)
                     .getSingleResult();
 
@@ -230,6 +232,25 @@ public class StudentBean extends Bean<Student> {
         }
     }
 */
+    public Student getStudentByEmail(String email)
+            throws EntityDoesNotExistsException {
+        try {
+            Student student = (Student) em.createNamedQuery("getStudentByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse email.");
+            }
+            
+            return student;
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public DocumentDTO getDocument(int id) throws EntityDoesNotExistsException {
         Document doc = em.find(Document.class, id);
 
@@ -265,6 +286,24 @@ public class StudentBean extends Bean<Student> {
         }
     }
     
+    public void sendEmailAboutPublicProofTo(String email, String name, PublicProof publicProof) 
+            throws MessagingException {
+        try {
+            emailBean.send(
+                    email,
+                    "Marcação da Prova Pública",
+                    "<p>Exmo " + name + ", a sua Prova Pública com Título '"+publicProof.getWorkTitle()+
+                    "', está agendada para o dia "+publicProof.getProofDate()+" às "+publicProof.getProofTime()+" horas.</p>" +
+                    "<p>Por favor compareça 30 minutos antes de se iniciar a apresentação da mesma.</p>" +
+                    "<br/>" +        
+                    "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException e) {
+            throw e;
+        }
+    }
+    
     public void sendEmailToStudent(int id) throws MessagingException, EntityDoesNotExistsException {
         try {
             Student student = em.find(Student.class, id);
@@ -281,5 +320,5 @@ public class StudentBean extends Bean<Student> {
             throw e;
         }
     }
-
+    
 }

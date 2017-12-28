@@ -84,10 +84,10 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             // send notification email
             if (proposal instanceof InstitutionProposal) {
                 InstitutionProposal institutionProposal = (InstitutionProposal) proposal;
-                //institutionBean.sendEmailToInstitution(institutionProposal.getInstitution().getId(), proposal);
+                //institutionBean.sendEmailAboutProposalTo(institutionProposal.getInstitution().getId(), proposal);
             } else {
                 TeacherProposal teacherProposal = (TeacherProposal) proposal;
-                //teacherBean.sendEmailToTeacher(teacherProposal.getTeacher().getId(), proposal);
+                //teacherBean.sendEmailAboutProposalTo(teacherProposal.getTeacher().getId(), proposal);
             }
             
         } catch (EntityDoesNotExistsException e) {

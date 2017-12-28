@@ -6,7 +6,9 @@
 package ejbs;
 
 import dtos.InstitutionDTO;
+import entities.Admin;
 import entities.Institution;
+import entities.PublicProof;
 import entities.WorkProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
@@ -148,7 +150,7 @@ public class InstitutionBean extends Bean<Institution> {
         }
     }
   
-    public void sendEmailToInstitution(int id, WorkProposal proposal) 
+    public void sendEmailAboutProposalTo(int id, WorkProposal proposal) 
             throws MessagingException, EntityDoesNotExistsException {
         try {
             Institution instituition = em.find(Institution.class, id);
@@ -166,5 +168,27 @@ public class InstitutionBean extends Bean<Institution> {
             throw e;
         }
     }
+    
+    public void sendEmailAboutPublicProofTo(int id, PublicProof publicProof) 
+            throws MessagingException, EntityDoesNotExistsException {
+        try {
+            Institution institution = em.find(Institution.class, id);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Instituição com esse ID.");
+            }
+            
+            emailBean.send(
+                    institution.getEmail(),
+                    "Marcação da Prova Pública",
+                    "<p>Exmo " + institution.getName() + ", a Prova Pública com Título '"+publicProof.getWorkTitle()+
+                    "', está agendada para o dia "+publicProof.getProofDate()+" às "+publicProof.getProofTime()+" horas.</p>" +
+                    "<p>Por favor compareça 30 minutos antes de se iniciar a apresentação da mesma.</p>" +
+                    "<br/>" +        
+                    "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
 
+        } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
+    }
 }

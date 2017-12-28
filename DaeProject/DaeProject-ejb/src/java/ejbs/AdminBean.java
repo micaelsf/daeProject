@@ -1,9 +1,8 @@
 package ejbs;
 
 import dtos.AdminDTO;
-import dtos.TeacherDTO;
 import entities.Admin;
-import entities.Teacher;
+import entities.PublicProof;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -143,5 +142,43 @@ public class AdminBean extends Bean<Admin> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+        
+    public Admin getAdminByEmail(String email)
+            throws EntityDoesNotExistsException {
+        try {
+            Admin admin = (Admin) em.createNamedQuery("getAdminByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
 
+            if (admin == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum admin com esse email.");
+            }
+            
+            return admin;
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    public void sendEmailAboutPublicProofTo(String email, String name, PublicProof publicProof) 
+            throws MessagingException {
+        try {
+
+            emailBean.send(
+                    email,
+                    "Marcação da Prova Pública",
+                    "<p>Exmo " + name + ", a Prova Pública com Título '"+publicProof.getWorkTitle()+
+                    "', está agendada para o dia "+publicProof.getProofDate()+" às "+publicProof.getProofTime()+" horas.</p>" +
+                    "<p>Por favor compareça 30 minutos antes de se iniciar a apresentação da mesma.</p>" +
+                    "<br/>" +        
+                    "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException e) {
+            throw e;
+        }
+    }
 }

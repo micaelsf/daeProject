@@ -2,9 +2,11 @@ package ejbs;
 
 import dtos.DocumentDTO;
 import dtos.PublicProofDTO;
+import entities.Admin;
 import entities.Document;
 import entities.PublicProof;
 import entities.Student;
+import entities.Teacher;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -12,6 +14,7 @@ import exceptions.Utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -26,7 +29,16 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("/publicProofs")
 public class PublicProofBean extends Bean<PublicProof>{
-
+    
+    @EJB 
+    AdminBean adminBean;
+    
+    @EJB 
+    TeacherBean teacherBean;
+    
+    @EJB 
+    StudentBean studentBean;
+    
     @POST
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -169,6 +181,37 @@ public class PublicProofBean extends Bean<PublicProof>{
             
             // set progress status for this student proposal to DONE
             publicProof.getStudent().getWorkProposal().setIsWorkCompleted(true);
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @POST
+    @Path("/sendEmailToAllREST/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void sendEmailToAllREST(@PathParam("id") String id) 
+            throws EntityDoesNotExistsException {
+        try {
+            PublicProof publicProof = em.find(PublicProof.class, Integer.parseInt(id));
+            if (publicProof == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Prova Pública com esse id.");
+            }
+            
+            Admin admin = adminBean.getAdminByEmail(publicProof.getCcpMemberEmail());
+            Teacher guider = teacherBean.getTeacherByEmail(publicProof.getWorkGuiderEmail());
+            Teacher teacher = teacherBean.getTeacherByEmail(publicProof.getTeacherEmail());
+            
+            System.out.println("ejbs.PublicProofBean.sendEmailToAllREST() admin email:" + admin.getEmail());
+            System.out.println("ejbs.PublicProofBean.sendEmailToAllREST() guider email:" + guider.getEmail());
+            System.out.println("ejbs.PublicProofBean.sendEmailToAllREST() teacher email:" + teacher.getEmail());
+            
+            //adminBean.sendEmailAboutPublicProofTo(admin.getEmail(), admin.getName(), publicProof);
+            //teacherBean.sendEmailAboutPublicProofTo(guider.getEmail(), guider.getName(), publicProof);
+            //teacherBean.sendEmailAboutPublicProofTo(teacher.getEmail(), teacher.getName(), publicProof);
+            //studentBean.sendEmailAboutPublicProofTo(publicProof.getStudent().getEmail(), publicProof.getStudent().getName(), publicProof);
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {

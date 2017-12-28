@@ -26,8 +26,10 @@ import javax.persistence.PrimaryKeyJoinColumn;
             query = "SELECT s FROM Student s ORDER BY s.name"),
     @NamedQuery(name = "getAllStudentsCourse",
             query = "SELECT s FROM Student s WHERE s.course.id = :courseId ORDER BY s.name"),
-    @NamedQuery(name = "getAllStudentByNumber",
-            query = "SELECT s FROM Student s WHERE s.studentNumber = :number")
+    @NamedQuery(name = "getStudentByNumber",
+            query = "SELECT s FROM Student s WHERE s.studentNumber = :number"),
+    @NamedQuery(name = "getStudentByEmail", 
+            query = "SELECT s FROM Student s WHERE s.email = :email")
 })
 public class Student extends User{
 

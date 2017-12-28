@@ -563,6 +563,23 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
     
+     public String sendEmailToAllInPublicProof(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("idEmail");
+            int id = Integer.parseInt(param.getValue().toString());
+
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/sendEmailToAllREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
     /////////////// UTILS //////////////////
     public int getSelectOption() {
         return selectOption;

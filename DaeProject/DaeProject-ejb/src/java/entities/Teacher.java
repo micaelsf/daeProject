@@ -12,12 +12,17 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
-@NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
+@NamedQueries({
+    @NamedQuery(name = "getAllTeachers", 
+            query = "SELECT t FROM Teacher t ORDER BY t.name"),
+    @NamedQuery(name = "getTeacherByEmail", 
+            query = "SELECT t FROM Teacher t WHERE t.email = :email")
+})
 public class Teacher extends User implements Serializable {
 
     @Column(nullable = false)

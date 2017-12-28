@@ -1,6 +1,8 @@
 package ejbs;
 
 import dtos.TeacherDTO;
+import entities.Admin;
+import entities.PublicProof;
 import entities.Teacher;
 import entities.WorkProposal;
 import exceptions.EntityAlreadyExistsException;
@@ -143,8 +145,27 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    public Teacher getTeacherByEmail(String email)
+            throws EntityDoesNotExistsException {
+        try {
+            Teacher teacher = (Teacher) em.createNamedQuery("getTeacherByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse email.");
+            }
+            
+            return teacher;
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
  
-    public void sendEmailToTeacher(int id, WorkProposal proposal) 
+    public void sendEmailAboutProposalTo(int id, WorkProposal proposal) 
             throws MessagingException, EntityDoesNotExistsException {
         try {
             Teacher teacher = em.find(Teacher.class, id);
@@ -159,6 +180,24 @@ public class TeacherBean extends Bean<Teacher> {
             );
 
         } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
+    }
+    
+    public void sendEmailAboutPublicProofTo(String email, String name, PublicProof publicProof) 
+            throws MessagingException {
+        try {
+            emailBean.send(
+                    email,
+                    "Marcação da Prova Pública",
+                    "<p>Exmo " + name + ", a Prova Pública com Título '"+publicProof.getWorkTitle()+
+                    "', está agendada para o dia "+publicProof.getProofDate()+" às "+publicProof.getProofTime()+" horas.</p>" +
+                    "<p>Por favor compareça 30 minutos antes de se iniciar a apresentação da mesma.</p>" +
+                    "<br/>" +        
+                    "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException e) {
             throw e;
         }
     }

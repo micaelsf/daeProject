@@ -54,6 +54,19 @@
                         </h:commandLink> &nbsp; 
                     </h:form> 
                 </p:column> 
+                <p:column headerText="Email"> 
+                    <h:form class="center-text"> 
+                        <h:commandLink 
+                            class="btn btn-default btn-sm"
+                            value="Notificar os presentes" 
+                            title="Notificar os presentes"
+                            actionListener="#{administratorManager.sendEmailToAllInPublicProof}"> 
+                            <f:param name="idEmail" 
+                                id="idEmail" 
+                                value="#{object.id}" /> 
+                        </h:commandLink> &nbsp; 
+                    </h:form> 
+                </p:column> 
             </em:dt>
             <br/>
             <br/>

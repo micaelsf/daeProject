@@ -14,7 +14,9 @@ import javax.persistence.NamedQuery;
 
 @NamedQueries({
     @NamedQuery(name = "getAllAdmins",
-            query = "SELECT a FROM Admin a ORDER BY a.name")
+            query = "SELECT a FROM Admin a ORDER BY a.name"),
+    @NamedQuery(name = "getAdminByEmail", 
+            query = "SELECT a FROM Admin a WHERE a.email = :email")
 })
 public class Admin extends User {
 
