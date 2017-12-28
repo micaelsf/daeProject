@@ -26,6 +26,8 @@ public class PublicProofDTO implements Serializable{
     private String studentCourse;
     private String workTitle;
     private String link;
+    private String ataName;
+    private String oldCompleteFilePath;
     
     public PublicProofDTO(){
     }
@@ -46,7 +48,9 @@ public class PublicProofDTO implements Serializable{
             String studentEmail,
             String studentNumber,
             String studentCourse,
-            String workTitle
+            String workTitle,
+            String ataName,
+            String oldCompleteFilePath
     ){
             this.id = id; 
             this.proofDate = proofDate;
@@ -64,7 +68,9 @@ public class PublicProofDTO implements Serializable{
             this.studentNumber = studentNumber;
             this.studentCourse = studentCourse;
             this.workTitle = workTitle;
+            this.ataName = ataName;
             this.link =  " ";
+            this.oldCompleteFilePath = oldCompleteFilePath;
     }
     
     public void reset(){
@@ -84,6 +90,23 @@ public class PublicProofDTO implements Serializable{
         this.studentNumber = null;
         this.studentCourse = null;
         this.workTitle = null;
+        this.ataName = null;
+    }
+
+    public String getOldCompleteFilePath() {
+        return oldCompleteFilePath;
+    }
+
+    public void setOldCompleteFilePath(String oldCompleteFilePath) {
+        this.oldCompleteFilePath = oldCompleteFilePath;
+    }
+
+    public String getAtaName() {
+        return ataName;
+    }
+
+    public void setAtaName(String ataName) {
+        this.ataName = ataName;
     }
 
     public String getWorkTitle() {
@@ -229,6 +252,18 @@ public class PublicProofDTO implements Serializable{
     public void setLink(String link) {
         this.link = link;
     }
-
     
+    public boolean isAtaAssigned() {
+        if (this.ataName == null) {
+            return false;
+        }
+        return this.ataName.trim().length() > 0;
+    }
+    
+    public String isAtaAssignedToString() {
+        if (isAtaAssigned()) {
+            return "Sim";
+        }
+        return "Não";
+    }
 }

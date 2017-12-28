@@ -122,7 +122,7 @@ public class WorkProposal implements Serializable {
     private String comments;
     
     @Column(name = "PROGRESS_STATUS", nullable = false)
-    private boolean progressStatus; // true: proposal is ended can be published
+    private boolean isWorkCompleted; // true: proposal is ended can be published
     
     public WorkProposal() {
     }
@@ -161,7 +161,7 @@ public class WorkProposal implements Serializable {
         
         this.rejectReason = " ";
         this.comments = " ";
-        this.progressStatus = false;
+        this.isWorkCompleted = false;
         this.status = ProposalStatus.Pendente;
         
         this.studentsApply = new LinkedList<>();
@@ -217,12 +217,12 @@ public class WorkProposal implements Serializable {
         this.comments = comments;
     }
 
-    public boolean isProgressStatus() {
-        return progressStatus;
+    public boolean isIsWorkCompleted() {
+        return isWorkCompleted;
     }
 
-    public void setProgressStatus(boolean progressStatus) {
-        this.progressStatus = progressStatus;
+    public void setIsWorkCompleted(boolean isWorkCompleted) {
+        this.isWorkCompleted = isWorkCompleted;
     }
     
     public int getId() {

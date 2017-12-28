@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -31,15 +32,19 @@ public class Document implements Serializable {
     @ManyToOne(cascade = CascadeType.REMOVE)
     private Student student;
     
+    @OneToOne(cascade = CascadeType.REMOVE)
+    private PublicProof publicProof;
+    
     public Document() {
         
     }
 
-    public Document(String filepath, String desiredName, String mimeType, Student student) {
+    public Document(String filepath, String desiredName, String mimeType) {
         this.filepath = filepath;
         this.desiredName = desiredName;
         this.mimeType = mimeType;
-        this.student = student;
+        this.student = null;
+        this.publicProof = null;
     }
 
     public int getId() {
@@ -81,4 +86,13 @@ public class Document implements Serializable {
     public void setStudent(Student student) {
         this.student = student;
     }
+
+    public PublicProof getPublicProof() {
+        return publicProof;
+    }
+
+    public void setPublicProof(PublicProof publicProof) {
+        this.publicProof = publicProof;
+    }
+    
 }

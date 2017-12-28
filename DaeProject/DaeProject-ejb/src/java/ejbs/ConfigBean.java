@@ -409,7 +409,9 @@ public class ConfigBean {
                     "micael@email.com",
                     "666666666",
                     "EI",
-                    "Estufas Inteligentes"
+                    "Estufas Inteligentes",
+                    null,
+                    null
             ));
             
             publicProofBean.create(new PublicProofDTO(
@@ -428,7 +430,9 @@ public class ConfigBean {
                     "bruno@email.com",
                     "555555555",
                     "JDM",
-                    "Titulo do trabalho xpto"
+                    "Titulo do trabalho xpto",
+                    null,
+                    null
             ));
             
             /*

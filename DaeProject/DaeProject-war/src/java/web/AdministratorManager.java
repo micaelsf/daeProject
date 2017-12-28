@@ -7,6 +7,7 @@ package web;
 
 import dtos.AdminDTO;
 import dtos.CourseDTO;
+import dtos.DocumentDTO;
 import dtos.InstitutionDTO;
 import dtos.InstitutionProposalDTO;
 import dtos.PublicProofDTO;
@@ -19,6 +20,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -56,6 +58,11 @@ public class AdministratorManager implements Serializable {
 
     private PublicProofDTO newPublicProof;
     private PublicProofDTO currentPublicProof;
+    
+    @ManagedProperty(value = "#{uploadManager}")
+    private UploadManager uploadManager;
+    
+    private DocumentDTO document;
     
     private UIComponent component;
     private Client client;
@@ -533,9 +540,6 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<List<PublicProofDTO>>() {
                     });
             
-            for(PublicProofDTO s: returnedPublicProofs) {
-                        System.out.println("web.AdministratorManager.getAllPublicProofsREST() publicProof worktitle:" + s.getWorkTitle());
-            }
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -543,16 +547,23 @@ public class AdministratorManager implements Serializable {
         return returnedPublicProofs;
     }
     
-    /////////////// UTILS //////////////////
-
-    public boolean isPendente(ProposalStatus status) {
-        return status == ProposalStatus.Pendente;
+    public String uploadDocumentToPublicProofREST() {
+        try {
+            document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/addDocument")
+                    .path(currentPublicProof.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(document));
+            
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
     }
     
-    public boolean isRejected() {
-        return currentProposal.getStatus() == ProposalStatus.NãoAceite;
-    }
-
+    /////////////// UTILS //////////////////
     public int getSelectOption() {
         return selectOption;
     }
@@ -560,7 +571,6 @@ public class AdministratorManager implements Serializable {
     public void setSelectOption(int selectOption) {
         this.selectOption = selectOption;
     }
-
 
     /////////////// GETTERS & SETTERS /////////////////
     //Courses
@@ -685,6 +695,22 @@ public class AdministratorManager implements Serializable {
 
     public void setCurrentPublicProof(PublicProofDTO currentPublicProof) {
         this.currentPublicProof = currentPublicProof;
+    }
+
+    public UploadManager getUploadManager() {
+        return uploadManager;
+    }
+
+    public void setUploadManager(UploadManager uploadManager) {
+        this.uploadManager = uploadManager;
+    }
+
+    public DocumentDTO getDocument() {
+        return document;
+    }
+
+    public void setDocument(DocumentDTO document) {
+        this.document = document;
     }
     
 }

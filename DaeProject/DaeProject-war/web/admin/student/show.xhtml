@@ -8,7 +8,7 @@
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h1 class="page-header">Dados do estudante com número de estudante: #{administratorManager.currentStudent.studentNumber}</h1>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="courseName" value="Curso: " />
                 <h:outputText 
                     id="courseName"

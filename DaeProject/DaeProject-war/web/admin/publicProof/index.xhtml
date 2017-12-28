@@ -5,7 +5,8 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h1 class="page-header">Provas Públicas</h1>
@@ -15,33 +16,42 @@
                    list="#{administratorManager.allPublicProofsREST}"> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
-                            <h:commandLink 
-                                class="fa fa-eye fa-fw"
-                                value=" " 
-                                title="Detalhes"
-                                action="show?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentPublicProof}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp;
-                            <h:commandLink 
-                                class="fa fa-pencil fa-fw"
-                                value=" " 
-                                title="Editar"
-                                action="edit?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentPublicProof}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp; 
-                            <h:commandLink 
-                                class="fa fa-trash fa-fw"
-                                value=" " 
-                                title="Remover"
-                                actionListener="#{administratorManager.removePublicProof}"> 
-                                <f:param name="id" 
-                                    id="id" 
-                                    value="#{object.id}" /> 
-                            </h:commandLink> 
+                        <h:commandLink 
+                            class="fa fa-eye fa-fw"
+                            value=" " 
+                            title="Detalhes"
+                            action="show?faces-redirect=true"> 
+                            <f:setPropertyActionListener 
+                                target="#{administratorManager.currentPublicProof}" 
+                                value="#{object}" /> 
+                        </h:commandLink> &nbsp;
+                        <h:commandLink 
+                            class="fa fa-pencil fa-fw"
+                            value=" " 
+                            title="Editar"
+                            action="edit?faces-redirect=true"> 
+                            <f:setPropertyActionListener 
+                                target="#{administratorManager.currentPublicProof}" 
+                                value="#{object}" /> 
+                        </h:commandLink> &nbsp; 
+                        <h:commandLink 
+                            class="fa fa-trash fa-fw"
+                            value=" " 
+                            title="Remover"
+                            actionListener="#{administratorManager.removePublicProof}"> 
+                            <f:param name="id" 
+                                id="id" 
+                                value="#{object.id}" /> 
+                        </h:commandLink> &nbsp; 
+                        <h:commandLink 
+                            class="btn btn-default btn-sm"
+                            value="Associar ATA" 
+                            title="Associar ATA"
+                            action="upload?faces-redirect=true"> 
+                            <f:setPropertyActionListener 
+                                target="#{administratorManager.currentPublicProof}" 
+                                value="#{object}" /> 
+                        </h:commandLink> &nbsp; 
                     </h:form> 
                 </p:column> 
             </em:dt>

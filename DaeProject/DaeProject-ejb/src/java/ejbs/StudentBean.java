@@ -198,8 +198,10 @@ public class StudentBean extends Bean<Student> {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
 
-            Document document = new Document(doc.getFilepath(), doc.getDesiredName(), doc.getMimeType(), student);
+            Document document = new Document(doc.getFilepath(), doc.getDesiredName(), doc.getMimeType());
             em.persist(document);
+            document.setStudent(student);
+            em.merge(document);
             student.addDocument(document);
 
         } catch (EntityDoesNotExistsException e) {

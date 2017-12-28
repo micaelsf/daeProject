@@ -51,6 +51,9 @@ public class PublicProof implements Serializable {
     
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "publicProof")
     private Student student;
+    
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "publicProof")
+    private Document documentATA;
 
     @Column(nullable = false)
     private String workTitle;
@@ -88,6 +91,15 @@ public class PublicProof implements Serializable {
         this.student = student;
         this.workTitle = workTitle;
         this.link = null;
+        this.documentATA = null;
+    }
+
+    public Document getDocumentATA() {
+        return documentATA;
+    }
+
+    public void setDocumentATA(Document documentATA) {
+        this.documentATA = documentATA;
     }
 
     public String getWorkTitle() {

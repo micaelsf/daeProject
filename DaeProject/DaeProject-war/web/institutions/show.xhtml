@@ -10,7 +10,7 @@
         <ui:define name="main">
             <h2>Estado da proposta: <b>#{institutionManager.currentProposal.status}</b></h2>
             <h3>Tipo: #{institutionManager.currentProposal.proposalType}</h3>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="id" value="Id: " />
                 <h:outputText 
                     id="id"
@@ -76,8 +76,8 @@
                     id="bibliography"
                     value="#{institutionManager.currentProposal.bibliographyToString}"/>
                 
-                <c:if test="#{!institutionManager.isPendente(administratorManager.currentProposal.status)}">
-                    <c:if test="#{institutionManager.rejected}">
+                <c:if test="#{!administratorManager.currentProposal.pendente}">
+                    <c:if test="#{institutionManager.currentProposal.rejected}">
                         <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
                         <h:outputText 
                             id="rejectedReason"

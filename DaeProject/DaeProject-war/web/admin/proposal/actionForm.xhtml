@@ -12,7 +12,7 @@
             <h3>Tipo: #{administratorManager.currentProposal.proposalType}</h3>
             
             <c:choose>
-                <c:when test="#{administratorManager.isPendente(administratorManager.currentProposal.status)}">.
+                <c:when test="#{administratorManager.currentProposal.pendente}">
                     <h:form>
                         <h:panelGrid columns="3" columnClasses="columnWidth">
                             <h:outputLabel for="reason" value="Em caso de rejeição, indique o Motivo: " />

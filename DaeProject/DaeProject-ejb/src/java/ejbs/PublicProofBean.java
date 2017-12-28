@@ -1,6 +1,8 @@
 package ejbs;
 
+import dtos.DocumentDTO;
 import dtos.PublicProofDTO;
+import entities.Document;
 import entities.PublicProof;
 import entities.Student;
 import exceptions.EntityAlreadyExistsException;
@@ -145,7 +147,41 @@ public class PublicProofBean extends Bean<PublicProof>{
         }
     }
     
+    @PUT
+    @Path("/addDocument/{id}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void addDocument(
+            @PathParam("id") int id,
+            DocumentDTO doc)
+            throws EntityDoesNotExistsException {
+        try {
+            PublicProof publicProof = em.find(PublicProof.class, id);
+            if (publicProof == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Prova Pública com esse id.");
+            }
+
+            Document document = new Document(doc.getFilepath(), doc.getDesiredName(), doc.getMimeType());
+            em.persist(document);
+            
+            document.setPublicProof(publicProof);
+            publicProof.setDocumentATA(document);
+            em.merge(document);
+            
+            // set progress status for this student proposal to DONE
+            publicProof.getStudent().getWorkProposal().setIsWorkCompleted(true);
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     private PublicProofDTO classToDTO(PublicProof publicProof) {
+        String filePath = null, ataName = null;
+        if (publicProof.getDocumentATA() != null) {
+            ataName = publicProof.getDocumentATA().getDesiredName();
+            filePath = publicProof.getDocumentATA().getFilepath();
+        }
         return new PublicProofDTO(
                 publicProof.getId(),
                     publicProof.getProofDate(),
@@ -162,7 +198,10 @@ public class PublicProofBean extends Bean<PublicProof>{
                     publicProof.getStudent().getEmail(),
                     publicProof.getStudent().getStudentNumber(),
                     publicProof.getStudent().getCourse().getName(),
-                    publicProof.getWorkTitle());
+                    publicProof.getWorkTitle(),
+                    ataName,
+                    filePath
+        );
     }
 
     private List<PublicProofDTO> classToDTOs(List<PublicProof> publicProofs) {

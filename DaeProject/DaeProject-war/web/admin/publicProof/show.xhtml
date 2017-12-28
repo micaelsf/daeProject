@@ -3,14 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2 class="page-header">Dados da Prova Pública com id:#{administratorManager.currentPublicProof.id}</h2>
             <h4>Dados gerais</h4>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="dateProof" value="Data da Prova: " />
                 <h:outputText 
                     id="dateProof"
@@ -62,8 +61,9 @@
                     value="#{administratorManager.currentPublicProof.teacherEmail}"/>
             </p:panelGrid>
             
+            <br/>
             <h4>Dados do estudante</h4>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="studentName" value="Nome: " />
                 <h:outputText 
                     id="studentName"
@@ -85,6 +85,17 @@
                     id="studentCourse"
                     value="#{administratorManager.currentPublicProof.studentCourse}"/>
             </p:panelGrid>
+            <c:if test="#{administratorManager.currentPublicProof.ataAssigned}">
+                <br/>
+                <h4>ATA</h4>
+                <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
+                    <h:outputLabel for="ata" value="Nome do ficheiro: " />
+                    <h:outputText 
+                        id="ata"
+                        value="#{administratorManager.currentPublicProof.ataName}"/>
+                </p:panelGrid>
+            </c:if>
+            
             <br/>
             <br/>
             <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/publicProof/index"/>

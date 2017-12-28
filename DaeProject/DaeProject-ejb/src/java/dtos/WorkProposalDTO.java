@@ -302,5 +302,12 @@ public class WorkProposalDTO implements Serializable {
                 (this.bibliography4 != null ? this.bibliography4 + ", \n" : "") +
                 (this.bibliography5 != null ? this.bibliography5 : "") ;
     }
-
+        
+    public boolean isPendente() {
+        return this.status == ProposalStatus.Pendente;
+    }
+       
+    public boolean isRejected() {
+        return this.status == ProposalStatus.NãoAceite;
+    }
 }

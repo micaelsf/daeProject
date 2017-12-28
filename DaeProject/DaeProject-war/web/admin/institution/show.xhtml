@@ -9,7 +9,7 @@
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2 class="page-header">Dados da Instituição com id:#{administratorManager.currentInstituition.id}</h2>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="created_at" value="Criado em: " />
                 <h:outputText 
                     id="created_at"
