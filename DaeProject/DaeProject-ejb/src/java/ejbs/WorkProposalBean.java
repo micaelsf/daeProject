@@ -6,9 +6,12 @@
 package ejbs;
 
 import dtos.StudentDTO;
+import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
 import entities.Student;
+import entities.TeacherProposal;
 import entities.WorkProposal;
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.StudentEnrolledException;
@@ -20,6 +23,7 @@ import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -29,6 +33,52 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("/proposals")
 public class WorkProposalBean extends Bean<WorkProposal> {
+
+    @POST
+    @Path("/createREST")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public void create(WorkProposalDTO proposalDTO)
+            throws EntityAlreadyExistsException, MyConstraintViolationException {
+        System.out.println("ejbs.WorkProposalBean.create() IN");
+        try {
+            if (em.find(WorkProposal.class, proposalDTO.getId()) != null) {
+                throw new EntityAlreadyExistsException("A proposta já existe.");
+            }
+            /*
+            List<String> bibliography = new LinkedList<>();
+            bibliography.add(proposalDTO.getBibliography1());
+            bibliography.add(proposalDTO.getBibliography2());
+            bibliography.add(proposalDTO.getBibliography3());
+            bibliography.add(proposalDTO.getBibliography4());
+            bibliography.add(proposalDTO.getBibliography5());
+             */
+            WorkProposal proposal = new WorkProposal(
+                    proposalDTO.getTitle(),
+                    proposalDTO.getScientificAreas(),
+                    proposalDTO.getObjectives(),
+                    proposalDTO.getWorkResume(),
+                    //bibliography,
+                    proposalDTO.getBibliography1(),
+                    proposalDTO.getBibliography2(),
+                    proposalDTO.getBibliography3(),
+                    proposalDTO.getBibliography4(),
+                    proposalDTO.getBibliography5(),
+                    proposalDTO.getWorkPlan(),
+                    proposalDTO.getWorkLocality(),
+                    proposalDTO.getSuccessRequirements(),
+                    proposalDTO.getBudget(),
+                    proposalDTO.getSupport()
+            );
+
+            em.persist(proposal);
+        } catch (EntityAlreadyExistsException e) {
+            throw e;
+        } catch (ConstraintViolationException e) {
+            throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @Override
     protected Collection<WorkProposal> getAll() {
@@ -65,18 +115,18 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
-    @PUT
-    @Path("enrollStudent/{studentId}/{workProposalId}")
+    @POST
+    @Path("enrollStudentRest/{studentId}/{workProposalId}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void ennrollStudentREST(
+    public void enrollStudent(
             @PathParam("studentId") String studentId,
             @PathParam("workProposalId") String workProposalId)
             throws EntityDoesNotExistsException,
             MyConstraintViolationException {
         System.out.println("enrollStudentREST studentId:" + studentId + " workProposalId: " + workProposalId);
-        
+
         try {
-            updateEnrollement(
+            enrollStudentToWorkProposal(
                     Integer.valueOf(studentId),
                     Integer.valueOf(workProposalId)
             );
@@ -87,16 +137,16 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
-    @PUT
-    @Path("unrollStudent/{studentId}/{workProposalId}")
+    @POST
+    @Path("unrollStudentRest/{studentId}/{workProposalId}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void unrollStudentREST(
+    public void unrollStudent(
             @PathParam("studentId") String studentId,
             @PathParam("workProposalId") String workProposalId)
             throws EntityDoesNotExistsException,
             MyConstraintViolationException {
         try {
-            updateUnrollement(
+            unrollStudentToWorkProposal(
                     Integer.valueOf(studentId),
                     Integer.valueOf(workProposalId)
             );
@@ -107,9 +157,12 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
-    public void updateEnrollement(int idStudent, int idWorkProposal)
+    public void enrollStudentToWorkProposal(int idStudent, int idWorkProposal)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
+
+            System.out.println("enrollStudentREST studentId:" + idStudent + " workProposalId: " + idWorkProposal);
+
             Student student = em.find(Student.class, idStudent);
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não exite nenhum estudante com esse ID.");
@@ -140,7 +193,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
-    public void updateUnrollement(int idStudent, int idWorkProposal)
+    public void unrollStudentToWorkProposal(int idStudent, int idWorkProposal)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             Student student = em.find(Student.class, idStudent);
@@ -150,7 +203,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
 
             WorkProposal workProposal = em.find(WorkProposal.class, idWorkProposal);
             if (workProposal == null) {
-                throw new EntityDoesNotExistsException("Não exite nenhum estudante com esse ID.");
+                throw new EntityDoesNotExistsException("Não exite nenhuma proposta com esse ID.");
             }
 
             if (!workProposal.getStudentsApply().contains(student)) {

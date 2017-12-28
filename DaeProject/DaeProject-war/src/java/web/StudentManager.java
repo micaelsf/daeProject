@@ -34,8 +34,7 @@ public class StudentManager implements Serializable {
     private Client client;
     private HttpAuthenticationFeature feature;
 
-    private Student currentStudent;
-
+    // private Student currentStudent;
     @ManagedProperty(value = "#{userManager}")
     private UserManager userManager;
 
@@ -72,9 +71,12 @@ public class StudentManager implements Serializable {
     public List<WorkProposal> getAllStudentWorkProposalsREST() {
         List<WorkProposal> returnedProposals;
         try {
+            int hardCodeCurrentStudent = 3;
+
             returnedProposals = client.target(URILookup.getBaseAPI())
                     .path("/proposals/allStudentProposals")
-                    .path(Integer.toString(currentStudent.getId()))
+                    //.path(Integer.toString(currentStudent.getId()))
+                    .path(Integer.toString(hardCodeCurrentStudent))
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<WorkProposal>>() {
                     });
@@ -91,12 +93,13 @@ public class StudentManager implements Serializable {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
 
-            System.out.println("StudentManager -> EnrollStudent -> current student" + currentStudent);
             System.out.println("StudentManager -> EnrollStudent -> currentProposal" + id);
+            int hardCodeCurrentStudent = 3;
 
             client.target(URILookup.getBaseAPI())
                     .path("/proposals/enrollStudent")
-                    .path(Integer.toString(currentStudent.getId()))
+                    //.path(Integer.toString(currentStudent.getId()))
+                    .path(Integer.toString(hardCodeCurrentStudent))
                     .path(Integer.toString(currentProposal.getId()))
                     .request(MediaType.APPLICATION_XML);
 
@@ -105,20 +108,20 @@ public class StudentManager implements Serializable {
         }
     }
 
-    public String unrollStudent() {
+    public void unrollStudent(ActionEvent event) {
         try {
-
+            int hardCodeCurrentStudent = 3;
             client.target(URILookup.getBaseAPI())
                     .path("/proposals/unrollStudent")
-                    .path(Integer.toString(currentStudent.getId()))
+                    // .path(Integer.toString(currentStudent.getId()))
+                    .path(Integer.toString(hardCodeCurrentStudent))
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(Integer.toString(currentProposal.getId())));
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
         }
-        return "index?faces-redirect=true";
+        //   return "index?faces-redirect=true";
     }
 
     public UserManager getUserManager() {
@@ -136,7 +139,7 @@ public class StudentManager implements Serializable {
     public void setUploadManager(UploadManager uploadManager) {
         this.uploadManager = uploadManager;
     }
-
+/*
     public Student getCurrentStudent() {
         return currentStudent;
     }
@@ -144,7 +147,7 @@ public class StudentManager implements Serializable {
     public void setCurrentStudent(Student currentStudent) {
         this.currentStudent = currentStudent;
     }
-
+ */
     public WorkProposalDTO getCurrentProposal() {
         return currentProposal;
     }
