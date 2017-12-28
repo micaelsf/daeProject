@@ -12,24 +12,28 @@
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="dateProof" value="Data da prova: " />
                     <h:inputText 
-                        class="form-control rowMargin"
+                        class="form-control rowMargin datepicker"
                         id="dateProof" 
-                        size="10"
-                        maxlength="10"
                         required="true"
-                        requiredMessage="Erro: Campo Data da prova não pode ser vazio."                            
-                        value="#{administratorManager.currentPublicProof.proofDate}" />
+                        requiredMessage="Erro: Campo Data da prova não pode ser vazio."
+                        validatorMessage=" Data inválida"                              
+                        value="#{administratorManager.currentPublicProof.proofDate}" >
+                        <f:validateRegex pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" />
+                    </h:inputText>   
                     <h:message for="dateProof" errorStyle="color: red" />
 
                     <h:outputLabel for="timeProof" value="Hora da prova: " />
                     <h:inputText
-                        class="form-control rowMargin"                        
+                        class="form-control rowMargin"
                         id="timeProof"
                         size="5" 
                         maxlength="5"
                         required="true"
-                        requiredMessage="Erro: Campo Hora da prova não pode ser vazio."                            
-                        value="#{administratorManager.currentPublicProof.proofTime}" />
+                        requiredMessage="Erro: Campo Hora da prova não pode ser vazio."
+                        validatorMessage=" Hora inválida"                              
+                        value="#{administratorManager.currentPublicProof.proofTime}" >
+                        <f:validateRegex pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" />
+                    </h:inputText>   
                     <h:message for="timeProof" errorStyle="color: red" />
 
                     <h:outputLabel for="location" value="Local: " />
@@ -128,51 +132,26 @@
                 <br/>
                 <h4>Dados do estudante</h4>
    
-<!--
-                <h:panelGrid columns="3" columnClasses="columnWidth">
-                    <h:outputLabel for="studentName" value="Nome do estudante: " />
-                    <h:inputText 
-                        class="form-control rowMargin"
-                        id="studentName" 
-                        size="52"                        
-                        required="true"
-                        requiredMessage="Erro: Campo Nome do estudante não pode ser vazio."                            
-                        value="#{administratorManager.currentPublicProof.studentName}" />
-                    <h:message for="studentName" errorStyle="color: red" />
-                    
-                    <h:outputLabel for="studentNumber" value="Número do estudante: " />
-                    <h:inputText 
-                        class="form-control rowMargin"
-                        id="studentNumber" 
-                        size="52"                        
-                        required="true"
-                        requiredMessage="Erro: Campo Número do estudante não pode ser vazio."                            
-                        value="#{administratorManager.currentPublicProof.studentNumber}" />
-                    <h:message for="studentNumber" errorStyle="color: red" />
-                    
-                    <h:outputLabel for="studentEmail" value="Email do estudante: " />
-                    <h:inputText 
-                        class="form-control rowMargin"
-                        id="studentEmail" 
-                        size="52"                        
-                        required="true"
-                        requiredMessage="Erro: Campo Email do estudante não pode ser vazio."                            
-                        value="#{administratorManager.currentPublicProof.studentEmail}" />
-                    <h:message for="studentEmail" errorStyle="color: red" />
-                    
-                    <h:outputLabel for="studentCourse" value="Curso pertencente: " />
-                    <h:inputText 
-                        class="form-control rowMargin"
-                        id="studentCourse" 
-                        size="52"                        
-                        required="true"
-                        requiredMessage="Erro: Campo Curso pertencente não pode ser vazio."                            
-                        value="#{administratorManager.currentPublicProof.studentCourse}" />
-                    <h:message for="studentCourse" errorStyle="color: red" />
+                <h:panelGrid columns="2" columnClasses="columnWidth" style="width: 420px">
+                    <h:outputLabel for="student" value="Escolha o estudante: " />
+                    <h:selectOneMenu
+                        class="form-control"
+                        id="student"
+                        value="#{administratorManager.currentPublicProof.studentId}" >
+                        <f:selectItems
+                            value="#{administratorManager.allStudentsREST}"
+                            var="student"
+                            itemValue="#{student.id}"
+                            itemLabel="#{student.courseName} - #{student.name}, #{student.studentNumber}" />
+                    </h:selectOneMenu>
                 </h:panelGrid> 
--->
+
                 <br/>
                 <br/>
+                <h:link styleClass="btn btn-primary" 
+                        style="margin-right: 15px"
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
                 <h:commandButton
                     class="btn btn-primary btn-md"
                     id="submit"
@@ -181,6 +160,19 @@
                 <h:message for="submit" style="color: red"/> 
             </h:form>
         </ui:define>    
+         <ui:define name="scripts">
+            <script type="text/javascript">
+                (function() {
+                    "use strict"
+                    $(function() {
+                        $(".datepicker").datepicker({
+                           dateFormat: 'yy-mm-dd',
+                           yearRange: "2017:2030"
+                        });
+                    });
+                })();
+            </script>
+        </ui:define>  
     </ui:composition> 
 </html>
 

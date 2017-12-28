@@ -7,8 +7,9 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
+import java.util.ArrayList;
 import java.util.Collection;
-import javax.ejb.EJB;
+import java.util.List;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -78,7 +79,8 @@ public class PublicProofBean extends Bean<PublicProof>{
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Collection<PublicProofDTO> getAllPublicProofs() {
         try {
-            return getAll(PublicProofDTO.class);
+            List<PublicProof> publicProofs = em.createNamedQuery("getAllPublicProofs").getResultList();
+            return classToDTOs(publicProofs);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -141,5 +143,33 @@ public class PublicProofBean extends Bean<PublicProof>{
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
+    }
+    
+    private PublicProofDTO classToDTO(PublicProof publicProof) {
+        return new PublicProofDTO(
+                publicProof.getId(),
+                    publicProof.getProofDate(),
+                    publicProof.getProofTime(),
+                    publicProof.getLocation(),
+                    publicProof.getCcpMember(),
+                    publicProof.getCcpMemberEmail(),
+                    publicProof.getWorkGuider(),
+                    publicProof.getWorkGuiderEmail(),
+                    publicProof.getTeacher(),
+                    publicProof.getTeacherEmail(),
+                    publicProof.getStudent().getId(),
+                    publicProof.getStudent().getName(),
+                    publicProof.getStudent().getEmail(),
+                    publicProof.getStudent().getStudentNumber(),
+                    publicProof.getStudent().getCourse().getName(),
+                    publicProof.getWorkTitle());
+    }
+
+    private List<PublicProofDTO> classToDTOs(List<PublicProof> publicProofs) {
+        List<PublicProofDTO> dtos = new ArrayList<>();
+        for (PublicProof pf : publicProofs) {
+            dtos.add(classToDTO(pf));
+        }
+        return dtos;
     }
 }

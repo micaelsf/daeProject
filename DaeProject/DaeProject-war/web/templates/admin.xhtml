@@ -12,6 +12,8 @@
         <h:outputStylesheet library="css" name="sb-admin-2.min.css" />              
         <h:outputStylesheet library="css" name="admin.css"/> 
 
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+        
         <ui:insert name="css"> <!-- other style sheets you might want to include --> 
         </ui:insert> 
     </h:head> 
@@ -152,11 +154,13 @@
         </div>
         <!-- /#wrapper -->
 
-
-        <h:outputScript library="js" name="jquery.min.js"/>
+        <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.js" />
+	<script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.js" />
+        <!--<h:outputScript library="js" name="jquery.min.js"/>-->
         <h:outputScript library="js" name="bootstrap.min.js"/>        
         <h:outputScript library="js" name="sb-admin-2.min.js"/>  
         <h:outputScript library="js" name="metisMenu.min.js"/> 
+       
 
         <ui:insert name="scripts"> 
             <!-- other scripts you might want to include -->

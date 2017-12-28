@@ -394,9 +394,9 @@ public class ConfigBean {
             ));
             
             publicProofBean.create(new PublicProofDTO(
-                    1,
+                    24,
                     "2018-01-01",
-                    "14:30:00",
+                    "14:30",
                     "ESTG, Anfitiatro D0",
                     "Joaquim Almeida",
                     "joaq@email.com",
@@ -413,9 +413,9 @@ public class ConfigBean {
             ));
             
             publicProofBean.create(new PublicProofDTO(
-                    2,
+                    25,
                     "2018-01-03",
-                    "16:00:00",
+                    "16:00",
                     "ESTG, Anfitiatro xx",
                     "Joaquim Almeida",
                     "joaq@email.com",
