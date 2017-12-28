@@ -15,7 +15,6 @@ import exceptions.MyConstraintViolationException;
 import exceptions.TeacherEnrolledException;
 import exceptions.Utils;
 import java.util.Collection;
-import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -51,20 +50,12 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             if (teacher == null) {
                 throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
             }
-            /*
-            List<String> bibliography = new LinkedList<>();
-            bibliography.add(proposalDTO.getBibliography1());
-            bibliography.add(proposalDTO.getBibliography2());
-            bibliography.add(proposalDTO.getBibliography3());
-            bibliography.add(proposalDTO.getBibliography4());
-            bibliography.add(proposalDTO.getBibliography5());
-            */
+            
             TeacherProposal proposal = new TeacherProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
                     proposalDTO.getObjectives(),
                     proposalDTO.getWorkResume(),
-                    //bibliography,
                     proposalDTO.getBibliography1(),
                     proposalDTO.getBibliography2(),
                     proposalDTO.getBibliography3(),
@@ -101,6 +92,9 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
+            
+            proposal.getTeacher().removeProposal(proposal);
+            
             em.remove(proposal);
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -153,7 +147,12 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
-
+            
+            Teacher teacher = em.find(Teacher.class, proposalDTO.getProponentID());
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+            
             proposal.setTitle(proposalDTO.getTitle());
             proposal.setScientificAreas(proposalDTO.getScientificAreas());
             proposal.setObjectives(proposalDTO.getObjectives());
@@ -170,7 +169,13 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             proposal.setSupport(proposalDTO.getSupport());
             proposal.setEnumProposalType(TeacherProposalType.valueOf(proposalDTO.getProposalType()));
             
+            proposal.getTeacher().removeProposal(proposal);
+            proposal.setTeacher(teacher);
+                  
+            teacher.addProposal(proposal);
+            
             em.merge(proposal);
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
@@ -180,7 +185,6 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
         }
     }
     
-       
     public void enrollProposal(int teacherId, int proposalId)
             throws EntityDoesNotExistsException, TeacherEnrolledException {
         try {

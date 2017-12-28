@@ -25,7 +25,8 @@
                         id="email"
                         size="52"
                         required="true"
-                        requiredMessage="Erro: Campo e-mail não pode ser vazio."                            
+                        requiredMessage="Erro: Campo e-mail não pode ser vazio." 
+                        validatorMessage=" Email inválido"                           
                         value="#{administratorManager.currentTeacher.email}" >
                         <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
                     </h:inputText>    

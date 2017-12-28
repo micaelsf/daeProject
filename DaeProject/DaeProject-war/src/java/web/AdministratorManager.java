@@ -9,16 +9,13 @@ import dtos.AdminDTO;
 import dtos.CourseDTO;
 import dtos.InstitutionDTO;
 import dtos.InstitutionProposalDTO;
+import dtos.PublicProofDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
 import entities.WorkProposal.ProposalStatus;
-import exceptions.EntityAlreadyExistsException;
-import exceptions.EntityDoesNotExistsException;
-import exceptions.MyConstraintViolationException;
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
@@ -57,6 +54,9 @@ public class AdministratorManager implements Serializable {
     private WorkProposalDTO newProposal;
     private WorkProposalDTO currentProposal;
 
+    private PublicProofDTO newPublicProof;
+    private PublicProofDTO currentPublicProof;
+    
     private UIComponent component;
     private Client client;
 
@@ -73,6 +73,7 @@ public class AdministratorManager implements Serializable {
         newInstituition = new InstitutionDTO();
         newTeacher = new TeacherDTO();
         newProposal = new WorkProposalDTO();
+        newPublicProof = new PublicProofDTO();
         client = ClientBuilder.newClient();
     }
     
@@ -121,7 +122,7 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
 
-    public void removeCourseREST(ActionEvent event) {
+    public String removeCourseREST(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
@@ -133,7 +134,9 @@ public class AdministratorManager implements Serializable {
                     .post(Entity.xml(""));
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return "index?faces-redirect=true";
     }
     
     /////////////// ADMINS /////////////////
@@ -474,6 +477,72 @@ public class AdministratorManager implements Serializable {
         return returnedProposals;
     }
     
+       /////////////// PUBLIC PROOFS //////////////////
+    public String createPublicProofREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newPublicProof)
+                    );
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public String updatePublicProofREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentPublicProof));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public String removePublicProof(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public List<PublicProofDTO> getAllPublicProofsREST() {
+        List<PublicProofDTO> returnedPublicProofs;
+        try {
+            returnedPublicProofs = client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<PublicProofDTO>>() {
+                    });
+            
+            for(PublicProofDTO s: returnedPublicProofs) {
+                        System.out.println("web.AdministratorManager.getAllPublicProofsREST() publicProof worktitle:" + s.getWorkTitle());
+            }
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedPublicProofs;
+    }
+    
     /////////////// UTILS //////////////////
 
     public boolean isPendente(ProposalStatus status) {
@@ -601,4 +670,21 @@ public class AdministratorManager implements Serializable {
     public void setCurrentProposal(WorkProposalDTO currentProposal) {
         this.currentProposal = currentProposal;
     }
+
+    public PublicProofDTO getNewPublicProof() {
+        return newPublicProof;
+    }
+
+    public void setNewPublicProof(PublicProofDTO newPublicProof) {
+        this.newPublicProof = newPublicProof;
+    }
+
+    public PublicProofDTO getCurrentPublicProof() {
+        return currentPublicProof;
+    }
+
+    public void setCurrentPublicProof(PublicProofDTO currentPublicProof) {
+        this.currentPublicProof = currentPublicProof;
+    }
+    
 }

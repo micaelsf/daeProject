@@ -18,13 +18,16 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllStudents",
             query = "SELECT s FROM Student s ORDER BY s.name"),
     @NamedQuery(name = "getAllStudentsCourse",
-            query = "SELECT s FROM Student s WHERE s.course.id = :courseId ORDER BY s.name")
+            query = "SELECT s FROM Student s WHERE s.course.id = :courseId ORDER BY s.name"),
+    @NamedQuery(name = "getAllStudentByNumber",
+            query = "SELECT s FROM Student s WHERE s.studentNumber = :number")
 })
 public class Student extends User{
 
@@ -43,6 +46,10 @@ public class Student extends User{
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "student")
     private WorkProposal workProposal;
+    
+    @OneToOne(fetch=FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name="ID")
+    private PublicProof publicProof;
 
     public Student() {
         documents = new LinkedList<>();
@@ -55,6 +62,14 @@ public class Student extends User{
 
         documents = new LinkedList<>();
         this.workProposalsApply = new LinkedList<>();
+    }
+
+    public PublicProof getPublicProof() {
+        return publicProof;
+    }
+
+    public void setPublicProof(PublicProof publicProof) {
+        this.publicProof = publicProof;
     }
 
     public void addProposalApply(WorkProposal workProp) {

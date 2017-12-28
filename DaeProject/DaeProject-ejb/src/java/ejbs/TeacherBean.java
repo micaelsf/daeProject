@@ -2,6 +2,7 @@ package ejbs;
 
 import dtos.TeacherDTO;
 import entities.Teacher;
+import entities.WorkProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -143,7 +144,8 @@ public class TeacherBean extends Bean<Teacher> {
         }
     }
  
-    public void sendEmailToTeacher(int id) throws MessagingException, EntityDoesNotExistsException {
+    public void sendEmailToTeacher(int id, WorkProposal proposal) 
+            throws MessagingException, EntityDoesNotExistsException {
         try {
             Teacher teacher = em.find(Teacher.class, id);
             if (teacher == null) {
@@ -153,7 +155,7 @@ public class TeacherBean extends Bean<Teacher> {
             emailBean.send(
                     teacher.getEmail(),
                     "Assunto",
-                    "Olá " + teacher.getName() + ", o estado da sua proposta foi alterado."
+                    "Olá " + teacher.getName() + ", o estado da sua proposta '"+proposal.getTitle()+"' foi alterado."
             );
 
         } catch (MessagingException | EntityDoesNotExistsException e) {

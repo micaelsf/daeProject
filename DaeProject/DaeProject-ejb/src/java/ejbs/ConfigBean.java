@@ -4,6 +4,7 @@ import dtos.AdminDTO;
 import dtos.CourseDTO;
 import dtos.InstitutionDTO;
 import dtos.InstitutionProposalDTO;
+import dtos.PublicProofDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
@@ -42,6 +43,9 @@ public class ConfigBean {
     
     @EJB
     private TeacherProposalBean teacherProposalBean;
+    
+    @EJB
+    private PublicProofBean publicProofBean;
 
     @PostConstruct
     public void populateBD() {
@@ -226,7 +230,7 @@ public class ConfigBean {
                             15, 
                             "t2", 
                             "t2", 
-                            "t2@ipleiria.pt", 
+                            "dae.ei.ipleiria@gmail.com", 
                             "DS02-XX",
                             "Leiria",
                             "Rua xxxx, 2400-xxx"
@@ -387,6 +391,44 @@ public class ConfigBean {
                     "Apoio fornecido pelo docente proponente",
                     TeacherProposalType.Projeto,
                     16
+            ));
+            
+            publicProofBean.create(new PublicProofDTO(
+                    1,
+                    "2018-01-01",
+                    "14:30:00",
+                    "ESTG, Anfitiatro D0",
+                    "Joaquim Almeida",
+                    "joaq@email.com",
+                    "Andre Costa",
+                    "andr@email.com",
+                    "Ana Filipa",
+                    "ana@email.com",
+                    8,
+                    "Micael",
+                    "micael@email.com",
+                    "666666666",
+                    "EI",
+                    "Estufas Inteligentes"
+            ));
+            
+            publicProofBean.create(new PublicProofDTO(
+                    2,
+                    "2018-01-03",
+                    "16:00:00",
+                    "ESTG, Anfitiatro xx",
+                    "Joaquim Almeida",
+                    "joaq@email.com",
+                    "Andre Costa",
+                    "andr@email.com",
+                    "Ana Filipa",
+                    "ana@email.com",
+                    7,
+                    "Bruno",
+                    "bruno@email.com",
+                    "555555555",
+                    "JDM",
+                    "Titulo do trabalho xpto"
             ));
             
             /*

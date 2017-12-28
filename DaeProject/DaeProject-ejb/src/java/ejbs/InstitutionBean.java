@@ -7,6 +7,7 @@ package ejbs;
 
 import dtos.InstitutionDTO;
 import entities.Institution;
+import entities.WorkProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -147,17 +148,18 @@ public class InstitutionBean extends Bean<Institution> {
         }
     }
   
-    public void sendEmailToInstitution(int id) throws MessagingException, EntityDoesNotExistsException {
+    public void sendEmailToInstitution(int id, WorkProposal proposal) 
+            throws MessagingException, EntityDoesNotExistsException {
         try {
             Institution instituition = em.find(Institution.class, id);
             if (instituition == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
-
+            
             emailBean.send(
                     instituition.getEmail(),
                     "Assunto",
-                    "Olá " + instituition.getName() + ", o estado da sua proposta foi alterado."
+                    "Olá " + instituition.getName() + ", o estado da sua proposta '"+proposal.getTitle()+"' foi alterado."
             );
 
         } catch (MessagingException | EntityDoesNotExistsException e) {

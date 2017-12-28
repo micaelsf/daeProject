@@ -113,7 +113,7 @@ public class InstitutionProposal extends WorkProposal {
         return institution;
     }
 
-    public void setInstitutions(Institution institution) {
+    public void setInstitution(Institution institution) {
         this.institution = institution;
     }
 

@@ -1,0 +1,88 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/admin.xhtml"> 
+        <ui:define name="main">
+            <h2 class="page-header">Dados da Prova Pública com id:#{administratorManager.currentPublicProof.id}</h2>
+            <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="dateProof" value="Data da Prova: " />
+                <h:outputText 
+                    id="dateProof"
+                    value="#{administratorManager.currentPublicProof.proofDate}"/>
+                
+                <h:outputLabel for="timeProof" value="Hora da Prova: " />
+                <h:outputText 
+                    id="timeProof"
+                    value="Ás #{administratorManager.currentPublicProof.proofTimeShort} horas"/>
+
+                <h:outputLabel for="location" value="Local: " />
+                <h:outputText 
+                    id="location"
+                    value="#{administratorManager.currentPublicProof.location}"/>
+                
+                <h:outputLabel for="workTitle" value="Titulo do trabalho: " />
+                <h:outputText 
+                    id="workTitle"
+                    value="#{administratorManager.currentPublicProof.workTitle}"/>
+
+                <h:outputLabel for="ccpMember" value="Nome do membro do CCP: " />
+                <h:outputText 
+                    id="ccpMember"
+                    value="#{administratorManager.currentPublicProof.ccpMember}"/> 
+                
+                <h:outputLabel for="ccpMemberEmail" value="Email do membro do CCP: " />
+                <h:outputText 
+                    id="ccpMemberEmail"
+                    value="#{administratorManager.currentPublicProof.ccpMemberEmail}"/> 
+                
+                <h:outputLabel for="workGuider" value="Nome do orientador: " />
+                <h:outputText 
+                    id="workGuider"
+                    value="#{administratorManager.currentPublicProof.workGuider}"/> 
+                
+                <h:outputLabel for="workGuiderEmail" value="Email do orientador: " />
+                <h:outputText 
+                    id="workGuiderEmail"
+                    value="#{administratorManager.currentPublicProof.workGuiderEmail}"/> 
+                
+                <h:outputLabel for="teacher" value="Nome do professor: " />
+                <h:outputText 
+                    id="teacher"
+                    value="#{administratorManager.currentPublicProof.teacher}"/>
+                
+                <h:outputLabel for="teacherEmail" value="Email do professor: " />
+                <h:outputText 
+                    id="teacherEmail"
+                    value="#{administratorManager.currentPublicProof.teacherEmail}"/>
+            </p:panelGrid>
+            
+            <h4>Dados do estudante</h4>
+            <p:panelGrid columns="2" class="table table-striped">
+                <h:outputLabel for="studentName" value="Nome: " />
+                <h:outputText 
+                    id="studentName"
+                    value="#{administratorManager.currentPublicProof.studentName}"/>
+                
+                <h:outputLabel for="studentEmail" value="Email: " />
+                <h:outputText 
+                    id="studentEmail"
+                    value="#{administratorManager.currentPublicProof.studentEmail}"/>
+                
+                <h:outputLabel for="studentCourse" value="Curso pertencente: " />
+                <h:outputText 
+                    id="studentCourse"
+                    value="#{administratorManager.currentPublicProof.studentCourse}"/>
+            </p:panelGrid>
+            <br/>
+            <br/>
+            <p:link class="btn btn-primary btn-md" value="Back" outcome="/admin/publicProof/index"/>
+                
+        </ui:define>
+    </ui:composition>
+</html>
+

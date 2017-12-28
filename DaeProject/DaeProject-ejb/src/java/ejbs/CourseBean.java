@@ -31,7 +31,7 @@ public class CourseBean extends Bean<Course>{
             Course course = em.find(Course.class, courseDTO.getId());
 
             if (course != null) {
-                throw new EntityAlreadyExistsException("A course with that code already exists.");
+                throw new EntityAlreadyExistsException("Já existe um curso com esse ID.");
             }
             
             course = new Course(
@@ -97,7 +97,7 @@ public class CourseBean extends Bean<Course>{
         try {
             Course course = em.find(Course.class, Integer.parseInt(id));
             if (course == null) {
-                throw new EntityDoesNotExistsException("There is no course with that code");
+                throw new EntityDoesNotExistsException("Não existe nenhum curso com esse id.");
             }
 
             em.remove(course);

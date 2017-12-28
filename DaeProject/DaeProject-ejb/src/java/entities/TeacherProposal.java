@@ -97,7 +97,7 @@ public class TeacherProposal extends WorkProposal {
         return teacher;
     }
 
-    public void setTeachers(Teacher teacher) {
+    public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
     }
 

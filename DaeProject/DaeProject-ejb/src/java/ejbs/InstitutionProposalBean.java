@@ -15,7 +15,6 @@ import exceptions.InstitutionEnrolledException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
-import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -51,20 +50,12 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
             }
-            /*
-            List<String> bibliography = new LinkedList<>();
-            bibliography.add(proposalDTO.getBibliography1());
-            bibliography.add(proposalDTO.getBibliography2());
-            bibliography.add(proposalDTO.getBibliography3());
-            bibliography.add(proposalDTO.getBibliography4());
-            bibliography.add(proposalDTO.getBibliography5());
-            */
+            
             InstitutionProposal proposal = new InstitutionProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
                     proposalDTO.getObjectives(),
                     proposalDTO.getWorkResume(),
-                    //bibliography,
                     proposalDTO.getBibliography1(),
                     proposalDTO.getBibliography2(),
                     proposalDTO.getBibliography3(),
@@ -102,6 +93,9 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
+            
+            proposal.getInstitution().removeProposal(proposal);
+            
             em.remove(proposal);
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -155,18 +149,15 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
             
-            /*List<String> bibliography = new LinkedList<>();
-            bibliography.add(proposalDTO.getBibliography1());
-            bibliography.add(proposalDTO.getBibliography2());
-            bibliography.add(proposalDTO.getBibliography3());
-            bibliography.add(proposalDTO.getBibliography4());
-            bibliography.add(proposalDTO.getBibliography5());
-            */
+            Institution institution = em.find(Institution.class, proposalDTO.getProponentID());
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
+            }
+            
             proposal.setTitle(proposalDTO.getTitle());
             proposal.setScientificAreas(proposalDTO.getScientificAreas());
             proposal.setObjectives(proposalDTO.getObjectives());
             proposal.setWorkResume(proposalDTO.getWorkResume());
-            //bibliography;
             proposal.setBibliography1(proposalDTO.getBibliography1());
             proposal.setBibliography2(proposalDTO.getBibliography2());
             proposal.setBibliography3(proposalDTO.getBibliography3());
@@ -180,8 +171,12 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             proposal.setSupervisor(proposalDTO.getSupervisor());
             proposal.setEnumProposalType(InstitutionProposalType.valueOf(proposalDTO.getProposalType()));
             
-                    
+            proposal.getInstitution().removeProposal(proposal);
+            proposal.setInstitution(institution);
+                  
+            institution.addProposal(proposal);
             em.merge(proposal);
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {

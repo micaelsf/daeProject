@@ -112,19 +112,19 @@ public class StudentBean extends Bean<Student> {
     public StudentDTO findStudent(@PathParam("id") String id)
             throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, id);
-
+            Student student = em.find(Student.class, Integer.parseInt(id));
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
-            return toDTO(student, StudentDTO.class);
+            
+            return toDTO(student,StudentDTO.class);
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-
+    
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -208,7 +208,26 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
+/*
+    public Student getStudentByNumber(String number)
+            throws EntityDoesNotExistsException {
+        try {
+            Student student = (Student) em.createNamedQuery("getAllStudentByNumber")
+                    .setParameter("number", number)
+                    .getSingleResult();
 
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse número.");
+            }
+            
+            return student;
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+*/
     public DocumentDTO getDocument(int id) throws EntityDoesNotExistsException {
         Document doc = em.find(Document.class, id);
 

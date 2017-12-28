@@ -13,7 +13,8 @@
                  store-protocol="imap"
                  store-protocol-class="com.sun.mail.imap.IMAPStore"
                  transport-protocol="smtps"
-                 transport-protocol-class="com.sun.mail.smtp.SMTPSSLTransport" user="dae.ei.ipleiria@gmail.com">
+                 transport-protocol-class="com.sun.mail.smtp.SMTPSSLTransport" 
+                 user="dae.ei.ipleiria@gmail.com">
     <description/>
     <property name="mail.smtps.auth" value="true"/>
     <property name="mail.smtps.password" value="ipleiria.ei.dae"/>
