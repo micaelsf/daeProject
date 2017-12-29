@@ -21,31 +21,34 @@ import javax.ejb.Startup;
 @Startup
 public class ConfigBean {
 
-    private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");   
-    
+    private static final Logger logger = Logger.getLogger("ejbs.ConfigBean");
+
     @EJB
     private CourseBean courseBean;
-    
+
     @EJB
     private AdminBean adminBean;
-    
+
     @EJB
     private StudentBean studentBean;
-    
+
     @EJB
     private InstitutionBean instituitionBean;
-    
+
     @EJB
     private TeacherBean teacherBean;
-    
+
     @EJB
     private InstitutionProposalBean institutionProposalBean;
-    
+
     @EJB
     private TeacherProposalBean teacherProposalBean;
-    
+
     @EJB
     private PublicProofBean publicProofBean;
+    
+    @EJB
+    private WorkProposalBean workProposalBean;
 
     @PostConstruct
     public void populateBD() {
@@ -440,28 +443,28 @@ public class ConfigBean {
                     null,
                     null
             ));
-            
+
+            //System.out.println("ConfigBean enroll Student in WorkProposal");
+            //workProposalBean.enrollStudent("7", "20");
+
             /*
             studentBean.enrollStudent("1111111", 1);
             studentBean.enrollStudent("1111111", 2);
             studentBean.enrollStudent("2222222", 3);
             studentBean.enrollStudent("2222222", 4);
-
             studentBean.enrollStudent("3333333", 5);
             studentBean.enrollStudent("3333333", 6);
             studentBean.enrollStudent("4444444", 6);
             studentBean.enrollStudent("4444444", 7);
-
             teacherBean.create("t1", "t1", "t1", "t1@ipleiria.pt", "O1");
             teacherBean.create("t2", "t2", "t2", "t2@ipleiria.pt", "O2");
             teacherBean.create("t3", "t3", "t3", "t3@ipleiria.pt", "O3");
-
             administratorBean.create("a1", "a1", "a1", "a1@ipleiria.pt");
             administratorBean.create("a2", "a2", "a2", "a2@ipleiria.pt");
             administratorBean.create("a3", "a3", "a3", "a3@ipleiria.pt");
-*/  
+             */
             System.out.println("End Inserting Entities Classes");
-        } catch(Exception e){
+        } catch (Exception e) {
             logger.log(Level.WARNING, "RAISED A EXCEPTION Inserting Entities: {0}", e.getMessage());
         }
     }

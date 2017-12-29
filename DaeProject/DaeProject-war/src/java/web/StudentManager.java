@@ -3,7 +3,12 @@ package web;
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.StudentDTO;
+import dtos.TeacherProposalDTO;
+import dtos.WorkProposalDTO;
 import ejbs.StudentBean;
+import entities.Student;
+import entities.WorkProposal;
+import exceptions.EntityDoesNotExistsException;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
@@ -11,9 +16,13 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.component.UIComponent;
+import javax.faces.component.UIParameter;
+import javax.faces.event.ActionEvent;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import utils.URILookup;
@@ -25,21 +34,24 @@ public class StudentManager implements Serializable {
     private Client client;
     private HttpAuthenticationFeature feature;
 
+    // private Student currentStudent;
     @ManagedProperty(value = "#{userManager}")
     private UserManager userManager;
 
     @ManagedProperty(value = "#{uploadManager}")
     private UploadManager uploadManager;
 
-    @EJB
-    private StudentBean studentBean;
+    private WorkProposalDTO currentProposal;
 
-    private StudentDTO student;
-    
     private List<DocumentDTO> documents;
     private DocumentDTO document;
 
+    @EJB
+    private StudentBean studentBean;
+    private StudentDTO student;
+    
     private String filePath;
+    private UIComponent component;
 
     public StudentManager() {
         client = ClientBuilder.newClient();
@@ -65,24 +77,121 @@ public class StudentManager implements Serializable {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-
-    public String uploadDocument() {
+    
+    public List<WorkProposalDTO> getAllWorkProposalsREST() {
+        List<WorkProposalDTO> returnedProposals;
         try {
-            document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
-
-            client.target(URILookup.getBaseAPI())
-                    .path("/students/addDocument")
-                    .path(student.getEmail())
+            
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/all")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(document));
-
+                    .get(new GenericType<List<WorkProposalDTO>>() {
+                    });
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
+        return returnedProposals;
+    }
 
+    public List<WorkProposalDTO> getAllStudentWorkProposalsREST() {
+        List<WorkProposalDTO> returnedProposals;
+        try {
+
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/allStudentProposalsRest")
+                    .path(userManager.getUsername() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<WorkProposalDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedProposals;
+    }
+
+    public String enrollStudentInProposal(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+
+            System.out.println("web.StudentManager.enrollStudentInProposal()");
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/enrollStudentRest")
+                    .path(userManager.getUsername() + "")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
         return "index?faces-redirect=true";
     }
+
+    public void unrollStudentFromProposal(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("removeId");
+            int removeId = Integer.parseInt(param.getValue().toString());
+            
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/unrollStudentRest")
+                    .path(userManager.getUsername() + "")
+                    .path(removeId + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+        }
+    }
+    
+    public boolean isProposalApplied() {
+        boolean isApplied = false;
+        try {
+            String result = client.target(URILookup.getBaseAPI())
+                    .path("/students/isStudentAppliedToProposal")
+                    .path(userManager.getUsername() + "")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<String>() {
+                    });
+
+            if (result.equals("YES")) {
+                isApplied = true;
+            }
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return false;
+        }
+        return isApplied;
+    }
+    
+    public boolean isMaxProposalReached() {
+        boolean maxReached = false;
+        try {
+            String totalProposal = client.target(URILookup.getBaseAPI())
+                    .path("/students/isStudentMaxProposalReached")
+                    .path(userManager.getUsername() + "")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<String>() {
+                    });
+            
+            if (Integer.parseInt(totalProposal) == 5) {
+                maxReached = true;
+            }
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return false;
+        }
+        return maxReached;
+    }
+
 
     public UserManager getUserManager() {
         return userManager;
@@ -99,29 +208,20 @@ public class StudentManager implements Serializable {
     public void setUploadManager(UploadManager uploadManager) {
         this.uploadManager = uploadManager;
     }
-
-    public StudentDTO getStudent() {
-        return student;
+    
+    public WorkProposalDTO getCurrentProposal() {
+        return currentProposal;
     }
 
-    public void setStudent(StudentDTO student) {
-        this.student = student;
+    public void setCurrentProposal(WorkProposalDTO currentProposal) {
+        this.currentProposal = currentProposal;
     }
 
-    public DocumentDTO getDocument() {
-        return document;
+    public UIComponent getComponent() {
+        return component;
     }
 
-    public void setDocument(DocumentDTO document) {
-        this.document = document;
+    public void setComponent(UIComponent component) {
+        this.component = component;
     }
-
-    public String getFilePath() {
-        return filePath;
-    }
-
-    public void setFilePath(String filePath) {
-        this.filePath = filePath;
-    }
-
 }

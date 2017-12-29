@@ -48,8 +48,8 @@ public class AdministratorManager implements Serializable {
     private StudentDTO newStudent;
     private StudentDTO currentStudent;
 
-    private InstitutionDTO newInstituition;
-    private InstitutionDTO currentInstituition;
+    private InstitutionDTO newInstitution;
+    private InstitutionDTO currentInstitution;
 
     private TeacherDTO newTeacher;
     private TeacherDTO currentTeacher;
@@ -74,12 +74,12 @@ public class AdministratorManager implements Serializable {
     private int selectOption;
 
     private HttpAuthenticationFeature feature;
-
+    
     public AdministratorManager() {
         newCourse = new CourseDTO();
         newAdmin = new AdminDTO();
         newStudent = new StudentDTO();
-        newInstituition = new InstitutionDTO();
+        newInstitution = new InstitutionDTO();
         newTeacher = new TeacherDTO();
         newProposal = new WorkProposalDTO();
         newPublicProof = new PublicProofDTO();
@@ -292,13 +292,13 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
 
-    /////////////// INSTITUTIONS /////////////////
-    public String createInstituition() {
+    //Institution
+    public String createInstitution() {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/institutions/createREST")
                     .request(MediaType.APPLICATION_XML)
-                    .post(Entity.xml(newInstituition)
+                    .post(Entity.xml(newInstitution)
                     );
 
         } catch (Exception e) {
@@ -308,12 +308,12 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
 
-    public String updateInstituitionREST() {
+    public String updateInstitutionREST() {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/institutions/updateREST")
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(currentInstituition));
+                    .put(Entity.xml(currentInstitution));
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
@@ -338,7 +338,7 @@ public class AdministratorManager implements Serializable {
         return returnedInstitutions;
     }
 
-    public String removeInstituition(ActionEvent event) {
+    public String removeInstitution(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("username");
             String username = param.getValue().toString();
@@ -466,7 +466,7 @@ public class AdministratorManager implements Serializable {
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
                     .path("/institutionProposals/all/institution")
-                    .path(currentInstituition.getUsername()+ "")
+                    .path(currentInstitution.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<InstitutionProposalDTO>>() {
                     });
@@ -643,19 +643,19 @@ public class AdministratorManager implements Serializable {
 
     //instituition
     public InstitutionDTO getCurrentInstituition() {
-        return currentInstituition;
+        return currentInstitution;
     }
 
-    public void setCurrentInstituition(InstitutionDTO currentInstituition) {
-        this.currentInstituition = currentInstituition;
+    public void setCurrentInstitution(InstitutionDTO currentInstitution) {
+        this.currentInstitution = currentInstitution;
     }
 
-    public InstitutionDTO getNewInstituition() {
-        return newInstituition;
+    public InstitutionDTO getNewInstitution() {
+        return newInstitution;
     }
 
-    public void setNewInstituition(InstitutionDTO newInstituition) {
-        this.newInstituition = newInstituition;
+    public void setNewInstitution(InstitutionDTO newInstitution) {
+        this.newInstitution = newInstitution;
     }
 
     //student

@@ -6,6 +6,7 @@
 package entities;
 
 import entities.UserGroup.GROUP;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
@@ -33,7 +34,13 @@ import javax.persistence.PrimaryKeyJoinColumn;
     @NamedQuery(name = "getStudentByEmail", 
             query = "SELECT s FROM Student s WHERE s.email = :email")
 })
-public class Student extends User{
+
+/*   
+@NamedQuery(name = "getAllProposals", 
+            query = "SELECT wp FROM Student wp WHERE wp.id = :workProposalId ORDER BY wp.id")
+*/
+
+public class Student extends User implements Serializable {
 
     @Column(nullable = false)
     private String studentNumber;
@@ -133,6 +140,11 @@ public class Student extends User{
     }
 
     public String toString() {
-        return "Student{" + "Password=" + password + ", nome=" + name + ", e-mail=" + email + ", número de estudante=" + studentNumber + '}';
+        return "Student{"
+                + "Password=" + password + ","
+                + " nome=" + name + ","
+                + " e-mail=" + email + ","
+                + " número de estudante=" + studentNumber
+                + '}';
     }
 }

@@ -21,7 +21,7 @@
                             title="Detalhes"
                             action="show?faces-redirect=true"> 
                             <f:setPropertyActionListener 
-                                target="#{administratorManager.currentInstituition}" 
+                                target="#{administratorManager.currentInstitution}" 
                                 value="#{object}" /> 
                         </h:commandLink> &nbsp; 
                         <h:commandLink
@@ -30,17 +30,24 @@
                             title="Editar" 
                             action="edit?faces-redirect=true"> 
                             <f:setPropertyActionListener 
-                                target="#{administratorManager.currentInstituition}" 
+                                target="#{administratorManager.currentInstitution}" 
                                 value="#{object}" /> 
                         </h:commandLink> &nbsp; 
                         <h:commandLink 
                             class="fa fa-trash fa-fw"
                             value=" " 
                             title="Remover"
+<<<<<<< HEAD
                             actionListener="#{administratorManager.removeInstituition}"> 
                             <f:param name="username" 
                                      id="username" 
                                      value="#{object.username}" /> 
+=======
+                            actionListener="#{administratorManager.removeInstitution}"> 
+                            <f:param name="id" 
+                                     id="id" 
+                                     value="#{object.id}" /> 
+>>>>>>> bafa33b4e0e3eace4d5324ea1297e9d15fedb645
                         </h:commandLink> 
                     </h:form> 
                 </p:column> 

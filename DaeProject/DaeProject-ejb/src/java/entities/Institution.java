@@ -25,8 +25,8 @@ import javax.persistence.OneToMany;
     @NamedQuery(name = "getInstitutionByEmail", 
             query = "SELECT i FROM Institution i WHERE i.email = :email")
 })
-public class Institution extends User implements Serializable{
-    
+public class Institution extends User implements Serializable {
+
     @OneToMany(mappedBy = "institution", cascade = CascadeType.REMOVE)
     private List<InstitutionProposal> proposals;
     
@@ -82,3 +82,4 @@ public class Institution extends User implements Serializable{
     }
     
 }
+

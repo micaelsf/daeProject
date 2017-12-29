@@ -1,11 +1,9 @@
 package ejbs;
 
 import dtos.TeacherDTO;
-import entities.Admin;
 import entities.PublicProof;
 import entities.Teacher;
 import entities.WorkProposal;
-import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -36,11 +34,11 @@ public class TeacherBean extends Bean<Teacher> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(TeacherDTO teacherDTO)
-            throws EntityAlreadyExistsException, MyConstraintViolationException {
+            throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             Teacher teacher = em.find(Teacher.class, teacherDTO.getUsername());
             if (teacher != null) {
-                throw new EntityAlreadyExistsException("Já existe um professor com esse nome.");
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
             }
 
             teacher = new Teacher(
@@ -55,7 +53,7 @@ public class TeacherBean extends Bean<Teacher> {
 
             em.persist(teacher);
 
-        } catch (EntityAlreadyExistsException e) {
+        } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -64,7 +62,6 @@ public class TeacherBean extends Bean<Teacher> {
         }
     }
 
-    
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @RolesAllowed({"Administrator"})
@@ -76,12 +73,11 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
-    
-     @Override
+
+    @Override
     protected Collection<Teacher> getAll() {
         return em.createNamedQuery("getAllTeachers").getResultList();
     }
-    
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

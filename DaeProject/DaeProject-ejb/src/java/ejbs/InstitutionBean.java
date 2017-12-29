@@ -40,9 +40,10 @@ public class InstitutionBean extends Bean<Institution> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(InstitutionDTO institutionDTO)
-            throws EntityAlreadyExistsException, MyConstraintViolationException {
+            throws EntityDoesNotExistsException, MyConstraintViolationException, EntityAlreadyExistsException {
         try {
             Institution institution = em.find(Institution.class, institutionDTO.getUsername());
+
             if (institution != null) {
                 throw new EntityAlreadyExistsException("Já existe uma instituição com esse nome.");
             }

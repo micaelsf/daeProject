@@ -37,8 +37,12 @@ import javax.persistence.Table;
 )
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-    @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title"),
-    @NamedQuery(name = "getAllEndedProposals",  query = "SELECT wp FROM WorkProposal wp WHERE wp.isWorkCompleted = TRUE ORDER BY wp.title")
+    @NamedQuery(name = "getAllProposals",  
+            query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title"),
+    @NamedQuery(name = "getAllEndedProposals",  
+            query = "SELECT wp FROM WorkProposal wp WHERE wp.isWorkCompleted = TRUE ORDER BY wp.title"),
+    @NamedQuery(name = "getProposalById",  
+            query = "SELECT wp FROM WorkProposal wp WHERE wp.id = :proposalId")
 })
 public class WorkProposal implements Serializable {
     

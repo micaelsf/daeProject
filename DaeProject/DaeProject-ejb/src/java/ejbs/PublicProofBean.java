@@ -56,7 +56,7 @@ public class PublicProofBean extends Bean<PublicProof>{
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe um estudante com esse Id.");
             }
-            
+
             publicProof = new PublicProof(
                     publicProofDTO.getId(),
                     publicProofDTO.getProofDate(),
@@ -71,7 +71,7 @@ public class PublicProofBean extends Bean<PublicProof>{
                     student,
                     publicProofDTO.getWorkTitle()
             );
-            
+
             student.setPublicProof(publicProof);
             em.persist(publicProof);
 
@@ -88,7 +88,7 @@ public class PublicProofBean extends Bean<PublicProof>{
     protected Collection<PublicProof> getAll() {
         return em.createNamedQuery("getAllPublicProofs").getResultList();
     }
-    
+
     @GET
     @Path("/all")
     @RolesAllowed({"Administrator"})
@@ -101,7 +101,7 @@ public class PublicProofBean extends Bean<PublicProof>{
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -117,8 +117,8 @@ public class PublicProofBean extends Bean<PublicProof>{
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe um estudante com esse Id.");
             }
-            
-            publicProof.setProofDate(publicProofDTO.getProofDate());            
+
+            publicProof.setProofDate(publicProofDTO.getProofDate());
             publicProof.setProofTime(publicProofDTO.getProofTime());
             publicProof.setLocation(publicProofDTO.getLocation());
             publicProof.setCcpMember(publicProofDTO.getCcpMember());
@@ -140,11 +140,11 @@ public class PublicProofBean extends Bean<PublicProof>{
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @POST
     @Path("/removeREST/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("id") String id)
             throws EntityDoesNotExistsException {
         try {
             PublicProof publicProof = em.find(PublicProof.class, Integer.parseInt(id));
@@ -160,7 +160,7 @@ public class PublicProofBean extends Bean<PublicProof>{
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @PUT
     @Path("/addDocument/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -176,11 +176,11 @@ public class PublicProofBean extends Bean<PublicProof>{
             }
             Document document = new Document(doc.getFilepath(), doc.getDesiredName(), doc.getMimeType());
             em.persist(document);
-            
+
             document.setPublicProof(publicProof);
             publicProof.setDocumentATA(document);
             em.merge(document);
-            
+
             // set progress status for this student proposal to DONE
             // STUDENT WORKPROPOSAL NOT YET IMPLEMENTED
             //publicProof.getStudent().getWorkProposal().setIsWorkCompleted(true);
@@ -221,7 +221,7 @@ public class PublicProofBean extends Bean<PublicProof>{
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     private PublicProofDTO classToDTO(PublicProof publicProof) {
         String filePath = null, ataName = null;
         if (publicProof.getDocumentATA() != null) {

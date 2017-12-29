@@ -7,11 +7,11 @@ package ejbs;
 
 import dtos.DocumentDTO;
 import dtos.StudentDTO;
-import entities.Admin;
 import entities.Course;
 import entities.Document;
 import entities.PublicProof;
 import entities.Student;
+import entities.WorkProposal;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
@@ -50,12 +50,12 @@ public class StudentBean extends Bean<Student> {
             if (student != null) {
                 throw new EntityAlreadyExistsException("Já existe um estudante com esse id.");
             }
-            
+
             Course course = em.find(Course.class, studentDTO.getCourseId());
             if (course == null) {
                 throw new EntityDoesNotExistsException("Não existe um curso com esse id.");
             }
-            
+
             student = new Student(
                     studentDTO.getUsername(),
                     studentDTO.getPassword(),
@@ -66,7 +66,7 @@ public class StudentBean extends Bean<Student> {
                     studentDTO.getAddress(),
                     course
             );
-            
+
             course.addStudent(student);
             em.persist(student);
 
@@ -104,13 +104,13 @@ public class StudentBean extends Bean<Student> {
             Collection<Student> students = em.createNamedQuery("getAllStudentsCourse")
                     .setParameter("courseId", Integer.parseInt(id))
                     .getResultList();
-            
+
             return toDTOs(students, StudentDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("findStudentByEmail/{email}")
@@ -149,7 +149,7 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -160,7 +160,7 @@ public class StudentBean extends Bean<Student> {
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
-            
+
             Course course = em.find(Course.class, studentDTO.getCourseId());
             if (course == null) {
                 throw new EntityDoesNotExistsException("Não existe um Curso com esse id.");
@@ -173,11 +173,12 @@ public class StudentBean extends Bean<Student> {
             student.setStudentNumber(studentDTO.getStudentNumber());
             student.setCity(studentDTO.getCity());
             student.setAddress(studentDTO.getAddress());
-            
+
             student.getCourse().removeStudent(student);
             student.setCourse(course);
-            
+
             course.addStudent(student);
+
             em.merge(student);
 
         } catch (EntityDoesNotExistsException e) {
@@ -188,7 +189,7 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @POST
     @Path("/removeREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -201,7 +202,7 @@ public class StudentBean extends Bean<Student> {
             }
 
             student.getCourse().removeStudent(student);
-            
+
             em.remove(student);
 
         } catch (EntityDoesNotExistsException e) {
@@ -236,26 +237,72 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
-/*
-    public Student getStudentByNumber(String number)
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("isStudentAppliedToProposal/{username}/{proposalId}")
+    public String isStudentAppliedToProposal(
+            @PathParam("username") String username,
+            @PathParam("proposalId") String proposalId)
             throws EntityDoesNotExistsException {
         try {
-            Student student = (Student) em.createNamedQuery("getStudentByNumber")
-                    .setParameter("number", number)
+            Student student = (Student) em.createNamedQuery("getStudentByUsername")
+                    .setParameter("username", username)
                     .getSingleResult();
 
             if (student == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse número.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse username.");
             }
             
-            return student;
+            WorkProposal proposal = (WorkProposal) em.createNamedQuery("getProposalById")
+                    .setParameter("proposalId", Integer.parseInt(proposalId))
+                    .getSingleResult();
+
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Proposta de trabalho com esse Id.");
+            }
+            return student.getWorkProposalsApply().contains(proposal) ? "YES" : "NO";
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-*/
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("isStudentMaxProposalReached/{username}/{proposalId}")
+    public String isStudentMaxProposalReached(
+            @PathParam("username") String username,
+            @PathParam("proposalId") String proposalId)
+            throws EntityDoesNotExistsException {
+        try {
+            Student student = (Student) em.createNamedQuery("getStudentByUsername")
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse username.");
+            }
+            
+            WorkProposal proposal = (WorkProposal) em.createNamedQuery("getProposalById")
+                    .setParameter("proposalId", Integer.parseInt(proposalId))
+                    .getSingleResult();
+
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Proposta de trabalho com esse Id.");
+            }
+            
+            return student.getWorkProposalsApply().size() + "";
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     public Student getStudentByEmail(String email)
             throws EntityDoesNotExistsException {
         try {

@@ -61,7 +61,6 @@ public class AdminBean extends Bean<Admin> {
         }
     }
 
-    
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @RolesAllowed({"Administrator"})
@@ -73,12 +72,11 @@ public class AdminBean extends Bean<Admin> {
             throw new EJBException(e.getMessage());
         }
     }
-    
-     @Override
+
+    @Override
     protected Collection<Admin> getAll() {
         return em.createNamedQuery("getAllAdmins").getResultList();
     }
-    
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -144,7 +142,7 @@ public class AdminBean extends Bean<Admin> {
             throw new EJBException(e.getMessage());
         }
     }
-       
+
     @POST
     @Path("/removeREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
