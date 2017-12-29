@@ -74,9 +74,9 @@ public class StudentManager implements Serializable {
             int hardCodeCurrentStudent = 3;
 
             returnedProposals = client.target(URILookup.getBaseAPI())
-                    .path("/proposals/allStudentProposals")
+                    .path("/proposals/allStudentProposalsRest")
                     //.path(Integer.toString(currentStudent.getId()))
-                    .path(Integer.toString(hardCodeCurrentStudent))
+                    .path(hardCodeCurrentStudent + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<WorkProposal>>() {
                     });
@@ -89,19 +89,18 @@ public class StudentManager implements Serializable {
 
     public void enrollStudent(ActionEvent event) {
         try {
-            System.out.println("StudentManager -> EnrollStudent");
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
 
-            System.out.println("StudentManager -> EnrollStudent -> currentProposal" + id);
+            System.out.println("StudentManager -> EnrollStudent -> currentProposal: " + id);
             int hardCodeCurrentStudent = 3;
 
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/enrollStudent")
-                    //.path(Integer.toString(currentStudent.getId()))
-                    .path(Integer.toString(hardCodeCurrentStudent))
-                    .path(Integer.toString(currentProposal.getId()))
-                    .request(MediaType.APPLICATION_XML);
+                    .path("/proposals/enrollStudentRest")
+                    .path(hardCodeCurrentStudent + "")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
@@ -110,18 +109,21 @@ public class StudentManager implements Serializable {
 
     public void unrollStudent(ActionEvent event) {
         try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            
             int hardCodeCurrentStudent = 3;
+            
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/unrollStudent")
-                    // .path(Integer.toString(currentStudent.getId()))
+                    .path("/proposals/unrollStudentRest")
                     .path(Integer.toString(hardCodeCurrentStudent))
+                    .path(Integer.toString(id))
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(Integer.toString(currentProposal.getId())));
+                    .post(Entity.xml(""));
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
-        //   return "index?faces-redirect=true";
     }
 
     public UserManager getUserManager() {

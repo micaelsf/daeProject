@@ -159,7 +159,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("allStudentProposals/{id}")
+    @Path("allStudentProposalsRest/{id}")
     public Collection<WorkProposal> getAllStudentWorkProposalsREST(
             @PathParam("studentId") String studentId)
             throws EntityDoesNotExistsException {
@@ -177,20 +177,20 @@ public class WorkProposalBean extends Bean<WorkProposal> {
     }
 
     @POST
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("enrollStudentRest/{studentId}/{workProposalId}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void enrollStudent(
             @PathParam("studentId") String studentId,
             @PathParam("workProposalId") String workProposalId)
             throws EntityDoesNotExistsException,
             MyConstraintViolationException {
-        System.out.println("enrollStudentREST studentId:" + studentId + " workProposalId: " + workProposalId);
 
         try {
             enrollStudentToWorkProposal(
-                    Integer.valueOf(studentId),
-                    Integer.valueOf(workProposalId)
+                    studentId,
+                    workProposalId
             );
+
         } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
             throw e;
         } catch (Exception e) {
@@ -199,18 +199,22 @@ public class WorkProposalBean extends Bean<WorkProposal> {
     }
 
     @POST
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("unrollStudentRest/{studentId}/{workProposalId}")
-    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void unrollStudent(
             @PathParam("studentId") String studentId,
             @PathParam("workProposalId") String workProposalId)
             throws EntityDoesNotExistsException,
             MyConstraintViolationException {
+
+        System.out.println("unrollStudentREST studentId:" + studentId + " workProposalId: " + workProposalId);
+
         try {
             unrollStudentFromWorkProposal(
-                    Integer.valueOf(studentId),
-                    Integer.valueOf(workProposalId)
+                    studentId,
+                    workProposalId
             );
+
         } catch (EntityDoesNotExistsException | MyConstraintViolationException e) {
             throw e;
         } catch (Exception e) {
@@ -218,11 +222,13 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
-    public void enrollStudentToWorkProposal(int idStudent, int idWorkProposal)
+    public void enrollStudentToWorkProposal(String idSt, String idWp)
             throws EntityDoesNotExistsException, MyConstraintViolationException, StudentNotEnrolledException, StudentEnrolledException {
         try {
+            System.out.println("WorkProposal -> enrollStudentREST studentId:" + idSt + " workProposalId: " + idWp);
 
-            System.out.println("enrollStudentREST studentId:" + idStudent + " workProposalId: " + idWorkProposal);
+            int idStudent = Integer.parseInt(idSt);
+            int idWorkProposal = Integer.parseInt(idWp);
 
             Student student = em.find(Student.class, idStudent);
             if (student == null) {
@@ -231,19 +237,24 @@ public class WorkProposalBean extends Bean<WorkProposal> {
 
             WorkProposal workProposal = em.find(WorkProposal.class, idWorkProposal);
             if (workProposal == null) {
-                throw new EntityDoesNotExistsException("Não exite nenhum estudante com esse ID.");
+                throw new EntityDoesNotExistsException("Não exite nenhum Proposta de trabalho com esse ID.");
             }
 
-            if (!student.getWorkProposalsApply().contains(workProposal)) {
-                throw new StudentNotEnrolledException("O estudante não tem essa Proposta.");
+            if (student.getWorkProposalsApply().contains(workProposal)) {
+                throw new StudentNotEnrolledException("O estudante já está inscrito neste Proposta de trabalho.");
             }
 
             if (workProposal.getStudentsApply().contains(student)) {
-                throw new StudentEnrolledException("Student is already enrolled in that subject.");
+                throw new StudentEnrolledException("O estudante já está proposto a este Proposta de trabalho.");
             }
 
+            System.out.println("enrollStudentREST merging in student and workproposal");
+
             student.addProposalApply(workProposal);
+            System.out.println("WorkProposal -> enrollSedWorkproposal in Student");
+
             workProposal.addStudentApply(student);
+            System.out.println("WorkProposal -> enrolledStudent on Workproposal / enrolled end");
 
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -253,9 +264,14 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
-    public void unrollStudentFromWorkProposal(int idStudent, int idWorkProposal)
+    public void unrollStudentFromWorkProposal(String idSt, String idWp)
             throws EntityDoesNotExistsException, MyConstraintViolationException, StudentNotEnrolledException {
         try {
+            System.out.println("enrollStudentREST studentId:" + idSt + " workProposalId: " + idWp);
+
+            int idStudent = Integer.parseInt(idSt);
+            int idWorkProposal = Integer.parseInt(idWp);
+
             Student student = em.find(Student.class, idStudent);
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não exite nenhum estudante com esse ID.");

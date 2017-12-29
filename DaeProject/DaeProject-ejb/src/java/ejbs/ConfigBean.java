@@ -437,12 +437,10 @@ public class ConfigBean {
                     null,
                     null
             ));
-/*
-            System.out.println("enroll Student To WorkProposal ");
-            workProposalBean.enrollStudent("1", "16");
-            workProposalBean.enrollStudent("3", "18");
-            workProposalBean.enrollStudent("5", "20");
-*/
+
+            System.out.println("ConfigBean enroll Student in WorkProposal");
+            workProposalBean.enrollStudent("7", "20");
+
             /*
             studentBean.enrollStudent("1111111", 1);
             studentBean.enrollStudent("1111111", 2);

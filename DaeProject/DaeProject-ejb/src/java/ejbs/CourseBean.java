@@ -20,7 +20,7 @@ import javax.ws.rs.core.MediaType;
 
 @Stateless
 @Path("/courses")
-public class CourseBean extends Bean<Course>{
+public class CourseBean extends Bean<Course> {
 
     @POST
     @Path("/createREST")
@@ -29,16 +29,14 @@ public class CourseBean extends Bean<Course>{
             throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
             Course course = em.find(Course.class, courseDTO.getId());
-
             if (course != null) {
                 throw new EntityAlreadyExistsException("Já existe um curso com esse ID.");
             }
-            
+
             course = new Course(
                     courseDTO.getId(),
                     courseDTO.getName()
             );
-            
             em.persist(course);
 
         } catch (EntityAlreadyExistsException e) {
@@ -54,7 +52,7 @@ public class CourseBean extends Bean<Course>{
     protected Collection<Course> getAll() {
         return em.createNamedQuery("getAllCourses").getResultList();
     }
-    
+
     @GET
     @Path("/all")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -65,7 +63,7 @@ public class CourseBean extends Bean<Course>{
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -88,11 +86,11 @@ public class CourseBean extends Bean<Course>{
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @POST
     @Path("/removeREST/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("id") String id)
             throws EntityDoesNotExistsException {
         try {
             Course course = em.find(Course.class, Integer.parseInt(id));
