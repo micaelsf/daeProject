@@ -60,9 +60,10 @@
             <br/>
             <c:choose>
                 <c:when test="#{!studentManager.proposalApplied and !studentManager.maxProposalReached}">
-                    <h4>Selecione o botão abaixo se deseja candidatar-se a esta proposta</h4>
+                    <h4>Selecione o botão abaixo se deseja candidatar-se a esta proposta <span style="font-style: italic; font-size: 90%">(Apenas se pode candidatar a 5 Propostas de Trabalho)</span></h4>
                     <h:form>
                         <h:commandButton 
+                            class="btn btn-bg btn-default"
                             value="Candidatar" 
                             title="Candidatar"
                             actionListener="#{studentManager.enrollStudentInProposal}"> 
