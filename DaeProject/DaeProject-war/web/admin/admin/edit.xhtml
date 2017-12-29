@@ -9,17 +9,6 @@
             <h2 class="page-header">Editar admin com username: <b>#{administratorManager.currentAdmin.username}</b></h2>   
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
-                    <h:outputLabel for="username" value="Username: " />
-                    <h:inputText
-                        class="form-control rowMargin"
-                        style="max-width: 50%"
-                        id="username"
-                        size="52"
-                        required="true"
-                        requiredMessage="Erro: O campo Username não pode ser vazio."                            
-                        value="#{administratorManager.currentAdmin.username}">
-                    </h:inputText>
-                    <h:message for="username" errorStyle="color: red" />
                     
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 

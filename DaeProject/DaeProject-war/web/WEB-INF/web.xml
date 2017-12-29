@@ -82,8 +82,8 @@
             <url-pattern>/webapi/courses/all</url-pattern>
             <url-pattern>/webapi/publicProofs/all</url-pattern>
             <url-pattern>/webapi/proposals/all</url-pattern>
-            <url-pattern>/webapi/teacherProposals/all</url-pattern>
-            <url-pattern>/webapi/institutionProposals/all</url-pattern>
+            <url-pattern>/webapi/teacherProposals/all/teacher/*</url-pattern>
+            <url-pattern>/webapi/institutionProposals/all/institution/*</url-pattern>
             <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
         </web-resource-collection>
         <auth-constraint>
@@ -104,7 +104,7 @@
             <web-resource-name>Teacher services</web-resource-name>
             <description/>
             <url-pattern>/webapi/teachers/findTeacherByUsername/*</url-pattern>
-            <url-pattern>/webapi/teacherProposals/all</url-pattern>
+            <url-pattern>/webapi/teacherProposals/all/teacher/*</url-pattern>
             <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
         </web-resource-collection>
         <auth-constraint>
@@ -125,7 +125,7 @@
             <web-resource-name>Institution services</web-resource-name>
             <description/>
             <url-pattern>/webapi/institutions/findInstitutionByUsername/*</url-pattern>
-            <url-pattern>/webapi/institutionProposals/all</url-pattern>
+            <url-pattern>/webapi/institutionProposals/all/institution/*</url-pattern>
             <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
         </web-resource-collection>
         <auth-constraint>

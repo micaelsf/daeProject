@@ -33,21 +33,16 @@ import javax.ws.rs.core.MediaType;
 public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @POST
-    @Path("/createREST")
+    @Path("/createREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void create(InstitutionProposalDTO proposalDTO)
+    public void create(@PathParam("username") String username, InstitutionProposalDTO proposalDTO)
          throws EntityAlreadyExistsException, MyConstraintViolationException, EntityDoesNotExistsException {
         try {
             if (em.find(InstitutionProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
             
-            // just to test create new proposal until authentication is not implemented
-            if (proposalDTO.getProponentUsername() == null) {
-                proposalDTO.setProponentUsername("institution1");
-            }
-            
-            Institution institution = em.find(Institution.class, proposalDTO.getProponentUsername());
+            Institution institution = em.find(Institution.class, username);
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
             }
@@ -125,14 +120,14 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
     @RolesAllowed({"Administrator", "Institution"})
-    @Path("/all/institution/{id}")
+    @Path("/all/institution/{username}")
     public Collection<InstitutionProposalDTO> getAllInstitutionProposals(
-            @PathParam("id") String idStr) {
+            @PathParam("username") String username) {
         try {
-            Institution institution = em.find(Institution.class, Integer.parseInt(idStr));
+            Institution institution = em.find(Institution.class, username);
             
             if (institution == null) {
-                throw new EntityDoesNotExistsException("Não existe uma instituição com este ID");
+                throw new EntityDoesNotExistsException("Não existe uma instituição com este username");
             }
             
             return toDTOs(institution.getProposals(), InstitutionProposalDTO.class);
@@ -142,9 +137,9 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     }
   
     @PUT
-    @Path("/updateREST")
+    @Path("/updateREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void updateREST(InstitutionProposalDTO proposalDTO)
+    public void updateREST(@PathParam("username") String username, InstitutionProposalDTO proposalDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
             InstitutionProposal proposal = em.find(InstitutionProposal.class, proposalDTO.getId());
@@ -152,7 +147,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
             
-            Institution institution = em.find(Institution.class, proposalDTO.getProponentUsername());
+            Institution institution = em.find(Institution.class, username);
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
             }

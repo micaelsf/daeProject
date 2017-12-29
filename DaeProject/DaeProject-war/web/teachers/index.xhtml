@@ -7,11 +7,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Propostas de trabalho</h1>
+            <h2 class="page-header">As minhas propostas de trabalho</h2>
              <em:dt title="Propostas" 
                    headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Estado']}" 
                    props="#{['proposalType', 'title', 'scientificAreas', 'status']}" 
-                   list="#{teacherManager.allProposalsREST}"> 
+                   list="#{teacherManager.proposalsFromTeacherREST}"> 
                 <p:column headerText="Ações">
                     <h:form class="center-text"> 
                             <h:commandLink 

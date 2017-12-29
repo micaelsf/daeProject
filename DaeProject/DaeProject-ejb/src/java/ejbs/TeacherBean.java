@@ -151,14 +151,14 @@ public class TeacherBean extends Bean<Teacher> {
     }
        
     @POST
-    @Path("/removeREST/{id}")
+    @Path("/removeREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("username") String username) 
             throws EntityDoesNotExistsException {
         try {
-            Teacher teacher = em.find(Teacher.class, Integer.parseInt(id));
+            Teacher teacher = em.find(Teacher.class, username);
             if (teacher == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse id.");
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse username.");
             }
 
             em.remove(teacher);

@@ -30,12 +30,6 @@ public class TeacherProposal extends WorkProposal {
     @Column(nullable = false, name = "PROPOSAL_TYPE")
     private TeacherProposalType enumProposalType;
     
-    /*@ManyToMany
-    @JoinTable(name = "PROPOSAL_TEACHER",
-            joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<Teacher> teachers;*/
-    
     @ManyToOne
     @JoinColumn(name = "TEACHER_USERNAME")
     private Teacher teacher;

@@ -155,14 +155,14 @@ public class InstitutionBean extends Bean<Institution> {
     }
        
     @POST
-    @Path("/removeREST/{id}")
+    @Path("/removeREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("username") String username) 
             throws EntityDoesNotExistsException {
         try {
-            Institution institution = em.find(Institution.class, Integer.parseInt(id));
+            Institution institution = em.find(Institution.class, username);
             if (institution == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse id.");
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse username.");
             }
 
             em.remove(institution);

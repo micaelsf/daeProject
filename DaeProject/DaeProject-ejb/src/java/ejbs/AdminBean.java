@@ -146,14 +146,14 @@ public class AdminBean extends Bean<Admin> {
     }
        
     @POST
-    @Path("/removeREST/{id}")
+    @Path("/removeREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("username") String username) 
             throws EntityDoesNotExistsException {
         try {
-            Admin admin = em.find(Admin.class, Integer.parseInt(id));
+            Admin admin = em.find(Admin.class, username);
             if (admin == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum admin com esse id.");
+                throw new EntityDoesNotExistsException("Não existe nenhum admin com esse username.");
             }
 
             em.remove(admin);

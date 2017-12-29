@@ -88,6 +88,7 @@ public class TeacherManager implements Serializable {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/teacherProposals/createREST")
+                    .path(userManager.getUsername() + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newProposal));
             newProposal.reset();
@@ -97,12 +98,13 @@ public class TeacherManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-
-    public List<TeacherProposalDTO> getAllProposalsREST() {
+        
+    public List<TeacherProposalDTO> getProposalsFromTeacherREST() {
         List<TeacherProposalDTO> returnedProposals;
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
-                    .path("/teacherProposals/all")
+                    .path("/teacherProposals/all/teacher")
+                    .path(userManager.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<TeacherProposalDTO>>() {
                     });
@@ -117,6 +119,7 @@ public class TeacherManager implements Serializable {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/teacherProposals/updateREST")
+                    .path(userManager.getUsername() + "")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentProposal));
         } catch (Exception e) {

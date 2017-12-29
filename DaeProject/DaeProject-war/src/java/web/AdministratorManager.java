@@ -200,12 +200,12 @@ public class AdministratorManager implements Serializable {
 
     public String removeAdmin(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
+            UIParameter param = (UIParameter) event.getComponent().findComponent("username");
+            String username = param.getValue().toString();
  
             client.target(URILookup.getBaseAPI())
                     .path("/admins/removeREST")
-                    .path(id + "")
+                    .path(username + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
         } catch (Exception e) {
@@ -277,12 +277,12 @@ public class AdministratorManager implements Serializable {
 
     public String removeStudent(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
+            UIParameter param = (UIParameter) event.getComponent().findComponent("username");
+            String username = param.getValue().toString();
  
             client.target(URILookup.getBaseAPI())
                     .path("/students/removeREST")
-                    .path(id + "")
+                    .path(username + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
         } catch (Exception e) {
@@ -340,11 +340,12 @@ public class AdministratorManager implements Serializable {
 
     public String removeInstituition(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
+            UIParameter param = (UIParameter) event.getComponent().findComponent("username");
+            String username = param.getValue().toString();
+            
             client.target(URILookup.getBaseAPI())
                     .path("/institutions/removeREST")
-                    .path(id + "")
+                    .path(username + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
         } catch (Exception e) {
@@ -387,12 +388,12 @@ public class AdministratorManager implements Serializable {
 
     public String removeTeacher(ActionEvent event) {
         try {
-            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
-            int id = Integer.parseInt(param.getValue().toString());
+            UIParameter param = (UIParameter) event.getComponent().findComponent("username");
+            String username = param.getValue().toString();
 
             client.target(URILookup.getBaseAPI())
                     .path("/teachers/removeREST")
-                    .path(id + "")
+                    .path(username + "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
         } catch (NumberFormatException e) {

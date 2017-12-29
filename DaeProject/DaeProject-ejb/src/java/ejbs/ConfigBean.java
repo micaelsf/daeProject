@@ -254,7 +254,7 @@ public class ConfigBean {
             );
             
             System.out.println("Inserting Institution Proposals");
-            institutionProposalBean.create(new InstitutionProposalDTO(
+            institutionProposalBean.create("institution1", new InstitutionProposalDTO(
                     1,
                     "Titulo 1", 
                     "EI", 
@@ -275,7 +275,7 @@ public class ConfigBean {
                     "institution1"
             ));
             
-            institutionProposalBean.create(new InstitutionProposalDTO(
+            institutionProposalBean.create("institution1", new InstitutionProposalDTO(
                     2,
                     "Titulo 2", 
                     "EI", 
@@ -296,7 +296,7 @@ public class ConfigBean {
                     "institution1"
             ));
             
-            institutionProposalBean.create(new InstitutionProposalDTO(
+            institutionProposalBean.create("institution2", new InstitutionProposalDTO(
                     3,
                     "Titulo 3", 
                     "EI", 
@@ -318,7 +318,7 @@ public class ConfigBean {
             ));
             
             System.out.println("Inserting Teacher Proposals");
-            teacherProposalBean.create(new TeacherProposalDTO(
+            teacherProposalBean.create("teacher1", new TeacherProposalDTO(
                     4,
                     "Titulo 4", 
                     "EI, EE", 
@@ -338,7 +338,7 @@ public class ConfigBean {
                     "teacher1"
             ));
             
-            teacherProposalBean.create(new TeacherProposalDTO(
+            teacherProposalBean.create("teacher1", new TeacherProposalDTO(
                     5,
                     "Titulo 5", 
                     "EI", 
@@ -358,7 +358,7 @@ public class ConfigBean {
                     "teacher1"
             ));
             
-            teacherProposalBean.create(new TeacherProposalDTO(
+            teacherProposalBean.create("teacher2", new TeacherProposalDTO(
                     6,
                     "Titulo 6", 
                     "EI, EE", 
@@ -378,7 +378,7 @@ public class ConfigBean {
                     "teacher2"
             ));
             
-            teacherProposalBean.create(new TeacherProposalDTO(
+            teacherProposalBean.create("teacher3", new TeacherProposalDTO(
                     7,
                     "Titulo 7", 
                     "EI", 

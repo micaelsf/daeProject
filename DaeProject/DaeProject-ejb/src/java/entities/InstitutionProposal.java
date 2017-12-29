@@ -18,11 +18,7 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllInstitutionProposals",
-            query = "SELECT ip FROM InstitutionProposal ip ORDER BY ip.title")/*,
-    @NamedQuery(name = "getInstitutionProposalsFrom",
-            query = "SELECT ip FROM InstitutionProposal ip "
-                    + "JOIN proposal_institution pi ON ip.ID = pi.PROPOSAL_ID "
-                    + "WHERE pi.PROPONENT_ID =:id ORDER BY ip.title")*/
+            query = "SELECT ip FROM InstitutionProposal ip ORDER BY ip.title")
 })
 public class InstitutionProposal extends WorkProposal {
 
@@ -36,12 +32,6 @@ public class InstitutionProposal extends WorkProposal {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "PROPOSAL_TYPE")
     private InstitutionProposalType enumProposalType;
-    
-   /* @ManyToMany
-    @JoinTable(name = "PROPOSAL_INSTITUTION",
-            joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<Institution> institutions;*/
     
     @ManyToOne
     @JoinColumn(name = "INSTITUTION_USERNAME")

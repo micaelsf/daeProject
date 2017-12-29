@@ -190,14 +190,14 @@ public class StudentBean extends Bean<Student> {
     }
     
     @POST
-    @Path("/removeREST/{id}")
+    @Path("/removeREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    public void remove(@PathParam("id") String id) 
+    public void remove(@PathParam("username") String username) 
             throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, Integer.parseInt(id));
+            Student student = em.find(Student.class, username);
             if (student == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse username.");
             }
 
             student.getCourse().removeStudent(student);

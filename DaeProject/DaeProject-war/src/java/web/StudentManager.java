@@ -50,7 +50,6 @@ public class StudentManager implements Serializable {
         feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
         client.register(feature);
         getLoggedStudent();
-        System.out.println("web.StudentManager.initClient()");
     }
 
     private void getLoggedStudent() {

@@ -6,18 +6,9 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h2 class="page-header">Editar Instituição com username: <b>#{administratorManager.currentInstituition.id}</b></h2>
+            <h2 class="page-header">Editar Instituição com username: <b>#{administratorManager.currentInstituition.username}</b></h2>
             <h:form>                  
-                <h:panelGrid columns="3" columnClasses="columnWidth">
-                    <h:outputLabel for="password" value="Password: " />
-                    <h:inputSecret
-                        class="form-control rowMargin"
-                        id="password"
-                        size="20"
-                        required="true"
-                        requiredMessage="Erro: O campo Password não pode ser vazio."
-                        value="#{administratorManager.currentInstituition.password}"/>
-                    <h:message for="password" errorStyle="color: red" />                        
+                <h:panelGrid columns="3" columnClasses="columnWidth">              
 
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
@@ -28,6 +19,16 @@
                         requiredMessage="Erro: O campo Nome não pode ser vazio."                            
                         value="#{administratorManager.currentInstituition.name}" />
                     <h:message for="name" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="password" value="Password: " />
+                    <h:inputSecret
+                        class="form-control rowMargin"
+                        id="password"
+                        size="20"
+                        required="true"
+                        requiredMessage="Erro: O campo Password não pode ser vazio."
+                        value="#{administratorManager.currentInstituition.password}"/>
+                    <h:message for="password" errorStyle="color: red" />          
 
                     <h:outputLabel for="email" value="Email: " />
                     <h:inputText

@@ -77,7 +77,7 @@ public class UserManager implements Serializable {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal() != null;
     }
 
-    public void logout() {
+    public String logout() {
         FacesContext context = FacesContext.getCurrentInstance();
         // remove data from beans:
         for (String bean : context.getExternalContext().getSessionMap().keySet()) {
@@ -88,14 +88,14 @@ public class UserManager implements Serializable {
                 = (HttpSession) context.getExternalContext().getSession(false);
         session.invalidate();
         isLoggedIn = false;
+        return "/login.xhtml?faces-redirect=true";
     }
 
     public String clearLogin() {
         if (isSomeUserAuthenticated()) {
             logout();
-            return "/login.xhtml?faces-redirect=true";
         }
-        return null;
+        return "/login.xhtml?faces-redirect=true";
     }
 
     public String getUsername() {

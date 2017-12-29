@@ -6,9 +6,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Editar Proposta de Trabalho</h1> 
+            <h2 class="page-header">Editar Proposta de Trabalho</h2> 
             <br/>
-            <h3 class="page-header">Tipo de Proposta: #{teacherManager.currentProposal.proposalType}</h3>
+            <h3>Tipo de Proposta: <b>#{teacherManager.currentProposal.proposalType}</b></h3>
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="title" value="Titulo: " />

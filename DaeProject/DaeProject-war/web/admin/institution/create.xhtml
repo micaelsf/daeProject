@@ -9,15 +9,17 @@
             <h2 class="page-header">Criar Instituição</h2> 
             <h:form>                  
                 <h:panelGrid columns="3" columnClasses="columnWidth">
-                    <h:outputLabel for="password" value="Password: " />
-                    <h:inputSecret
+                    <h:outputLabel for="username" value="Username: " />
+                    <h:inputText
                         class="form-control rowMargin"
-                        id="password"
-                        size="20"
+                        style="max-width: 50%"
+                        id="username"
+                        size="52"
                         required="true"
-                        requiredMessage="Erro: O campo Password não pode ser vazio."
-                        value="#{administratorManager.newInstituition.password}"/>
-                    <h:message for="password" errorStyle="color: red" />                        
+                        requiredMessage="Erro: O campo Username não pode ser vazio."                            
+                        value="#{administratorManager.newInstituition.username}">
+                    </h:inputText>
+                    <h:message for="username" errorStyle="color: red" />                    
 
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
@@ -28,6 +30,16 @@
                         requiredMessage="Erro: O campo Nome não pode ser vazio."                            
                         value="#{administratorManager.newInstituition.name}" />
                     <h:message for="name" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="password" value="Password: " />
+                    <h:inputSecret
+                        class="form-control rowMargin"
+                        id="password"
+                        size="20"
+                        required="true"
+                        requiredMessage="Erro: O campo Password não pode ser vazio."
+                        value="#{administratorManager.newInstituition.password}"/>
+                    <h:message for="password" errorStyle="color: red" />    
 
                     <h:outputLabel for="email" value="Email: " />
                     <h:inputText

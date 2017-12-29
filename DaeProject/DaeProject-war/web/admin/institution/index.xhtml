@@ -10,8 +10,8 @@
         <ui:define name="main">
             <h2 class="page-header">Instituições</h2>
             <em:dt title="Instituições" 
-                   headers="#{['Nome', 'Email']}" 
-                   props="#{['name', 'email']}" 
+                   headers="#{['Username', 'Nome', 'Email']}" 
+                   props="#{['username', 'name', 'email']}" 
                    list="#{administratorManager.allInstitutionsREST}"> 
                 <p:column headerText="Actions">
                     <h:form class="center-text"> 
@@ -38,8 +38,8 @@
                             value=" " 
                             title="Remover"
                             actionListener="#{administratorManager.removeInstituition}"> 
-                            <f:param name="id" 
-                                     id="id" 
+                            <f:param name="username" 
+                                     id="username" 
                                      value="#{object.username}" /> 
                         </h:commandLink> 
                     </h:form> 

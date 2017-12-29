@@ -87,6 +87,7 @@ public class InstitutionManager implements Serializable {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/institutionProposals/createREST")
+                    .path(userManager.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newProposal));
             newProposal.reset();
@@ -96,12 +97,13 @@ public class InstitutionManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-
-    public List<InstitutionProposalDTO> getAllProposalsREST() {
+        
+    public List<InstitutionProposalDTO> getProposalsFromInstitutionREST() {
         List<InstitutionProposalDTO> returnedProposals;
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
-                    .path("/institutionProposals/all")
+                    .path("/institutionProposals/all/institution")
+                    .path(userManager.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<InstitutionProposalDTO>>() {
                     });
@@ -110,12 +112,13 @@ public class InstitutionManager implements Serializable {
             return null;
         }
         return returnedProposals;
-    } 
+    }
     
     public String updateProposalREST() {
         try {
             client.target(URILookup.getBaseAPI())
                     .path("/institutionProposals/updateREST")
+                    .path(userManager.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(currentProposal));
         } catch (Exception e) {
