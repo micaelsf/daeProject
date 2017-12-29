@@ -8,7 +8,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Instituições</h1>
+            <h2 class="page-header">Instituições</h2>
             <em:dt title="Instituições" 
                    headers="#{['Nome', 'Email']}" 
                    props="#{['name', 'email']}" 
@@ -40,7 +40,7 @@
                             actionListener="#{administratorManager.removeInstituition}"> 
                             <f:param name="id" 
                                      id="id" 
-                                     value="#{object.id}" /> 
+                                     value="#{object.username}" /> 
                         </h:commandLink> 
                     </h:form> 
                 </p:column> 

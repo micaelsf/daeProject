@@ -88,7 +88,7 @@ public class AdministratorManager implements Serializable {
     
     @PostConstruct
     public void initClient() {
-        feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
+        feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
         client.register(feature);
     }
     
@@ -465,7 +465,7 @@ public class AdministratorManager implements Serializable {
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
                     .path("/institutionProposals/all/institution")
-                    .path(currentInstituition.getId() + "")
+                    .path(currentInstituition.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<InstitutionProposalDTO>>() {
                     });
@@ -481,7 +481,7 @@ public class AdministratorManager implements Serializable {
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
                     .path("/teacherProposals/all/teacher")
-                    .path(currentTeacher.getId() + "")
+                    .path(currentTeacher.getUsername()+ "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<TeacherProposalDTO>>() {
                     });

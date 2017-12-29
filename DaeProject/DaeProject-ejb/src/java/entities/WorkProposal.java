@@ -59,11 +59,11 @@ public class WorkProposal implements Serializable {
     @ManyToMany
     @JoinTable(name = "PROPOSAL_STUDENT",
             joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name = "STUDENT_ID", referencedColumnName = "ID"))
+            inverseJoinColumns = @JoinColumn(name = "STUDENT_USERNAME", referencedColumnName = "USERNAME"))
     private List<Student> studentsApply;
     
     @OneToOne(fetch=FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name="ID") //PrimaryKeyJoinColumn instead of JoinColumn because of conflicts while writing ID
+    @PrimaryKeyJoinColumn(name="USERNAME") //PrimaryKeyJoinColumn instead of JoinColumn because of conflicts while writing ID
     private Student student;
     
     @Column(nullable = false)

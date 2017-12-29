@@ -37,7 +37,7 @@ public class TeacherProposal extends WorkProposal {
     private List<Teacher> teachers;*/
     
     @ManyToOne
-    @JoinColumn(name = "TEACHER_ID")
+    @JoinColumn(name = "TEACHER_USERNAME")
     private Teacher teacher;
         
     public TeacherProposal() {

@@ -15,14 +15,15 @@ import javax.servlet.http.HttpSession;
 @SessionScoped
 public class UserManager implements Serializable {
 
-    private String email;
+    private String username;
     private String password;
+    private boolean isLoggedIn = false;
     private static final Logger logger = Logger.getLogger("web.UserManager");
 
     public UserManager() {
-
+        isLoggedIn = false;
     }
-
+    
     public String redirect() {
         if (isUserInRole(UserGroup.GROUP.Administrator)) {
             return "/faces/admin/index?faces-redirect=true";
@@ -40,20 +41,25 @@ public class UserManager implements Serializable {
             return "/faces/institutions/index?faces-redirect=true";
         }
 
-        return "error?faces-redirect=true";
+        return "/error?faces-redirect=true";
     }
 
     public String login() {
+        // se a flag não estiver a true significa que existe alguem logado mas que não fez login.. !?
+        // portanto, faz logout dessa sessão e loga com a nova sessão
+        if(!isLoggedIn) {
+            clearLogin();
+        }
+        
         FacesContext context = FacesContext.getCurrentInstance();
         HttpServletRequest request
                 = (HttpServletRequest) context.getExternalContext().getRequest();
         try {
-            System.out.println("web.UserManager.login() email:" + email);
-            System.out.println("web.UserManager.login() password: " + password);
-            request.login(email, password);
+            request.login(username, password);
+            isLoggedIn = true;
         } catch (ServletException e) {
             logger.log(Level.WARNING, e.getMessage());
-            return "error?faces-redirect=true";
+            return "/error?faces-redirect=true";
         }
 
         return redirect();
@@ -71,7 +77,7 @@ public class UserManager implements Serializable {
         return FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal() != null;
     }
 
-    public String logout() {
+    public void logout() {
         FacesContext context = FacesContext.getCurrentInstance();
         // remove data from beans:
         for (String bean : context.getExternalContext().getSessionMap().keySet()) {
@@ -81,23 +87,23 @@ public class UserManager implements Serializable {
         HttpSession session
                 = (HttpSession) context.getExternalContext().getSession(false);
         session.invalidate();
-        // using faces-redirect to initiate a new request:
-        return "/login.xhtml?faces-redirect=true";
+        isLoggedIn = false;
     }
 
     public String clearLogin() {
         if (isSomeUserAuthenticated()) {
             logout();
+            return "/login.xhtml?faces-redirect=true";
         }
-        return "login.xhtml?faces-redirect=true";
+        return null;
     }
 
-    public String getEmail() {
-        return email;
+    public String getUsername() {
+        return username;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -106,6 +112,14 @@ public class UserManager implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isIsLoggedIn() {
+        return isLoggedIn;
+    }
+
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn = isLoggedIn;
     }
 
 }

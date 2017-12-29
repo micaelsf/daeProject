@@ -5,11 +5,10 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Propostas de trabalho</h1>
+            <h2 class="page-header">Propostas de trabalho</h2>
             <em:dt title="Propostas" 
                    headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
                    props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 

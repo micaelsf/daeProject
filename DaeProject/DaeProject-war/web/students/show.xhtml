@@ -6,13 +6,8 @@
       xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Id da Proposta de Trabalho:#{administratorManager.currentProposal.id}</h1>
-            <p:panelGrid columns="2" class="table table-striped">
-                <h:outputLabel for="title" value="Titulo: " />
-                <h:outputText 
-                    id="title"
-                    value="#{administratorManager.currentProposal.title}"/>
-
+            <h2 class="page-header">Proposta de Trabalho:#{administratorManager.currentProposal.title}</h2>
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="scientificAreas" value="Áreas científicas: " />
                 <h:outputText 
                     id="scientificAreas"
@@ -27,7 +22,7 @@
                 <h:outputLabel for="status" value="Estado: " />
                 <h:outputText 
                     id="status"
-                    value="#{administratorManager.currentProposal.statusToStr(administratorManager.currentProposal.status)}"/>
+                    value="#{administratorManager.currentProposal.status}"/>
             </p:panelGrid>
             <br/>
             <br/>

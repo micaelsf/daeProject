@@ -10,9 +10,9 @@
         <ui:define name="main">
             <div class="login">
                 <h1>Login</h1>
-                <c:if test="${not userManager.someUserAuthenticated}">
-                    <h:form rendered="${not userManager.someUserAuthenticated}">
-                        <h:inputText a:placeholder="Email" class="inputfield" id="email" value="#{userManager.email}" required="true" />
+                <c:if test="${!userManager.isLoggedIn}">
+                    <h:form rendered="${!userManager.isLoggedIn}">
+                        <h:inputText a:placeholder="Username" class="inputfield" id="username" value="#{userManager.username}" required="true" />
                         <h:inputSecret a:placeholder="Password" class="inputfield" id="password" value="#{userManager.password}" required="true" />
                         <h:commandButton 
                             value="Entrar" 
@@ -20,7 +20,7 @@
                             action="#{userManager.login}" />
                     </h:form>
                 </c:if>
-                <c:if test="${userManager.someUserAuthenticated}">
+                <c:if test="${userManager.someUserAuthenticated and userManager.isLoggedIn}">
                     <p>Estás logado!</p>
                     <h:link outcome="${userManager.redirect()}" value="Voltar para a página principal"/>
                 </c:if>

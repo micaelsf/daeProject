@@ -8,10 +8,10 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Professores</h1>
+            <h2 class="page-header">Professores</h2>
             <em:dt title="Profesores" 
-                   headers="#{['Id', 'Nome', 'Email', 'Escritório']}" 
-                   props="#{['id', 'name', 'email', 'office']}" 
+                   headers="#{['Username', 'Nome', 'Email', 'Escritório']}" 
+                   props="#{['username', 'name', 'email', 'office']}" 
                    list="#{administratorManager.allTeachersREST}"> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
@@ -40,7 +40,7 @@
                                 actionListener="#{administratorManager.removeTeacher}"> 
                                 <f:param name="id" 
                                     id="id" 
-                                    value="#{object.id}" /> 
+                                    value="#{object.username}" /> 
                             </h:commandLink> 
                     </h:form> 
                 </p:column> 

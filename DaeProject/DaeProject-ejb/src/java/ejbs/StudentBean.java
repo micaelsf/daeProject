@@ -46,7 +46,7 @@ public class StudentBean extends Bean<Student> {
     public void create(StudentDTO studentDTO)
             throws EntityAlreadyExistsException, MyConstraintViolationException, EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, studentDTO.getId());
+            Student student = em.find(Student.class, studentDTO.getUsername());
             if (student != null) {
                 throw new EntityAlreadyExistsException("Já existe um estudante com esse id.");
             }
@@ -57,6 +57,7 @@ public class StudentBean extends Bean<Student> {
             }
             
             student = new Student(
+                    studentDTO.getUsername(),
                     studentDTO.getPassword(),
                     studentDTO.getName(),
                     studentDTO.getEmail(),
@@ -112,12 +113,35 @@ public class StudentBean extends Bean<Student> {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findStudent/{email}")
+    @Path("findStudentByEmail/{email}")
     public StudentDTO findStudent(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
             
             return toDTO(getStudentByEmail(email),StudentDTO.class);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findStudentByUsername/{username}")
+    public StudentDTO findStudentByUsername(@PathParam("username") String username)
+            throws EntityDoesNotExistsException {
+        try {
+            Student student = (Student) em.createNamedQuery("getStudentByUsername")
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse username.");
+            }
+            
+            return toDTO(student, StudentDTO.class);
             
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -132,7 +156,7 @@ public class StudentBean extends Bean<Student> {
     public void updateREST(StudentDTO studentDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Student student = em.find(Student.class, studentDTO.getId());
+            Student student = em.find(Student.class, studentDTO.getUsername());
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
             }
@@ -142,6 +166,7 @@ public class StudentBean extends Bean<Student> {
                 throw new EntityDoesNotExistsException("Não existe um Curso com esse id.");
             }
 
+            student.setUsername(studentDTO.getUsername());
             student.setPassword(studentDTO.getPassword());
             student.setName(studentDTO.getName());
             student.setEmail(studentDTO.getEmail());

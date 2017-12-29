@@ -6,7 +6,7 @@
 	width:300px;
 	height:300px;
 }
-.login h1 { color: #666; text-shadow: 0 0 10px rgba(50,50,50,0.8); letter-spacing:1px; text-align:center; }
+.login h1 { color: #666; text-shadow: 0 0 10px rgba(50,50,50,0.3); letter-spacing:1px; text-align:center; }
 
 .login .inputfield { 
 	width: 100%; 

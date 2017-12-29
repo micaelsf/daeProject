@@ -38,12 +38,13 @@ public class TeacherBean extends Bean<Teacher> {
     public void create(TeacherDTO teacherDTO)
             throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
-            Teacher teacher = em.find(Teacher.class, teacherDTO.getId());
+            Teacher teacher = em.find(Teacher.class, teacherDTO.getUsername());
             if (teacher != null) {
                 throw new EntityAlreadyExistsException("Já existe um professor com esse nome.");
             }
 
             teacher = new Teacher(
+                    teacherDTO.getUsername(),
                     teacherDTO.getPassword(),
                     teacherDTO.getName(),
                     teacherDTO.getEmail(),
@@ -84,12 +85,35 @@ public class TeacherBean extends Bean<Teacher> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findTeacher/{email}")
-    public TeacherDTO findTeacher(@PathParam("email") String email)
+    @Path("findTeacherByEmail/{email}")
+    public TeacherDTO findTeacherByEmail(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
             
             return toDTO(getTeacherByEmail(email), TeacherDTO.class);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findTeacherByUsername/{username}")
+    public TeacherDTO findTeacherByUsername(@PathParam("username") String username)
+            throws EntityDoesNotExistsException {
+        try {
+            Teacher teacher = (Teacher) em.createNamedQuery("getTeacherByUsername")
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse username.");
+            }
+            
+            return toDTO(teacher, TeacherDTO.class);
             
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -104,11 +128,12 @@ public class TeacherBean extends Bean<Teacher> {
     public void updateREST(TeacherDTO teacherDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Teacher teacher = em.find(Teacher.class, teacherDTO.getId());
+            Teacher teacher = em.find(Teacher.class, teacherDTO.getUsername());
             if (teacher == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
             }
 
+            teacher.setUsername(teacherDTO.getUsername());
             teacher.setPassword(teacherDTO.getPassword());
             teacher.setName(teacherDTO.getName());
             teacher.setEmail(teacherDTO.getEmail());

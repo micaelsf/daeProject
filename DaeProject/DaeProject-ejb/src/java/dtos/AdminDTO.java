@@ -12,8 +12,8 @@ public class AdminDTO extends UserDTO implements Serializable {
     public AdminDTO() {
     }    
     
-    public AdminDTO(int id, String password, String name, String email, String city, String address) {
-        super(id, password, name, email, city, address);
+    public AdminDTO(String username, String password, String name, String email, String city, String address) {
+        super(username, password, name, email, city, address);
     }
     
     @Override

@@ -7,7 +7,7 @@
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h2 class="page-header">Dados da Prova Pública com id:#{administratorManager.currentPublicProof.id}</h2>
+            <h2 class="page-header">Dados da Prova Pública com id: <b>#{administratorManager.currentPublicProof.id}</b></h2>
             <h4>Dados gerais</h4>
             <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="dateProof" value="Data da Prova: " />

@@ -19,7 +19,7 @@ public class PublicProofDTO implements Serializable{
     private String workGuiderEmail;
     private String teacher;
     private String teacherEmail;
-    private int studentId;
+    private String studentUsername;
     private String studentName;
     private String studentEmail;
     private String studentNumber;
@@ -43,7 +43,7 @@ public class PublicProofDTO implements Serializable{
             String workGuiderEmail,
             String teacher,
             String teacherEmail,
-            int studentId,
+            String studentUsername,
             String studentName,
             String studentEmail,
             String studentNumber,
@@ -62,7 +62,7 @@ public class PublicProofDTO implements Serializable{
             this.workGuiderEmail = workGuiderEmail;
             this.teacher = teacher;
             this.teacherEmail = teacherEmail;
-            this.studentId = studentId;
+            this.studentUsername = studentUsername;
             this.studentName = studentName;
             this.studentEmail = studentEmail;
             this.studentNumber = studentNumber;
@@ -84,7 +84,7 @@ public class PublicProofDTO implements Serializable{
         this.workGuiderEmail = null;
         this.teacher = null;
         this.teacherEmail = null;
-        this.studentId = 0;
+        this.studentUsername = null;
         this.studentName = null;
         this.studentEmail = null;
         this.studentNumber = null;
@@ -205,12 +205,20 @@ public class PublicProofDTO implements Serializable{
         this.teacherEmail = teacherEmail;
     }
 
-    public int getStudentId() {
-        return studentId;
+    public String getStudentUsername() {
+        return studentUsername;
     }
 
-    public void setStudentId(int studentId) {
-        this.studentId = studentId;
+    public void setStudentUsername(String studentUsername) {
+        this.studentUsername = studentUsername;
+    }
+
+    public String getstudentUsername() {
+        return studentUsername;
+    }
+
+    public void setstudentUsername(String studentUsername) {
+        this.studentUsername = studentUsername;
     }
 
     public String getStudentName() {

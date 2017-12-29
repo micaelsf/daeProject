@@ -2,7 +2,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets" 
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"> 
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
     <h:head> <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /> 
         <title>
             <ui:insert name="title">Gestão de Mestrados</ui:insert>
@@ -26,20 +28,47 @@
                 <div>
                     <!-- Right Side Of Navbar -->
                     <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
-                        <p:button styleClass="btn btn-primary" value="Administrador" outcome="/admin/index"/>
+                        <p:button styleClass="btn btn-primary" value="Página inicial" outcome="/frontend/index"/>
                     </ul>
-                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
-                        <p:button styleClass="btn btn-primary" value="Instituições" outcome="/institutions/index"/>
-                    </ul>
-                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
-                        <p:button styleClass="btn btn-primary" value="Professores" outcome="/teachers/index"/>
-                    </ul>
-                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
-                        <p:button styleClass="btn btn-primary" value="Estudantes" outcome="/students/index"/>
-                    </ul>
-                    <ul class="nav navbar-nav pull-right" style="margin-right: 15px; margin-bottom: 10px">
-                        <p:button styleClass="btn btn-default btn-bg" value="Login" outcome="/login"/>
-                    </ul>
+                    
+                    <c:choose>
+                        <c:when test="${userManager.someUserAuthenticated and userManager.isLoggedIn}">
+                            <c:choose>
+                                <c:when test='${userManager.isUserInRole("Administrator")}'>
+                                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
+                                        <p:button styleClass="btn btn-primary" value="Administrador" outcome="/admin/index"/>
+                                    </ul>
+                                </c:when>
+                                <c:when test='${userManager.isUserInRole("Institution")}'>
+                                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
+                                        <p:button styleClass="btn btn-primary" value="Área Instituição" outcome="/institutions/index"/>
+                                    </ul>
+                                </c:when>
+                                <c:when test='${userManager.isUserInRole("Teacher")}'>
+                                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
+                                        <p:button styleClass="btn btn-primary" value="Área Professor" outcome="/teachers/index"/>
+                                    </ul>
+                                </c:when>
+                                <c:when test='${userManager.isUserInRole("Student")}'>
+                                    <ul class="nav navbar-nav" style="margin-left: 15px; margin-bottom: 10px">
+                                        <p:button styleClass="btn btn-primary" value="Área Aluno" outcome="/students/index"/>
+                                    </ul>
+                                </c:when>
+                            </c:choose>
+                            <h:form rendered="${userManager.someUserAuthenticated}">
+                                <h:commandButton 
+                                    value="Logout" 
+                                    class="nav navbar-nav pull-right" 
+                                    style="margin-right: 15px; margin-bottom: 10px"
+                                    action="#{userManager.logout()}" />
+                            </h:form>
+                        </c:when>
+                        <c:otherwise>
+                            <ul class="nav navbar-nav pull-right" style="margin-right: 15px; margin-bottom: 10px">
+                                <p:button styleClass="btn btn-default btn-bg" value="Login" outcome="/login"/>
+                            </ul>
+                        </c:otherwise>
+                    </c:choose>
                 </div>
             </nav>
             <div class="col-md-12">

@@ -73,7 +73,7 @@
         <web-resource-collection>
             <web-resource-name>Admin services</web-resource-name>
             <description/>
-            <url-pattern>/webapi/admins/findAdmin/*</url-pattern>
+            <url-pattern>/webapi/admins/findAdminByUsername/*</url-pattern>
             <url-pattern>/webapi/students/all</url-pattern>
             <url-pattern>/webapi/admins/all</url-pattern>
             <url-pattern>/webapi/teachers/all</url-pattern>
@@ -81,7 +81,10 @@
             <url-pattern>/webapi/students/all</url-pattern>
             <url-pattern>/webapi/courses/all</url-pattern>
             <url-pattern>/webapi/publicProofs/all</url-pattern>
-            <url-pattern>/webapi/workProposals/all</url-pattern>
+            <url-pattern>/webapi/proposals/all</url-pattern>
+            <url-pattern>/webapi/teacherProposals/all</url-pattern>
+            <url-pattern>/webapi/institutionProposals/all</url-pattern>
+            <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -94,15 +97,15 @@
         <web-resource-collection>
             <web-resource-name>Teacher pages</web-resource-name>
             <description/>
-            <url-pattern>/faces/teacher/*</url-pattern>
+            <url-pattern>/faces/teachers/*</url-pattern>
             <url-pattern>/faces/frontend/*</url-pattern>
         </web-resource-collection>
         <web-resource-collection>
             <web-resource-name>Teacher services</web-resource-name>
             <description/>
-            <url-pattern>/webapi/teachers/findTeacher/*</url-pattern>
+            <url-pattern>/webapi/teachers/findTeacherByUsername/*</url-pattern>
             <url-pattern>/webapi/teacherProposals/all</url-pattern>
-            <url-pattern>/webapi/workProposals/all</url-pattern>
+            <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -115,15 +118,15 @@
         <web-resource-collection>
             <web-resource-name>Institution pages</web-resource-name>
             <description/>
-            <url-pattern>/faces/institution/*</url-pattern>
+            <url-pattern>/faces/institutions/*</url-pattern>
             <url-pattern>/faces/frontend/*</url-pattern>
         </web-resource-collection>
         <web-resource-collection>
             <web-resource-name>Institution services</web-resource-name>
             <description/>
-            <url-pattern>/webapi/institutions/findInstitution/*</url-pattern>
+            <url-pattern>/webapi/institutions/findInstitutionByUsername/*</url-pattern>
             <url-pattern>/webapi/institutionProposals/all</url-pattern>
-            <url-pattern>/webapi/workProposals/all</url-pattern>
+            <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
@@ -136,18 +139,19 @@
         <web-resource-collection>
             <web-resource-name>Student pages</web-resource-name>
             <description/>
-            <url-pattern>/faces/student/*</url-pattern>
+            <url-pattern>/faces/students/*</url-pattern>
             <url-pattern>/faces/frontend/*</url-pattern>
         </web-resource-collection>
         <web-resource-collection>
             <web-resource-name>Student services</web-resource-name>
             <description/>
-            <url-pattern>/webapi/students/findStudent/*</url-pattern>
-            <url-pattern>/webapi/workProposals/all</url-pattern>
+            <url-pattern>/webapi/students/findStudentByUsername/*</url-pattern>
+            <url-pattern>/webapi/proposals/allEndedProposals</url-pattern>
+            <url-pattern>/webapi/proposals/all</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
-            <role-name>Teacher</role-name>
+            <role-name>Student</role-name>
         </auth-constraint>
     </security-constraint>
     

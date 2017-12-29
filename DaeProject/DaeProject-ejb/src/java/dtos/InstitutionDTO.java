@@ -13,24 +13,37 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement(name = "Instituition")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class InstitutionDTO extends UserDTO implements Serializable{
-
+    
+    private String enterprise;
+    
     public InstitutionDTO() {
     }
 
     public InstitutionDTO(
-            int id,
+            String username,
             String password,
             String name,
             String email, 
             String city, 
-            String address
+            String address,
+            String enterprise
     ) {
-        super(id, password, name, email, city, address);
+        super(username, password, name, email, city, address);
+        this.enterprise = enterprise;
     }
 
     @Override
     public void reset() {
         super.reset();
+        this.enterprise = null;
+    }
+
+    public String getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(String enterprise) {
+        this.enterprise = enterprise;
     }
 
 }

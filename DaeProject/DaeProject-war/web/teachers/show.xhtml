@@ -10,11 +10,6 @@
             <h2>Estado da proposta: <b>#{teacherManager.currentProposal.status}</b></h2>
             <h3>Tipo: #{teacherManager.currentProposal.proposalType}</h3>
             <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
-                <h:outputLabel for="id" value="Id: " />
-                <h:outputText 
-                    id="id"
-                    value="#{teacherManager.currentProposal.id}"/>
-                
                 <h:outputLabel for="created_at" value="Criado em: " />
                 <h:outputText 
                     id="created_at"

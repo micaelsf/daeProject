@@ -14,7 +14,7 @@ public class TeacherDTO extends UserDTO implements Serializable {
     }    
     
     public TeacherDTO(
-            int id, 
+            String username, 
             String password, 
             String name, 
             String email, 
@@ -22,7 +22,7 @@ public class TeacherDTO extends UserDTO implements Serializable {
             String address, 
             String office
     ) {
-        super(id, password, name, email, city, address);
+        super(username, password, name, email, city, address);
         this.office = office;
     }
     

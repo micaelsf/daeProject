@@ -12,7 +12,8 @@ import java.util.Calendar;
 
 public class UserDTO implements Serializable{
     
-    protected int id;
+    //protected int id;
+    protected String username;       
     protected String password;    
     protected String name;
     protected String email;
@@ -23,8 +24,8 @@ public class UserDTO implements Serializable{
     public UserDTO() {
     }    
     
-    public UserDTO(int id, String password, String name, String email, String city, String address) {
-        this.id = id;
+    public UserDTO(String username, String password, String name, String email, String city, String address) {
+        this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
@@ -37,7 +38,7 @@ public class UserDTO implements Serializable{
     }
     
     public void reset() {
-        setId(0);
+        setUsername(null);
         setPassword(null);
         setName(null);
         setEmail(null);
@@ -69,14 +70,14 @@ public class UserDTO implements Serializable{
         this.address = address;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
-    
+
     public String getPassword() {
         return password;
     }

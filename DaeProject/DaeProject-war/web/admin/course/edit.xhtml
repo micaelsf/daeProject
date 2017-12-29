@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Editar curso com id: #{administratorManager.currentCourse.id}</h1>   
+            <h2 class="page-header">Editar curso com id: <b>#{administratorManager.currentCourse.id}</b></h2>   
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="name" value="Nome: " />

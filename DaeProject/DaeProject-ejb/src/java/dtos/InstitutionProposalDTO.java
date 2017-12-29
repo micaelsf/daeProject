@@ -31,7 +31,7 @@ public class InstitutionProposalDTO extends WorkProposalDTO implements Serializa
             String support,  
             String supervisor,
             InstitutionProposalType proposalType,
-            int institutionId
+            String institutionUsername
     ) {
         super(
                 id, 
@@ -51,7 +51,7 @@ public class InstitutionProposalDTO extends WorkProposalDTO implements Serializa
                 support,
                 supervisor,
                 proposalType.toString(),
-                institutionId
+                institutionUsername
         );
     }
     

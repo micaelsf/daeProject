@@ -20,6 +20,8 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     @NamedQuery(name = "getAllTeachers", 
             query = "SELECT t FROM Teacher t ORDER BY t.name"),
+    @NamedQuery(name = "getTeacherByUsername", 
+            query = "SELECT t FROM Teacher t WHERE t.username = :username"),
     @NamedQuery(name = "getTeacherByEmail", 
             query = "SELECT t FROM Teacher t WHERE t.email = :email")
 })
@@ -37,8 +39,8 @@ public class Teacher extends User implements Serializable {
     protected Teacher() {
     }
 
-    public Teacher(String password, String name, String email, String office, String city, String address) {
-        super(password, GROUP.Teacher, name, email, city, address);
+    public Teacher(String username, String password, String name, String email, String office, String city, String address) {
+        super(username, password, GROUP.Teacher, name, email, city, address);
         this.office = office;
         
         proposals = new LinkedList<>();

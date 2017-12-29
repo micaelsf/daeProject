@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Editar estudante com id: #{administratorManager.currentStudent.id}</h1>  
+            <h2 class="page-header">Editar estudante com username: <b>#{administratorManager.currentStudent.username}</b></h2>  
             <h3>Curso: #{administratorManager.currentStudent.courseName}</h3>
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
@@ -64,8 +64,7 @@
                         style="max-width: 50%"
                         id="city"
                         size="30"
-                        required="true"
-                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        required="false"                           
                         value="#{administratorManager.currentStudent.city}">
                     </h:inputText>
                     <h:message for="city" errorStyle="color: red" />
@@ -76,8 +75,7 @@
                         style="max-width: 50%"
                         id="address"
                         size="100"
-                        required="true"
-                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        required="false"                           
                         value="#{administratorManager.currentStudent.address}">
                     </h:inputText>
                     <h:message for="address" errorStyle="color: red" />

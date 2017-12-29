@@ -7,8 +7,13 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Dados do estudante com número de estudante: #{administratorManager.currentStudent.studentNumber}</h1>
+            <h2 class="page-header">Dados do estudante com username: <b>#{administratorManager.currentStudent.username}</b></h2>
             <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
+                <h:outputLabel for="numeroEstudante" value="Número do estudante: " />
+                <h:outputText 
+                    id="numeroEstudante"
+                    value="#{administratorManager.currentStudent.studentNumber}"/>
+                
                 <h:outputLabel for="courseName" value="Curso: " />
                 <h:outputText 
                     id="courseName"
@@ -18,11 +23,6 @@
                 <h:outputText 
                     id="created_at"
                     value="#{administratorManager.currentStudent.created_at}"/>
-                
-                <h:outputLabel for="id" value="Id: " />
-                <h:outputText 
-                    id="id"
-                    value="#{administratorManager.currentStudent.id}"/>
                 
                 <h:outputLabel for="name" value="Nome: " />
                 <h:outputText 

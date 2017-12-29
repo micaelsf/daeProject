@@ -24,7 +24,7 @@ public class UserGroup implements Serializable {
 
     @Id
     @OneToOne
-    @JoinColumn(name = "EMAIL")
+    @JoinColumn(name = "USERNAME")
     private User user;
 
     public UserGroup() {

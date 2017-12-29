@@ -47,17 +47,18 @@ public class StudentManager implements Serializable {
 
     @PostConstruct
     public void initClient() {
-        feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
+        feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
         client.register(feature);
         getLoggedStudent();
+        System.out.println("web.StudentManager.initClient()");
     }
 
     private void getLoggedStudent() {
         try {
 
             student = client.target(URILookup.getBaseAPI())
-                    .path("/students/findStudent")
-                    .path(userManager.getEmail())
+                    .path("/students/findStudentByUsername")
+                    .path(userManager.getUsername())
                     .request(MediaType.APPLICATION_XML)
                     .get(StudentDTO.class);
 

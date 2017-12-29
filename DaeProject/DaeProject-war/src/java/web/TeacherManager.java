@@ -60,7 +60,7 @@ public class TeacherManager implements Serializable {
 
     @PostConstruct
     public void initClient() {
-        feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
+        feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
         client.register(feature);
         getLoggedTeacher();
     }
@@ -69,8 +69,8 @@ public class TeacherManager implements Serializable {
         try {
 
             teacher = client.target(URILookup.getBaseAPI())
-                    .path("/teachers/findTeacher")
-                    .path(userManager.getEmail())
+                    .path("/teachers/findTeacherByUsername")
+                    .path(userManager.getUsername())
                     .request(MediaType.APPLICATION_XML)
                     .get(TeacherDTO.class);
 

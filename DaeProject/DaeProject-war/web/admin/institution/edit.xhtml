@@ -6,7 +6,7 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Editar Instituição com id:#{administratorManager.currentInstituition.id}</h1>
+            <h2 class="page-header">Editar Instituição com username: <b>#{administratorManager.currentInstituition.id}</b></h2>
             <h:form>                  
                 <h:panelGrid columns="3" columnClasses="columnWidth">
                     <h:outputLabel for="password" value="Password: " />
@@ -48,8 +48,7 @@
                         style="max-width: 50%"
                         id="city"
                         size="30"
-                        required="true"
-                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        required="false"                          
                         value="#{administratorManager.currentInstituition.city}">
                     </h:inputText>
                     <h:message for="city" errorStyle="color: red" />
@@ -60,11 +59,21 @@
                         style="max-width: 50%"
                         id="address"
                         size="100"
-                        required="true"
-                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        required="false"                          
                         value="#{administratorManager.currentInstituition.address}">
                     </h:inputText>
                     <h:message for="address" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="enterprise" value="Empresa representada: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="enterprise"
+                        size="52"
+                        required="false"                          
+                        value="#{administratorManager.currentInstituition.enterprise}">
+                    </h:inputText>
+                    <h:message for="enterprise" errorStyle="color: red" />
                 </h:panelGrid>  
 
                 <br></br>

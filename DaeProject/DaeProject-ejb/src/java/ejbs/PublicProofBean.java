@@ -51,7 +51,7 @@ public class PublicProofBean extends Bean<PublicProof>{
                 throw new EntityAlreadyExistsException("Já existe uma prova pública com esse Id.");
             }
             
-            Student student = em.find(Student.class, publicProofDTO.getStudentId());
+            Student student = em.find(Student.class, publicProofDTO.getstudentUsername());
             
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe um estudante com esse Id.");
@@ -113,7 +113,7 @@ public class PublicProofBean extends Bean<PublicProof>{
                 throw new EntityDoesNotExistsException("Não existe nenhuma Prova Pública com esse id.");
             }
             
-            Student student = em.find(Student.class, publicProofDTO.getStudentId());
+            Student student = em.find(Student.class, publicProofDTO.getstudentUsername());
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe um estudante com esse Id.");
             }
@@ -165,15 +165,15 @@ public class PublicProofBean extends Bean<PublicProof>{
     @Path("/addDocument/{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void addDocument(
-            @PathParam("id") int id,
+            @PathParam("id") String id,
             DocumentDTO doc)
             throws EntityDoesNotExistsException {
         try {
-            PublicProof publicProof = em.find(PublicProof.class, id);
+            PublicProof publicProof = em.find(PublicProof.class, Integer.parseInt(id));
+            
             if (publicProof == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma Prova Pública com esse id.");
             }
-
             Document document = new Document(doc.getFilepath(), doc.getDesiredName(), doc.getMimeType());
             em.persist(document);
             
@@ -182,7 +182,8 @@ public class PublicProofBean extends Bean<PublicProof>{
             em.merge(document);
             
             // set progress status for this student proposal to DONE
-            publicProof.getStudent().getWorkProposal().setIsWorkCompleted(true);
+            // STUDENT WORKPROPOSAL NOT YET IMPLEMENTED
+            //publicProof.getStudent().getWorkProposal().setIsWorkCompleted(true);
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -238,7 +239,7 @@ public class PublicProofBean extends Bean<PublicProof>{
                     publicProof.getWorkGuiderEmail(),
                     publicProof.getTeacher(),
                     publicProof.getTeacherEmail(),
-                    publicProof.getStudent().getId(),
+                    publicProof.getStudent().getUsername(),
                     publicProof.getStudent().getName(),
                     publicProof.getStudent().getEmail(),
                     publicProof.getStudent().getStudentNumber(),

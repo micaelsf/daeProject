@@ -6,7 +6,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Criar Prova Pública</h1>   
+            <h2 class="page-header">Criar Prova Pública</h2>   
             <h:form>
                 
                 <h4>Dados gerais</h4>
@@ -136,11 +136,11 @@
                     <h:selectOneMenu
                         class="form-control"
                         id="student"
-                        value="#{administratorManager.newPublicProof.studentId}" >
+                        value="#{administratorManager.newPublicProof.studentUsername}" >
                         <f:selectItems
                             value="#{administratorManager.allStudentsREST}"
                             var="student"
-                            itemValue="#{student.id}"
+                            itemValue="#{student.username}"
                             itemLabel="#{student.courseName} - #{student.name}, #{student.studentNumber}" />
                     </h:selectOneMenu>
                 </h:panelGrid> 

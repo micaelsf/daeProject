@@ -43,11 +43,11 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             }
             
             // just to test create new proposal until authentication is not implemented
-            if (proposalDTO.getProponentID() == 0) {
-                proposalDTO.setProponentID(10);
+            if (proposalDTO.getProponentUsername() == null) {
+                proposalDTO.setProponentUsername("institution1");
             }
             
-            Institution institution = em.find(Institution.class, proposalDTO.getProponentID());
+            Institution institution = em.find(Institution.class, proposalDTO.getProponentUsername());
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
             }
@@ -152,7 +152,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
             
-            Institution institution = em.find(Institution.class, proposalDTO.getProponentID());
+            Institution institution = em.find(Institution.class, proposalDTO.getProponentUsername());
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
             }

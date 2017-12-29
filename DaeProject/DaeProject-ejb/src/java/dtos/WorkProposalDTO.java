@@ -34,7 +34,8 @@ public class WorkProposalDTO implements Serializable {
     protected String rejectReason;
     protected String comments;
     protected boolean progressStatus;
-    protected int proponentID;
+    //protected int proponentID;
+    protected String proponentUsername;
     protected String created_at;
 
     public WorkProposalDTO() {
@@ -58,7 +59,8 @@ public class WorkProposalDTO implements Serializable {
             String support,  
             String supervisor,
             String proposalType,
-            int proponentID
+            //int proponentID,
+            String proponentUsername
     ) {
         this.id = id;        
         this.title = title;        
@@ -77,7 +79,8 @@ public class WorkProposalDTO implements Serializable {
         this.support = support;     
         this.supervisor = supervisor;
         this.proposalType = proposalType;
-        this.proponentID = proponentID;
+        //this.proponentID = proponentID;
+        this.proponentUsername = proponentUsername;
         
         this.rejectReason = " ";
         this.comments = " ";
@@ -108,7 +111,7 @@ public class WorkProposalDTO implements Serializable {
         setStatus(null);        
         setSupervisor(null);    
         setProposalType(null); 
-        setProponentID(0);
+        setProponentUsername(null);
     }    
 
     public String getCreated_at() {
@@ -134,15 +137,15 @@ public class WorkProposalDTO implements Serializable {
     public void setProgressStatus(boolean progressStatus) {
         this.progressStatus = progressStatus;
     }
+
+    public String getProponentUsername() {
+        return proponentUsername;
+    }
+
+    public void setProponentUsername(String proponentUsername) {
+        this.proponentUsername = proponentUsername;
+    }
     
-    public int getProponentID() {
-        return proponentID;
-    }
-
-    public void setProponentID(int proponentID) {
-        this.proponentID = proponentID;
-    }
-
     public String getRejectReason() {
         return rejectReason;
     }

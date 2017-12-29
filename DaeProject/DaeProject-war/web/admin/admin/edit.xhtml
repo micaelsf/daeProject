@@ -6,9 +6,21 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/templates/admin.xhtml">
         <ui:define name="main">
-            <h1 class="page-header">Editar admin com id: #{administratorManager.currentAdmin.id}</h1>   
+            <h2 class="page-header">Editar admin com username: <b>#{administratorManager.currentAdmin.username}</b></h2>   
             <h:form>
                 <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="username" value="Username: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="username"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Username não pode ser vazio."                            
+                        value="#{administratorManager.currentAdmin.username}">
+                    </h:inputText>
+                    <h:message for="username" errorStyle="color: red" />
+                    
                     <h:outputLabel for="name" value="Nome: " />
                     <h:inputText 
                         class="form-control rowMargin"
@@ -52,8 +64,7 @@
                         style="max-width: 50%"
                         id="city"
                         size="30"
-                        required="true"
-                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        required="false"                         
                         value="#{administratorManager.currentAdmin.city}">
                     </h:inputText>
                     <h:message for="city" errorStyle="color: red" />
@@ -64,8 +75,7 @@
                         style="max-width: 50%"
                         id="address"
                         size="100"
-                        required="true"
-                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        required="false"                         
                         value="#{administratorManager.currentAdmin.address}">
                     </h:inputText>
                     <h:message for="address" errorStyle="color: red" />

@@ -36,12 +36,13 @@ public class AdminBean extends Bean<Admin> {
     public void create(AdminDTO adminDTO)
             throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
-            Admin admin = em.find(Admin.class, adminDTO.getId());
+            Admin admin = em.find(Admin.class, adminDTO.getUsername());
             if (admin != null) {
                 throw new EntityAlreadyExistsException("Já existe um admin com esse nome.");
             }
 
             admin = new Admin(
+                    adminDTO.getUsername(),
                     adminDTO.getPassword(),
                     adminDTO.getName(),
                     adminDTO.getEmail(),
@@ -81,7 +82,7 @@ public class AdminBean extends Bean<Admin> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findAdmin/{email}")
+    @Path("findAdminByEmail/{email}")
     public AdminDTO findAdmin(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
@@ -92,18 +93,42 @@ public class AdminBean extends Bean<Admin> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findAdminByUsername/{username}")
+    public AdminDTO findAdminByUsername(@PathParam("username") String username)
+            throws EntityDoesNotExistsException {
+        try {
+            Admin admin = (Admin) em.createNamedQuery("getAdminByUsername")
+                    .setParameter("username", username)
+                    .getSingleResult();
 
+            if (admin == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum administrador com esse username.");
+            }
+            
+            return toDTO(admin, AdminDTO.class);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void updateREST(AdminDTO adminDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Admin admin = em.find(Admin.class, adminDTO.getId());
+            Admin admin = em.find(Admin.class, adminDTO.getUsername());
             if (admin == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum admin com esse nome.");
             }
 
+            admin.setUsername(adminDTO.getUsername());
             admin.setPassword(adminDTO.getPassword());
             admin.setName(adminDTO.getName());
             admin.setEmail(adminDTO.getEmail());

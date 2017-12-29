@@ -30,10 +30,13 @@ import util.Security;
 @NamedQuery(name = "getAllUsers", query = "SELECT u FROM User u")
 public class User implements Serializable {
 
-    @Id
+/*    @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
+    private int id;*/
+    
+    @Id
+    protected String username;
+    
     @Column(nullable = false)
     protected String created_at;
     
@@ -62,7 +65,8 @@ public class User implements Serializable {
     protected User() {
     }
 
-    protected User(String password, UserGroup.GROUP group, String name, String email, String city, String address) {
+    protected User(String username, String password, UserGroup.GROUP group, String name, String email, String city, String address) {
+        this.username = username;
         this.password = Security.hashPassword(password);
         this.group = new UserGroup(group, this);
         this.name = name;
@@ -83,12 +87,12 @@ public class User implements Serializable {
         this.created_at = dateTime;
     }
 
-    public int getId() {
-        return id;
+    public String getUsername() {
+        return username;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {

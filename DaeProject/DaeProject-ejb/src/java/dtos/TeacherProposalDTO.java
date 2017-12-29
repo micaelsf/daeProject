@@ -30,7 +30,7 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
             float budget,  
             String support,  
             TeacherProposalType proposalType,
-            int teacherId
+            String teacherUsername
     ) {
         super(
                 id, 
@@ -50,7 +50,7 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
                 support,
                 "N/A",
                 proposalType.toString(),
-                teacherId
+                teacherUsername
         );
     }
     

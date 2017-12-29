@@ -15,6 +15,8 @@ import javax.persistence.NamedQuery;
 @NamedQueries({
     @NamedQuery(name = "getAllAdmins",
             query = "SELECT a FROM Admin a ORDER BY a.name"),
+    @NamedQuery(name = "getAdminByUsername", 
+            query = "SELECT a FROM Admin a WHERE a.username = :username"),
     @NamedQuery(name = "getAdminByEmail", 
             query = "SELECT a FROM Admin a WHERE a.email = :email")
 })
@@ -23,7 +25,7 @@ public class Admin extends User {
     public Admin() {
     }
 
-    public Admin(String password, String name, String email, String city, String address) {
-        super(password, GROUP.Administrator, name, email, city, address);
+    public Admin(String username, String password, String name, String email, String city, String address) {
+        super(username, password, GROUP.Administrator, name, email, city, address);
     }
 }

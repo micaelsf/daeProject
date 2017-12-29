@@ -23,7 +23,7 @@ public class StudentDTO extends UserDTO implements Serializable {
     }
 
     public StudentDTO(
-            int id,
+            String username,
             String password,
             String name,
             String email,
@@ -33,7 +33,7 @@ public class StudentDTO extends UserDTO implements Serializable {
             int courseId,
             String courseName
     ) {
-        super(id, password, name, email, city, address);
+        super(username, password, name, email, city, address);
         this.studentNumber = studentNumber;
         this.courseId = courseId;
         this.courseName = courseName;

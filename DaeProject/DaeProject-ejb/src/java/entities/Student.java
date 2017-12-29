@@ -28,6 +28,8 @@ import javax.persistence.PrimaryKeyJoinColumn;
             query = "SELECT s FROM Student s WHERE s.course.id = :courseId ORDER BY s.name"),
     @NamedQuery(name = "getStudentByNumber",
             query = "SELECT s FROM Student s WHERE s.studentNumber = :number"),
+    @NamedQuery(name = "getStudentByUsername", 
+            query = "SELECT s FROM Student s WHERE s.username = :username"),
     @NamedQuery(name = "getStudentByEmail", 
             query = "SELECT s FROM Student s WHERE s.email = :email")
 })
@@ -50,15 +52,15 @@ public class Student extends User{
     private WorkProposal workProposal;
     
     @OneToOne(fetch=FetchType.LAZY)
-    @PrimaryKeyJoinColumn(name="ID")
+    @PrimaryKeyJoinColumn(name="USERNAME")
     private PublicProof publicProof;
 
     public Student() {
         documents = new LinkedList<>();
     }
 
-    public Student(String password, String name, String email, String studentNumber, String city, String address, Course course) {
-        super(password, GROUP.Student, name, email, city, address);
+    public Student(String username, String password, String name, String email, String studentNumber, String city, String address, Course course) {
+        super(username, password, GROUP.Student, name, email, city, address);
         this.course = course;
         this.studentNumber = studentNumber;
 

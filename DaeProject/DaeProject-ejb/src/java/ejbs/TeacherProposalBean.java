@@ -43,11 +43,11 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             }
             
             // just to test create new proposal until authentication is not implemented
-            if (proposalDTO.getProponentID() == 0) {
-                proposalDTO.setProponentID(12);
+            if (proposalDTO.getProponentUsername() == null) {
+                proposalDTO.setProponentUsername("teacher1");
             }
             
-            Teacher teacher = em.find(Teacher.class, proposalDTO.getProponentID());
+            Teacher teacher = em.find(Teacher.class, proposalDTO.getProponentUsername());
             if (teacher == null) {
                 throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
             }
@@ -150,8 +150,8 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
-            
-            Teacher teacher = em.find(Teacher.class, proposalDTO.getProponentID());
+            System.out.println("ejbs.TeacherProposalBean.updateREST() username do proponente:" + proposalDTO.getProponentUsername());
+            Teacher teacher = em.find(Teacher.class, proposalDTO.getProponentUsername());
             if (teacher == null) {
                 throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
             }

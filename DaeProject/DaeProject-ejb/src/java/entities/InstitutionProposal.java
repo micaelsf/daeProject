@@ -44,7 +44,7 @@ public class InstitutionProposal extends WorkProposal {
     private List<Institution> institutions;*/
     
     @ManyToOne
-    @JoinColumn(name = "INSTITUTION_ID")
+    @JoinColumn(name = "INSTITUTION_USERNAME")
     private Institution institution;
     
     public InstitutionProposal() {

@@ -62,7 +62,7 @@ public class ConfigBean {
             System.out.println("Inserting Admins");
             adminBean.create(
                     new AdminDTO(
-                            1, 
+                            "admin1", 
                             "123123", 
                             "admin", 
                             "admin@email.com",
@@ -72,7 +72,7 @@ public class ConfigBean {
             );            
             adminBean.create(
                     new AdminDTO(
-                            2, 
+                            "admin2", 
                             "123123", 
                             "admin_2", 
                             "admin_2@email.com",
@@ -84,7 +84,7 @@ public class ConfigBean {
             System.out.println("Inserting Students");
             studentBean.create(
                     new StudentDTO(
-                            3, 
+                            "student1", 
                             "123123", 
                             "Zé", 
                             "ze@email.com", 
@@ -97,7 +97,7 @@ public class ConfigBean {
             );            
             studentBean.create(
                     new StudentDTO(
-                            4, 
+                            "student2", 
                             "123123", 
                             "Maria", 
                             "maria@email.com",
@@ -110,7 +110,7 @@ public class ConfigBean {
             );
             studentBean.create(
                     new StudentDTO(
-                            5, 
+                            "student3", 
                             "123123", 
                             "Joana", 
                             "joana@email.com", 
@@ -123,7 +123,7 @@ public class ConfigBean {
             );
             studentBean.create(
                     new StudentDTO(
-                            6, 
+                            "student4", 
                             "123123", 
                             "André", 
                             "andre@email.com", 
@@ -136,7 +136,7 @@ public class ConfigBean {
             );
             studentBean.create(
                     new StudentDTO(
-                            7, 
+                            "student5", 
                             "123123", 
                             "Bruno", 
                             "bruno@email.com", 
@@ -149,7 +149,7 @@ public class ConfigBean {
             );
             studentBean.create(
                     new StudentDTO(
-                            8, 
+                            "student6", 
                             "123123", 
                             "Micael", 
                             "micael@email.com", 
@@ -164,93 +164,98 @@ public class ConfigBean {
             System.out.println("Inserting Institutions");
             instituitionBean.create(
                     new InstitutionDTO(
-                            9, 
+                            "institution1", 
                             "123123", 
                             "CompanyA", 
                             "companya@email.com",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx",
+                            "Empresa XPTO"
                     )
             );
             instituitionBean.create(
                     new InstitutionDTO(
-                            10, 
+                            "institution2", 
                             "123123", 
                             "CompanyB", 
                             "companyb@email.com",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx",
+                            "Empresa XPTO"
                     )
             );
             instituitionBean.create(
                     new InstitutionDTO(
-                            12, 
+                            "institution3", 
                             "123123", 
                             "CompanyC", 
                             "companyc@email.com",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx",
+                            "Empresa XPTO"
                     )
             );
             instituitionBean.create(
                     new InstitutionDTO(
-                            13, 
+                            "institution4", 
                             "123123", 
                             "CompanyD", 
                             "companyd@email.com",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx",
+                            "Empresa XPTO"
                     )
             );
             instituitionBean.create(
                     new InstitutionDTO(
-                            13, 
+                            "institution5", 
                             "123123", 
                             "CompanyF", 
                             "companyf@email.com",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx",
+                            "Empresa XPTO"
                     )
             );
             
             System.out.println("Inserting Teachers");
             teacherBean.create(
                     new TeacherDTO(
-                            14, 
-                            "123", 
+                            "teacher1", 
+                            "123123", 
                             "mic", 
-                            "micaelsf@sapo.pt", 
-                            "DS02-XX",
+                            "micaelsf@sapo.pt",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx", 
+                            "DS02-XX"
                     )
             );
             teacherBean.create(
                     new TeacherDTO(
-                            15, 
+                            "teacher2", 
+                            "123123", 
                             "t2", 
-                            "t2", 
-                            "dae.ei.ipleiria@gmail.com", 
-                            "DS02-XX",
+                            "dae.ei.ipleiria@gmail.com",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx", 
+                            "DS02-XX"
                     )
             );
             teacherBean.create(
                     new TeacherDTO(
-                            16, 
+                            "teacher3", 
                             "t3", 
                             "t3", 
-                            "t3@ipleiria.pt", 
-                            "DS02-XX",
+                            "t3@ipleiria.pt",
                             "Leiria",
-                            "Rua xxxx, 2400-xxx"
+                            "Rua xxxx, 2400-xxx", 
+                            "DS02-XX"
                     )
             );
             
             System.out.println("Inserting Institution Proposals");
             institutionProposalBean.create(new InstitutionProposalDTO(
-                    17,
+                    1,
                     "Titulo 1", 
                     "EI", 
                     "Objetivos do trabalho: ...", 
@@ -267,11 +272,11 @@ public class ConfigBean {
                     "Apoio fornecido pelo docente proponente",
                     "Inácio", 
                     InstitutionProposalType.Projeto,
-                    9
+                    "institution1"
             ));
             
             institutionProposalBean.create(new InstitutionProposalDTO(
-                    18,
+                    2,
                     "Titulo 2", 
                     "EI", 
                     "Objetivos do trabalho: ...", 
@@ -288,11 +293,11 @@ public class ConfigBean {
                     "Apoio fornecido pelo docente proponente",
                     "Paulo Neves", 
                     InstitutionProposalType.Dissertação,
-                    9
+                    "institution1"
             ));
             
             institutionProposalBean.create(new InstitutionProposalDTO(
-                    19,
+                    3,
                     "Titulo 3", 
                     "EI", 
                     "Objetivos do trabalho: ...", 
@@ -309,12 +314,12 @@ public class ConfigBean {
                     "Apoio fornecido pela empresa",
                     "João Andrade", 
                     InstitutionProposalType.Estágio,
-                    10
+                    "institution2"
             ));
             
             System.out.println("Inserting Teacher Proposals");
             teacherProposalBean.create(new TeacherProposalDTO(
-                    20,
+                    4,
                     "Titulo 4", 
                     "EI, EE", 
                     "Objetivos do trabalho: ...", 
@@ -330,11 +335,11 @@ public class ConfigBean {
                     200,
                     "Apoio fornecido pelo docente proponente",
                     TeacherProposalType.Projeto,
-                    14
+                    "teacher1"
             ));
             
             teacherProposalBean.create(new TeacherProposalDTO(
-                    21,
+                    5,
                     "Titulo 5", 
                     "EI", 
                     "Objetivos do trabalho: ...", 
@@ -350,11 +355,11 @@ public class ConfigBean {
                     200,
                     "Apoio fornecido pelo estg",
                     TeacherProposalType.Dissertação,
-                    14
+                    "teacher1"
             ));
             
             teacherProposalBean.create(new TeacherProposalDTO(
-                    22,
+                    6,
                     "Titulo 6", 
                     "EI, EE", 
                     "Objetivos do trabalho: ...", 
@@ -370,11 +375,11 @@ public class ConfigBean {
                     200,
                     "Sem apoios",
                     TeacherProposalType.Dissertação,
-                    15
+                    "teacher2"
             ));
             
             teacherProposalBean.create(new TeacherProposalDTO(
-                    23,
+                    7,
                     "Titulo 7", 
                     "EI", 
                     "Objetivos do trabalho: ...", 
@@ -390,11 +395,12 @@ public class ConfigBean {
                     200,
                     "Apoio fornecido pelo docente proponente",
                     TeacherProposalType.Projeto,
-                    16
+                    "teacher3"
             ));
             
+            System.out.println("Inserting Public Proofs");
             publicProofBean.create(new PublicProofDTO(
-                    24,
+                    8,
                     "2018-01-01",
                     "14:30",
                     "ESTG, Anfitiatro D0",
@@ -404,7 +410,7 @@ public class ConfigBean {
                     "dae.ei.ipleiria@gmail.com",
                     "t3",
                     "t3@ipleiria.pt",
-                    8,
+                    "student6",
                     "Micael",
                     "micael@email.com",
                     "666666666",
@@ -415,7 +421,7 @@ public class ConfigBean {
             ));
             
             publicProofBean.create(new PublicProofDTO(
-                    25,
+                    9,
                     "2018-01-03",
                     "16:00",
                     "ESTG, Anfitiatro xx",
@@ -425,7 +431,7 @@ public class ConfigBean {
                     "dae.ei.ipleiria@gmail.com",
                     "t3",
                     "t3@ipleiria.pt",
-                    7,
+                    "student5",
                     "Bruno",
                     "bruno@email.com",
                     "555555555",

@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -19,6 +20,8 @@ import javax.persistence.OneToMany;
 @NamedQueries({
     @NamedQuery(name = "getAllInstitutions",
             query = "SELECT s FROM Institution s ORDER BY s.name"),
+    @NamedQuery(name = "getInstitutionByUsername", 
+            query = "SELECT i FROM Institution i WHERE i.username = :username"),
     @NamedQuery(name = "getInstitutionByEmail", 
             query = "SELECT i FROM Institution i WHERE i.email = :email")
 })
@@ -27,13 +30,24 @@ public class Institution extends User implements Serializable{
     @OneToMany(mappedBy = "institution", cascade = CascadeType.REMOVE)
     private List<InstitutionProposal> proposals;
     
+    @Column(nullable = true)
+    private String enterprise;
+    
     public Institution() {
     }
 
-    public Institution(String password, String name, String email, String city, String address) {
-        super(password, GROUP.Institution, name, email, city, address);
-        
-        proposals = new LinkedList<>();
+    public Institution(
+            String username, 
+            String password, 
+            String name, 
+            String email, 
+            String city, 
+            String address, 
+            String enterprise
+    ) {
+        super(username, password, GROUP.Institution, name, email, city, address);
+        this.enterprise = enterprise;
+        this.proposals = new LinkedList<>();
     }
 
     @Override
@@ -58,4 +72,13 @@ public class Institution extends User implements Serializable{
     public void removeProposal(InstitutionProposal proposal) {
         proposals.remove(proposal);
     }
+
+    public String getEnterprise() {
+        return enterprise;
+    }
+
+    public void setEnterprise(String enterprise) {
+        this.enterprise = enterprise;
+    }
+    
 }

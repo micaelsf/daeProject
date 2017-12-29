@@ -8,7 +8,7 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h2 class="page-header">Dados do Professor com id:#{administratorManager.currentTeacher.id}</h2>
+            <h2 class="page-header">Dados do Professor com username: <b>#{administratorManager.currentTeacher.username}</b></h2>
             <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="created_at" value="Criado em: " />
                 <h:outputText 

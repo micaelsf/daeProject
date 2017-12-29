@@ -42,17 +42,19 @@ public class InstitutionBean extends Bean<Institution> {
     public void create(InstitutionDTO institutionDTO)
             throws EntityAlreadyExistsException, MyConstraintViolationException {
         try {
-            Institution institution = em.find(Institution.class, institutionDTO.getId());
+            Institution institution = em.find(Institution.class, institutionDTO.getUsername());
             if (institution != null) {
                 throw new EntityAlreadyExistsException("Já existe uma instituição com esse nome.");
             }
 
             institution = new Institution(
+                    institutionDTO.getUsername(),
                     institutionDTO.getPassword(),
                     institutionDTO.getName(),
                     institutionDTO.getEmail(),
                     institutionDTO.getCity(),
-                    institutionDTO.getAddress()
+                    institutionDTO.getAddress(),
+                    institutionDTO.getEnterprise()
             );
 
             em.persist(institution);
@@ -85,12 +87,35 @@ public class InstitutionBean extends Bean<Institution> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findInstitution/{email}")
+    @Path("findInstitutionByEmail/{email}")
     public InstitutionDTO findInstituition(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
 
             return toDTO(getInstitutionByEmail(email), InstitutionDTO.class);
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("findInstitutionByUsername/{username}")
+    public InstitutionDTO findInstitutionByUsername(@PathParam("username") String username)
+            throws EntityDoesNotExistsException {
+        try {
+            Institution institution = (Institution) em.createNamedQuery("getInstitutionByUsername")
+                    .setParameter("username", username)
+                    .getSingleResult();
+
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse username.");
+            }
+            
+            return toDTO(institution, InstitutionDTO.class);
             
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -105,16 +130,19 @@ public class InstitutionBean extends Bean<Institution> {
     public void updateREST(InstitutionDTO institutionDTO)
             throws EntityDoesNotExistsException, MyConstraintViolationException {
         try {
-            Institution institution = em.find(Institution.class, institutionDTO.getId());
+            Institution institution = em.find(Institution.class, institutionDTO.getUsername());
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
 
+            institution.setUsername(institutionDTO.getUsername());
             institution.setPassword(institutionDTO.getPassword());
             institution.setName(institutionDTO.getName());
             institution.setEmail(institutionDTO.getEmail());
             institution.setCity(institutionDTO.getCity());
             institution.setAddress(institutionDTO.getAddress());
+            institution.setEnterprise(institutionDTO.getEnterprise());
+            
             em.merge(institution);
 
         } catch (EntityDoesNotExistsException e) {

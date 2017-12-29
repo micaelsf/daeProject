@@ -59,7 +59,7 @@ public class InstitutionManager implements Serializable {
 
     @PostConstruct
     public void initClient() {
-        feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
+        feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
         client.register(feature);
         getLoggedStudent();
     }
@@ -68,8 +68,8 @@ public class InstitutionManager implements Serializable {
         try {
 
             institution = client.target(URILookup.getBaseAPI())
-                    .path("/institutions/findInstitution")
-                    .path(userManager.getEmail())
+                    .path("/institutions/findInstitutionByUsername")
+                    .path(userManager.getUsername())
                     .request(MediaType.APPLICATION_XML)
                     .get(InstitutionDTO.class);
 
