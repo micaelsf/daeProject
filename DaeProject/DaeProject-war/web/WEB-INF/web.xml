@@ -29,8 +29,14 @@
         </session-timeout>
     </session-config>
     <welcome-file-list>
-        <welcome-file>faces/frontend/index.xhtml</welcome-file>
+        <welcome-file>faces/login.xhtml</welcome-file>
     </welcome-file-list>
+    
+    <error-page>
+        <error-code>403</error-code>
+        <location>/faces/error.xhtml</location>
+    </error-page>
+
     <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
@@ -39,20 +45,130 @@
         <extension>eot</extension>
         <mime-type>application/vnd.ms-fontobject</mime-type>
     </mime-mapping>
-    <mime-mapping>  
-        <extension>otf</extension>  
-        <mime-type>font/opentype</mime-type>  
-    </mime-mapping>      
-    <mime-mapping>  
-        <extension>ttf</extension>  
-        <mime-type>application/x-font-ttf</mime-type>  
-    </mime-mapping>      
-    <mime-mapping>  
-        <extension>woff</extension>  
-        <mime-type>application/x-font-woff</mime-type>  
+    <mime-mapping>
+        <extension>otf</extension>
+        <mime-type>font/opentype</mime-type>
     </mime-mapping>
-    <mime-mapping>  
-        <extension>woff2</extension>  
-        <mime-type>application/x-font-woff2</mime-type>  
+    <mime-mapping>
+        <extension>ttf</extension>
+        <mime-type>application/x-font-ttf</mime-type>
     </mime-mapping>
+    <mime-mapping>
+        <extension>woff</extension>
+        <mime-type>application/x-font-woff</mime-type>
+    </mime-mapping>
+    <mime-mapping>
+        <extension>woff2</extension>
+        <mime-type>application/x-font-woff2</mime-type>
+    </mime-mapping>
+    
+    <security-constraint>
+        <display-name>AdministratorConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Admin pages</web-resource-name>
+            <description/>
+            <url-pattern>/faces/admin/*</url-pattern>
+            <url-pattern>/faces/frontend/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Admin services</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/admins/findAdmin/*</url-pattern>
+            <url-pattern>/webapi/students/all</url-pattern>
+            <url-pattern>/webapi/admins/all</url-pattern>
+            <url-pattern>/webapi/teachers/all</url-pattern>
+            <url-pattern>/webapi/institutions/all</url-pattern>
+            <url-pattern>/webapi/students/all</url-pattern>
+            <url-pattern>/webapi/courses/all</url-pattern>
+            <url-pattern>/webapi/publicProofs/all</url-pattern>
+            <url-pattern>/webapi/workProposals/all</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <display-name>TeacherConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Teacher pages</web-resource-name>
+            <description/>
+            <url-pattern>/faces/teacher/*</url-pattern>
+            <url-pattern>/faces/frontend/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Teacher services</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/teachers/findTeacher/*</url-pattern>
+            <url-pattern>/webapi/teacherProposals/all</url-pattern>
+            <url-pattern>/webapi/workProposals/all</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Teacher</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <display-name>IntitutionConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Intitution pages</web-resource-name>
+            <description/>
+            <url-pattern>/faces/intitution/*</url-pattern>
+            <url-pattern>/faces/frontend/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Intitution services</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/intitutions/findIntitution/*</url-pattern>
+            <url-pattern>/webapi/intitutionProposals/all</url-pattern>
+            <url-pattern>/webapi/workProposals/all</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Teacher</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <security-constraint>
+        <display-name>StudentConstraint</display-name>
+        <web-resource-collection>
+            <web-resource-name>Student pages</web-resource-name>
+            <description/>
+            <url-pattern>/faces/student/*</url-pattern>
+            <url-pattern>/faces/frontend/*</url-pattern>
+        </web-resource-collection>
+        <web-resource-collection>
+            <web-resource-name>Student services</web-resource-name>
+            <description/>
+            <url-pattern>/webapi/students/findStudent/*</url-pattern>
+            <url-pattern>/webapi/workProposals/all</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>Teacher</role-name>
+        </auth-constraint>
+    </security-constraint>
+    
+    <login-config>
+        <auth-method>BASIC</auth-method>
+        <realm-name>dae_project_realm</realm-name>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>Administrator</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>Teacher</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>Institution</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>Student</role-name>
+    </security-role>
 </web-app>

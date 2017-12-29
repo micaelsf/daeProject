@@ -15,10 +15,10 @@ import dtos.StudentDTO;
 import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
-import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
@@ -30,6 +30,7 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import utils.URILookup;
 
 @ManagedBean
@@ -62,6 +63,9 @@ public class AdministratorManager implements Serializable {
     @ManagedProperty(value = "#{uploadManager}")
     private UploadManager uploadManager;
     
+    @ManagedProperty(value = "#{userManager}")
+    private UserManager userManager;
+    
     private DocumentDTO document;
     
     private UIComponent component;
@@ -69,10 +73,8 @@ public class AdministratorManager implements Serializable {
 
     private int selectOption;
 
-    //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
-    //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
-    //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
-    
+    private HttpAuthenticationFeature feature;
+
     public AdministratorManager() {
         newCourse = new CourseDTO();
         newAdmin = new AdminDTO();
@@ -82,6 +84,12 @@ public class AdministratorManager implements Serializable {
         newProposal = new WorkProposalDTO();
         newPublicProof = new PublicProofDTO();
         client = ClientBuilder.newClient();
+    }
+    
+    @PostConstruct
+    public void initClient() {
+        feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
+        client.register(feature);
     }
     
     /////////////// COURSES /////////////////
@@ -590,6 +598,15 @@ public class AdministratorManager implements Serializable {
     }
 
     /////////////// GETTERS & SETTERS /////////////////
+
+    public UserManager getUserManager() {
+        return userManager;
+    }
+
+    public void setUserManager(UserManager userManager) {
+        this.userManager = userManager;
+    }
+    
     //Courses
     public CourseDTO getNewCourse() {    
         return newCourse;

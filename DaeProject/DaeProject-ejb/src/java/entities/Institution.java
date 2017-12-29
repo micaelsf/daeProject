@@ -11,24 +11,21 @@ import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.NotNull;
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllInstitutions",
-            query = "SELECT s FROM Institution s ORDER BY s.name")
+            query = "SELECT s FROM Institution s ORDER BY s.name"),
+    @NamedQuery(name = "getInstitutionByEmail", 
+            query = "SELECT i FROM Institution i WHERE i.email = :email")
 })
 public class Institution extends User implements Serializable{
     
     @OneToMany(mappedBy = "institution", cascade = CascadeType.REMOVE)
     private List<InstitutionProposal> proposals;
-    
-    //@ManyToMany(mappedBy = "institutions")
-    //private List<InstitutionProposal> proposals;
     
     public Institution() {
     }

@@ -8,6 +8,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -62,6 +63,7 @@ public class AdminBean extends Bean<Admin> {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @RolesAllowed({"Administrator"})
     @Path("all")
     public Collection<AdminDTO> getAllAdmins() {
         try {
@@ -79,16 +81,11 @@ public class AdminBean extends Bean<Admin> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findAdmin/{id}")
-    public AdminDTO findAdmin(@PathParam("id") String id)
+    @Path("findAdmin/{email}")
+    public AdminDTO findAdmin(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
-            Admin admin = em.find(Admin.class, id);
-
-            if (admin == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum admin com esse nome.");
-            }
-            return toDTO(admin, AdminDTO.class);
+            return toDTO(getAdminByEmail(email), AdminDTO.class);
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -142,7 +139,6 @@ public class AdminBean extends Bean<Admin> {
             throw new EJBException(e.getMessage());
         }
     }
-    
         
     public Admin getAdminByEmail(String email)
             throws EntityDoesNotExistsException {

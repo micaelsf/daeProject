@@ -12,6 +12,7 @@ import entities.WorkProposal;
 import entities.WorkProposal.ProposalStatus;
 import exceptions.EntityDoesNotExistsException;
 import java.util.Collection;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -39,6 +40,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @RolesAllowed({"Administrator", "Teacher", "Institution", "Student"})
     @Path("all")
     public Collection<WorkProposalDTO> getAllProposals() {
         try {

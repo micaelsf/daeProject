@@ -2,13 +2,16 @@ package web;
 
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
+import dtos.InstitutionDTO;
 import dtos.InstitutionProposalDTO;
+import ejbs.InstitutionBean;
 import entities.InstitutionProposal.InstitutionProposalType;
 import entities.WorkProposal;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
-import java.util.LinkedList;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
@@ -41,6 +44,11 @@ public class InstitutionManager implements Serializable {
     private List<DocumentDTO> documents;
     private DocumentDTO document;
 
+    @EJB
+    private InstitutionBean institutionBean;
+
+    private InstitutionDTO institution;
+    
     private String filePath;
     private UIComponent component;
     
@@ -49,7 +57,7 @@ public class InstitutionManager implements Serializable {
         newProposal = new InstitutionProposalDTO();
     }
 
-/*    @PostConstruct
+    @PostConstruct
     public void initClient() {
         feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
         client.register(feature);
@@ -59,36 +67,17 @@ public class InstitutionManager implements Serializable {
     private void getLoggedStudent() {
         try {
 
-            student = client.target(URILookup.getBaseAPI())
-                    .path("/students/findStudent")
+            institution = client.target(URILookup.getBaseAPI())
+                    .path("/institutions/findInstitution")
                     .path(userManager.getEmail())
                     .request(MediaType.APPLICATION_XML)
-                    .get(StudentDTO.class);
+                    .get(InstitutionDTO.class);
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-*/
-    /*
-    public String uploadDocument() {
-        try {
-            document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
 
-            client.target(URILookup.getBaseAPI())
-                    .path("/students/addDocument")
-                    .path(student.getEmail())
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(document));
-
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-
-        return "index?faces-redirect=true";
-    }
-*/
     /* PROPOSAL */
     public InstitutionProposalType[] getAllTypes() {
         return InstitutionProposalType.values();

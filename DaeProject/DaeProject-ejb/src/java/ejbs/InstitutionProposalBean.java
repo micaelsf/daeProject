@@ -15,6 +15,7 @@ import exceptions.InstitutionEnrolledException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -111,6 +112,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @RolesAllowed({"Administrator", "Institution"})
     @Path("all")
     public Collection<InstitutionProposalDTO> getAllProposals() {
         try {
@@ -122,8 +124,9 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+    @RolesAllowed({"Administrator", "Institution"})
     @Path("/all/institution/{id}")
-    public Collection<InstitutionProposalDTO> getAllInstitutionProposalsFrom(
+    public Collection<InstitutionProposalDTO> getAllInstitutionProposals(
             @PathParam("id") String idStr) {
         try {
             Institution institution = em.find(Institution.class, Integer.parseInt(idStr));

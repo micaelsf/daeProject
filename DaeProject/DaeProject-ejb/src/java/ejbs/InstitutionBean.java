@@ -6,7 +6,6 @@
 package ejbs;
 
 import dtos.InstitutionDTO;
-import entities.Admin;
 import entities.Institution;
 import entities.PublicProof;
 import entities.WorkProposal;
@@ -15,6 +14,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -68,6 +68,7 @@ public class InstitutionBean extends Bean<Institution> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @RolesAllowed({"Administrator"})
     @Path("all")
     public Collection<InstitutionDTO> getAllInstitutions() {
         try {
@@ -84,17 +85,12 @@ public class InstitutionBean extends Bean<Institution> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findInstitution/{id}")
-    public InstitutionDTO findInstituition(@PathParam("id") String id)
+    @Path("findInstitution/{email}")
+    public InstitutionDTO findInstituition(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
-            Institution institution = em.find(Institution.class, id);
 
-            if (institution == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
-            }
-            
-            return toDTO(institution, InstitutionDTO.class);
+            return toDTO(getInstitutionByEmail(email), InstitutionDTO.class);
             
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -143,6 +139,25 @@ public class InstitutionBean extends Bean<Institution> {
 
             em.remove(institution);
 
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }        
+    
+    public Institution getInstitutionByEmail(String email)
+            throws EntityDoesNotExistsException {
+        try {
+            Institution instituition = (Institution) em.createNamedQuery("getInstitutionByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
+
+            if (instituition == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Instituição com esse email.");
+            }
+            
+            return instituition;
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {

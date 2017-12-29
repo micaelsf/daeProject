@@ -14,6 +14,7 @@ import exceptions.Utils;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -90,6 +91,7 @@ public class PublicProofBean extends Bean<PublicProof>{
     
     @GET
     @Path("/all")
+    @RolesAllowed({"Administrator"})
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public Collection<PublicProofDTO> getAllPublicProofs() {
         try {

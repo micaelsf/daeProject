@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 @ManagedBean
 @SessionScoped
 public class UserManager implements Serializable {
-/*
+
     private String email;
     private String password;
     private static final Logger logger = Logger.getLogger("web.UserManager");
@@ -33,11 +33,11 @@ public class UserManager implements Serializable {
         }
 
         if (isUserInRole(UserGroup.GROUP.Teacher)) {
-            return "/faces/teacher/index?faces-redirect=true";
+            return "/faces/teachers/index?faces-redirect=true";
         }
 
-        if (isUserInRole(UserGroup.GROUP.Instituition)) {
-            return "/faces/instituition/index?faces-redirect=true";
+        if (isUserInRole(UserGroup.GROUP.Institution)) {
+            return "/faces/institutions/index?faces-redirect=true";
         }
 
         return "error?faces-redirect=true";
@@ -105,5 +105,5 @@ public class UserManager implements Serializable {
     public void setPassword(String password) {
         this.password = password;
     }
-*/
+
 }

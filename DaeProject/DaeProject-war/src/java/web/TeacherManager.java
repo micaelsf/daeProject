@@ -2,12 +2,17 @@ package web;
 
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
+import dtos.StudentDTO;
+import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
+import ejbs.TeacherBean;
 import entities.TeacherProposal.TeacherProposalType;
 import entities.WorkProposal;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.PostConstruct;
+import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.component.UIComponent;
@@ -39,7 +44,12 @@ public class TeacherManager implements Serializable {
     
     private List<DocumentDTO> documents;
     private DocumentDTO document;
+    
+    @EJB
+    private TeacherBean teacherBean;
 
+    private TeacherDTO teacher;
+    
     private String filePath;
     private UIComponent component;
     
@@ -48,46 +58,27 @@ public class TeacherManager implements Serializable {
         newProposal = new TeacherProposalDTO();
     }
 
-/*    @PostConstruct
+    @PostConstruct
     public void initClient() {
         feature = HttpAuthenticationFeature.basic(userManager.getEmail(), userManager.getPassword());
         client.register(feature);
-        getLoggedStudent();
+        getLoggedTeacher();
     }
 
-    private void getLoggedStudent() {
+    private void getLoggedTeacher() {
         try {
 
-            student = client.target(URILookup.getBaseAPI())
-                    .path("/students/findStudent")
+            teacher = client.target(URILookup.getBaseAPI())
+                    .path("/teachers/findTeacher")
                     .path(userManager.getEmail())
                     .request(MediaType.APPLICATION_XML)
-                    .get(StudentDTO.class);
+                    .get(TeacherDTO.class);
 
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
         }
     }
-*/
-    /*
-    public String uploadDocument() {
-        try {
-            document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
 
-            client.target(URILookup.getBaseAPI())
-                    .path("/students/addDocument")
-                    .path(student.getEmail())
-                    .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(document));
-
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Unexpected error! Try again latter!", logger);
-            return null;
-        }
-
-        return "index?faces-redirect=true";
-    }
-*/
     /* PROPOSAL */
     public TeacherProposalType[] getAllTypes() {
         return TeacherProposalType.values();
@@ -151,14 +142,6 @@ public class TeacherManager implements Serializable {
         }
     }
 
-    public boolean isPendente(WorkProposal.ProposalStatus status) {
-        return status == WorkProposal.ProposalStatus.Pendente;
-    }
-    
-    public boolean isRejected() {
-        return currentProposal.getStatus() == WorkProposal.ProposalStatus.NãoAceite;
-    }
-    
     public UserManager getUserManager() {
         return userManager;
     }
@@ -215,4 +198,21 @@ public class TeacherManager implements Serializable {
         this.component = component;
     }
 
+    public TeacherBean getTeacherBean() {
+        return teacherBean;
+    }
+
+    public void setTeacherBean(TeacherBean teacherBean) {
+        this.teacherBean = teacherBean;
+    }
+
+    public TeacherDTO getTeacher() {
+        return teacher;
+    }
+
+    public void setTeacher(TeacherDTO teacher) {
+        this.teacher = teacher;
+    }
+
+    
 }

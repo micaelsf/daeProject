@@ -18,6 +18,7 @@ import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
 import java.util.List;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -79,6 +80,7 @@ public class StudentBean extends Bean<Student> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @RolesAllowed({"Administrator"})
     @Path("all")
     public Collection<StudentDTO> getAllStudents() {
         try {
@@ -110,16 +112,13 @@ public class StudentBean extends Bean<Student> {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findStudent/{id}")
-    public StudentDTO findStudent(@PathParam("id") String id)
+    @Path("findStudent/{email}")
+    public StudentDTO findStudent(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
-            Student student = em.find(Student.class, Integer.parseInt(id));
-            if (student == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse id.");
-            }
             
-            return toDTO(student,StudentDTO.class);
+            return toDTO(getStudentByEmail(email),StudentDTO.class);
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {

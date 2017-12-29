@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <ui:composition template="/templates/skeleton.xhtml"> 
+        <ui:define name="title">Página de Login</ui:define>
+        <ui:define name="main">
+            <div class="login">
+                <h1>Login</h1>
+                <c:if test="${not userManager.someUserAuthenticated}">
+                    <h:form rendered="${not userManager.someUserAuthenticated}">
+                        <h:inputText a:placeholder="Email" class="inputfield" id="email" value="#{userManager.email}" required="true" />
+                        <h:inputSecret a:placeholder="Password" class="inputfield" id="password" value="#{userManager.password}" required="true" />
+                        <h:commandButton 
+                            value="Entrar" 
+                            class="btn btn-primary btn-block btn-large" 
+                            action="#{userManager.login}" />
+                    </h:form>
+                </c:if>
+                <c:if test="${userManager.someUserAuthenticated}">
+                    <p>Estás logado!</p>
+                    <h:link outcome="${userManager.redirect()}" value="Voltar para a página principal"/>
+                </c:if>
+            </div>
+        </ui:define>
+    </ui:composition>
+</html>
+

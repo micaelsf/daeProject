@@ -10,6 +10,7 @@ import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
@@ -65,6 +66,7 @@ public class TeacherBean extends Bean<Teacher> {
     
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @RolesAllowed({"Administrator"})
     @Path("all")
     public Collection<TeacherDTO> getAllTeachers() {
         try {
@@ -82,16 +84,13 @@ public class TeacherBean extends Bean<Teacher> {
 
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("findTeacher/{id}")
-    public TeacherDTO findTeacher(@PathParam("id") String id)
+    @Path("findTeacher/{email}")
+    public TeacherDTO findTeacher(@PathParam("email") String email)
             throws EntityDoesNotExistsException {
         try {
-            Teacher teacher = em.find(Teacher.class, id);
-
-            if (teacher == null) {
-                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
-            }
-            return toDTO(teacher, TeacherDTO.class);
+            
+            return toDTO(getTeacherByEmail(email), TeacherDTO.class);
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
