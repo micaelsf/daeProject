@@ -35,6 +35,7 @@ public class User implements Serializable {
     private int id;*/
     
     @Id
+    @Column(name="USERNAME")
     protected String username;
     
     @Column(nullable = false)
