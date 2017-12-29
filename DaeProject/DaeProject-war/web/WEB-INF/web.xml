@@ -111,23 +111,23 @@
     </security-constraint>
     
     <security-constraint>
-        <display-name>IntitutionConstraint</display-name>
+        <display-name>InstitutionConstraint</display-name>
         <web-resource-collection>
-            <web-resource-name>Intitution pages</web-resource-name>
+            <web-resource-name>Institution pages</web-resource-name>
             <description/>
-            <url-pattern>/faces/intitution/*</url-pattern>
+            <url-pattern>/faces/institution/*</url-pattern>
             <url-pattern>/faces/frontend/*</url-pattern>
         </web-resource-collection>
         <web-resource-collection>
-            <web-resource-name>Intitution services</web-resource-name>
+            <web-resource-name>Institution services</web-resource-name>
             <description/>
-            <url-pattern>/webapi/intitutions/findIntitution/*</url-pattern>
-            <url-pattern>/webapi/intitutionProposals/all</url-pattern>
+            <url-pattern>/webapi/institutions/findInstitution/*</url-pattern>
+            <url-pattern>/webapi/institutionProposals/all</url-pattern>
             <url-pattern>/webapi/workProposals/all</url-pattern>
         </web-resource-collection>
         <auth-constraint>
             <description/>
-            <role-name>Teacher</role-name>
+            <role-name>Institution</role-name>
         </auth-constraint>
     </security-constraint>
     
