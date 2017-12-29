@@ -6,6 +6,10 @@
 package entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -33,6 +37,15 @@ public class User implements Serializable {
     private int id;
 
     @Column(nullable = false)
+    protected String created_at;
+    
+    @Column(nullable = true)
+    protected String city;
+    
+    @Column(nullable = true)
+    protected String address;
+    
+    @Column(nullable = false)
     protected String password;
 
     @Column(nullable = false)
@@ -52,11 +65,25 @@ public class User implements Serializable {
     protected User() {
     }
 
-    protected User(String password, UserGroup.GROUP group, String name, String email) {
+    protected User(String password, UserGroup.GROUP group, String name, String email, String city, String address) {
         this.password = Security.hashPassword(password);
         this.group = new UserGroup(group, this);
         this.name = name;
         this.email = email;
+        this.city = city;
+        this.address = address;
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        this.created_at = dateFormat.format(cal.getTime());
+    }
+
+    public String getDateTime() {
+        return created_at;
+    }
+
+    public void setDateTime(String dateTime) {
+        this.created_at = dateTime;
     }
 
     public int getId() {
@@ -89,6 +116,30 @@ public class User implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
 }

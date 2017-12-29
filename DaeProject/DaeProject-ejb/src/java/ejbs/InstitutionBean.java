@@ -7,6 +7,9 @@ package ejbs;
 
 import dtos.InstitutionDTO;
 import entities.Institution;
+import entities.PublicProof;
+import entities.WorkProposal;
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -36,23 +39,25 @@ public class InstitutionBean extends Bean<Institution> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(InstitutionDTO institutionDTO)
-            throws EntityDoesNotExistsException, MyConstraintViolationException {
+            throws EntityDoesNotExistsException, MyConstraintViolationException, EntityAlreadyExistsException {
         try {
 
             Institution institution = em.find(Institution.class, institutionDTO.getId());
             if (institution != null) {
-                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+                throw new EntityAlreadyExistsException("Já existe uma instituição com esse nome.");
             }
 
             institution = new Institution(
                     institutionDTO.getPassword(),
                     institutionDTO.getName(),
-                    institutionDTO.getEmail()
+                    institutionDTO.getEmail(),
+                    institutionDTO.getCity(),
+                    institutionDTO.getAddress()
             );
 
             em.persist(institution);
 
-        } catch (EntityDoesNotExistsException e) {
+        } catch (EntityAlreadyExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -108,7 +113,12 @@ public class InstitutionBean extends Bean<Institution> {
             if (institution == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
-
+            
+            institution.setPassword(institutionDTO.getPassword());
+            institution.setName(institutionDTO.getName());
+            institution.setEmail(institutionDTO.getEmail());
+            institution.setCity(institutionDTO.getCity());
+            institution.setAddress(institutionDTO.getAddress());
             em.merge(institution);
 
         } catch (EntityDoesNotExistsException e) {
@@ -139,22 +149,47 @@ public class InstitutionBean extends Bean<Institution> {
             throw new EJBException(e.getMessage());
         }
     }
-
-    public void sendEmailToInstitution(int id) throws MessagingException, EntityDoesNotExistsException {
+  
+    public void sendEmailAboutProposalTo(int id, WorkProposal proposal) 
+            throws MessagingException, EntityDoesNotExistsException {
         try {
-            Institution institution = em.find(Institution.class, id);
-            if (institution == null) {
+            Institution instituition = em.find(Institution.class, id);
+            if (instituition == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
             }
-
+            
             emailBean.send(
-                    institution.getEmail(),
+                    instituition.getEmail(),
                     "Assunto",
-                    "Olá " + institution.getName());
+                    "Olá " + instituition.getName() + ", o estado da sua proposta '"+proposal.getTitle()+"' foi alterado."
+            );
 
         } catch (MessagingException | EntityDoesNotExistsException e) {
             throw e;
         }
     }
+    
+    public void sendEmailAboutPublicProofTo(int id, PublicProof publicProof) 
+            throws MessagingException, EntityDoesNotExistsException {
+        try {
+            Institution institution = em.find(Institution.class, id);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Instituição com esse ID.");
+            }
+            
+            emailBean.send(
+                    institution.getEmail(),
+                    "Marcação da Prova Pública",
+                    "<p>Exmo " + institution.getName() + ", a Prova Pública com Título '"+publicProof.getWorkTitle()+
+                    "', está agendada para o dia "+publicProof.getProofDate()+" às "+publicProof.getProofTime()+" horas.</p>" +
+                    "<p>Por favor compareça 30 minutos antes de se iniciar a apresentação da mesma.</p>" +
+                    "<br/>" +        
+                    "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
+}
 
 }

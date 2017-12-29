@@ -3,16 +3,22 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2>Estado da proposta: <b>#{administratorManager.currentProposal.status}</b></h2>
             <h3>Tipo: #{administratorManager.currentProposal.proposalType}</h3>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="id" value="Id: " />
                 <h:outputText 
                     id="id"
                     value="#{administratorManager.currentProposal.id}"/>
+                
+                <h:outputLabel for="created_at" value="Criado em: " />
+                <h:outputText 
+                    id="created_at"
+                    value="#{administratorManager.currentProposal.created_at}"/>
                 
                 <h:outputLabel for="supervisor" value="Supervisor: " />
                 <h:outputText 
@@ -68,6 +74,19 @@
                 <h:outputText 
                     id="bibliography"
                     value="#{administratorManager.currentProposal.bibliographyToString}"/>
+                
+                <c:if test="#{!administratorManager.currentProposal.pendente}">
+                    <c:if test="#{administratorManager.currentProposal.rejected}">
+                        <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                        <h:outputText 
+                            id="rejectedReason"
+                            value="#{administratorManager.currentProposal.rejectReason}"/>
+                    </c:if>
+                    <h:outputLabel for="comments" value="Cometários: " />
+                    <h:outputText 
+                        id="comments" 
+                        value="#{administratorManager.currentProposal.comments}"/>
+                </c:if>
             </p:panelGrid>
             <br/>
             <br/>

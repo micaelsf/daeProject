@@ -23,6 +23,7 @@ public class EmailBean {
         try {
             // Adjust the recipients. Here we have only one recipient.
             // The recipient's address must be an object of the InternetAddress class.
+            System.out.println("ejbs.EmailBean.send() to: " + to);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to, false));
 
             // Set the message's subject

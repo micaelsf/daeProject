@@ -4,6 +4,7 @@ import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.InstitutionProposalDTO;
 import entities.InstitutionProposal.InstitutionProposalType;
+import entities.WorkProposal;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.LinkedList;
@@ -120,28 +121,8 @@ public class InstitutionManager implements Serializable {
             return null;
         }
         return returnedProposals;
-    }
-/*    
-    public List<String> getAllProposalsBibliographyREST() {
-        List<String> returnedBibliography;
-        try {
-            System.out.println("web.InstitutionManager.getAllProposalsBibliographyREST() current id:" + currentProposal.getId());
-            returnedBibliography = client.target(URILookup.getBaseAPI())
-                    .path("/institutionProposals/allBibliography")
-                    .path(currentProposal.getId() + "")
-                    .request(MediaType.APPLICATION_XML)
-                    .get(new GenericType<List<String>>() {
-                    });
-            for(String s: returnedBibliography) {
-                System.out.println("web.InstitutionManager.getAllProposalsBibliographyREST() biblio found:" + s);
-            }
-        } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
-            return null;
-        }
-        return returnedBibliography;
-    }
-*/
+    } 
+    
     public String updateProposalREST() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -170,7 +151,14 @@ public class InstitutionManager implements Serializable {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
     }
-
+    
+    public boolean isPendente(WorkProposal.ProposalStatus status) {
+        return status == WorkProposal.ProposalStatus.Pendente;
+    }
+    
+    public boolean isRejected() {
+        return currentProposal.getStatus() == WorkProposal.ProposalStatus.NãoAceite;
+    }
     
     public UserManager getUserManager() {
         return userManager;

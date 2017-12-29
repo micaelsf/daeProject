@@ -21,8 +21,11 @@ public class InstitutionDTO extends UserDTO implements Serializable{
             int id,
             String password,
             String name,
-            String email) {
-        super(id, password, name, email);
+            String email, 
+            String city, 
+            String address
+    ) {
+        super(id, password, name, email, city, address);
     }
 
     @Override

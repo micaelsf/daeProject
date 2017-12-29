@@ -5,15 +5,22 @@
  */
 package web;
 
+import dtos.AdminDTO;
+import dtos.CourseDTO;
+import dtos.DocumentDTO;
 import dtos.InstitutionDTO;
+import dtos.InstitutionProposalDTO;
+import dtos.PublicProofDTO;
 import dtos.StudentDTO;
 import dtos.TeacherDTO;
+import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
 import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.component.UIParameter;
@@ -31,6 +38,12 @@ public class AdministratorManager implements Serializable {
 
     private static final Logger logger = Logger.getLogger("web.AdministratorManager");
 
+    private CourseDTO newCourse;
+    private CourseDTO currentCourse;
+    
+    private AdminDTO newAdmin;
+    private AdminDTO currentAdmin;
+    
     private StudentDTO newStudent;
     private StudentDTO currentStudent;
 
@@ -43,6 +56,14 @@ public class AdministratorManager implements Serializable {
     private WorkProposalDTO newProposal;
     private WorkProposalDTO currentProposal;
 
+    private PublicProofDTO newPublicProof;
+    private PublicProofDTO currentPublicProof;
+    
+    @ManagedProperty(value = "#{uploadManager}")
+    private UploadManager uploadManager;
+    
+    private DocumentDTO document;
+    
     private UIComponent component;
     private Client client;
 
@@ -50,15 +71,143 @@ public class AdministratorManager implements Serializable {
 
     //baseUri is getting called by "URILookup.getBaseAPI()" -> package utils
     //private final String baseUri = "http://localhost:38105/DaeProject-war/webapi";
-    //private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
+    private final String baseUri = "http://localhost:8080/DaeProject-war/webapi";
+    
     public AdministratorManager() {
+        newCourse = new CourseDTO();
+        newAdmin = new AdminDTO();
         newStudent = new StudentDTO();
         newInstitution = new InstitutionDTO();
         newTeacher = new TeacherDTO();
         newProposal = new WorkProposalDTO();
+        newPublicProof = new PublicProofDTO();
         client = ClientBuilder.newClient();
     }
+    
+    /////////////// COURSES /////////////////
+    public String createCourseREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/courses/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newCourse));
+            newCourse.reset();
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
 
+    public List<CourseDTO> getAllCoursesREST() {
+        List<CourseDTO> returnedCourses;
+        try {
+            returnedCourses = client.target(URILookup.getBaseAPI())
+                    .path("/courses/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<CourseDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedCourses;
+    }
+
+    public String updateCourseREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/courses/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentCourse));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public String removeCourseREST(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+            
+            client.target(URILookup.getBaseAPI())
+                    .path("/courses/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    /////////////// ADMINS /////////////////
+    public String createAdmin() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/admins/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newAdmin));
+            newAdmin.reset();
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public String updateAdminREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/admins/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentAdmin));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public List<AdminDTO> getAllAdminsREST() {
+        List<AdminDTO> returnedAdmins;
+        try {
+            returnedAdmins = client.target(URILookup.getBaseAPI())
+                    .path("/admins/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<AdminDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedAdmins;
+    }
+
+    public String removeAdmin(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+ 
+            client.target(URILookup.getBaseAPI())
+                    .path("/admins/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    /////////////// STUDENTS /////////////////
     public String createStudent() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -67,7 +216,7 @@ public class AdministratorManager implements Serializable {
                     .post(Entity.xml(newStudent));
             newStudent.reset();
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -81,7 +230,7 @@ public class AdministratorManager implements Serializable {
                     .put(Entity.xml(currentStudent));
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -91,12 +240,26 @@ public class AdministratorManager implements Serializable {
         List<StudentDTO> returnedStudents;
         try {
             returnedStudents = client.target(URILookup.getBaseAPI())
-                    // returnedStudents = client.target(baseUri)
                     .path("/students/all")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<StudentDTO>>() {
                     });
-            System.out.println(returnedStudents);
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedStudents;
+    }
+    
+    public List<StudentDTO> getAllStudentsCourseREST() {
+        List<StudentDTO> returnedStudents;
+        try {
+            returnedStudents = client.target(URILookup.getBaseAPI())
+                    .path("/students/allStudentsFromCourse")
+                    .path(currentCourse.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<StudentDTO>>() {
+                    });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -131,7 +294,7 @@ public class AdministratorManager implements Serializable {
                     );
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -145,7 +308,7 @@ public class AdministratorManager implements Serializable {
                     .put(Entity.xml(currentInstitution));
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -183,7 +346,7 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
 
-    /* TEACHERS  */
+    /////////////// TEACHERS //////////////////
     public String createTeacher() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -193,7 +356,7 @@ public class AdministratorManager implements Serializable {
                     );
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -208,7 +371,7 @@ public class AdministratorManager implements Serializable {
                     .put(Entity.xml(currentTeacher));
 
         } catch (Exception e) {
-            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
@@ -247,7 +410,7 @@ public class AdministratorManager implements Serializable {
         return returnedTeachers;
     }
 
-    /* PROPOSAL */
+    /////////////// PROPOSAL //////////////////
     public List<WorkProposalDTO> getAllWorkProposalsREST() {
         List<WorkProposalDTO> returnedProposals;
         try {
@@ -262,36 +425,145 @@ public class AdministratorManager implements Serializable {
         }
         return returnedProposals;
     }
-
-    public void updateStatusWorkProposalREST(ActionEvent event) {
+    
+    public String updateProposalStatusREST() {
         try {
-            UIParameter paramAccept = (UIParameter) event.getComponent().findComponent("acceptProposalID");
-            UIParameter paramReject = (UIParameter) event.getComponent().findComponent("rejectProposalID");
-            int id = 0; 
-            ProposalStatus status = ProposalStatus.Pendente;
-
-            if (paramAccept != null) {
-                id = Integer.parseInt(paramAccept.getValue().toString());
-                status = ProposalStatus.Aceite;;
+            String option = null;
+            if (selectOption == 1) {
+                option = "Aceite";
             }
-
-            if (paramReject != null) {
-                id = Integer.parseInt(paramReject.getValue().toString());
-                status = ProposalStatus.NãoAceite;
+            if (selectOption == 2) {
+                option = "NãoAceite";
             }
 
             client.target(URILookup.getBaseAPI())
-                    .path("/proposals/updateREST")
-                    .path(id + "")
-                    .path(status + "")
+                    .path("/proposals/updateProposalStatusREST")
+                    .path(currentProposal.getId() + "")
+                    .path(currentProposal.getRejectReason() + "")
+                    .path(currentProposal.getComments() + "")
+                    .path(option)
                     .request(MediaType.APPLICATION_XML)
-                    .put(Entity.xml(""));
-
+                    .post(Entity.xml(""));
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    public List<InstitutionProposalDTO> getProposalsFromInstitutionREST() {
+        List<InstitutionProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/institutionProposals/all/institution")
+                    .path(currentInstitution.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<InstitutionProposalDTO>>() {
+                    });
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
         }
+        return returnedProposals;
+    }
+    
+    public List<TeacherProposalDTO> getProposalsFromTeacherREST() {
+        List<TeacherProposalDTO> returnedProposals;
+        try {
+            returnedProposals = client.target(URILookup.getBaseAPI())
+                    .path("/teacherProposals/all/teacher")
+                    .path(currentTeacher.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<TeacherProposalDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedProposals;
+    }
+    
+       /////////////// PUBLIC PROOFS //////////////////
+    public String createPublicProofREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/createREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(newPublicProof)
+                    );
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
     }
 
+    public String updatePublicProofREST() {
+        try {
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/updateREST")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(currentPublicProof));
+
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public String removePublicProof(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("id");
+            int id = Integer.parseInt(param.getValue().toString());
+
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/removeREST")
+                    .path(id + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+
+    public List<PublicProofDTO> getAllPublicProofsREST() {
+        List<PublicProofDTO> returnedPublicProofs;
+        try {
+            returnedPublicProofs = client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/all")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<PublicProofDTO>>() {
+                    });
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedPublicProofs;
+    }
+    
+    public String uploadDocumentToPublicProofREST() {
+        try {
+            document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
+            client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/addDocument")
+                    .path(currentPublicProof.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .put(Entity.xml(document));
+            
+        } catch (NumberFormatException e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "index?faces-redirect=true";
+    }
+    
+    /////////////// UTILS //////////////////
     public int getSelectOption() {
         return selectOption;
     }
@@ -300,9 +572,42 @@ public class AdministratorManager implements Serializable {
         this.selectOption = selectOption;
     }
 
-    /////////////// GETTERS & SETTERS ///////////////// 
-    //institution
-    public InstitutionDTO getCurrentInstitution() {
+    /////////////// GETTERS & SETTERS /////////////////
+    //Courses
+    public CourseDTO getNewCourse() {    
+        return newCourse;
+    }
+
+    public void setNewCourse(CourseDTO newCourse) {
+        this.newCourse = newCourse;
+    }
+
+    public CourseDTO getCurrentCourse() {
+        return currentCourse;
+    }
+    
+    public void setCurrentCourse(CourseDTO currentCourse) {
+        this.currentCourse = currentCourse;
+    }
+
+    //admins
+    public AdminDTO getNewAdmin() {
+        return newAdmin;
+    }
+
+    public void setNewAdmin(AdminDTO newAdmin) {
+        this.newAdmin = newAdmin;
+    }
+
+    public AdminDTO getCurrentAdmin() {
+        return currentAdmin;
+    }
+    public void setCurrentAdmin(AdminDTO currentAdmin) {    
+        this.currentAdmin = currentAdmin;
+    }
+
+    //instituition
+    public InstitutionDTO getCurrentInstituition() {
         return currentInstitution;
     }
 
@@ -375,4 +680,37 @@ public class AdministratorManager implements Serializable {
     public void setCurrentProposal(WorkProposalDTO currentProposal) {
         this.currentProposal = currentProposal;
     }
+
+    public PublicProofDTO getNewPublicProof() {
+        return newPublicProof;
+    }
+
+    public void setNewPublicProof(PublicProofDTO newPublicProof) {
+        this.newPublicProof = newPublicProof;
+    }
+
+    public PublicProofDTO getCurrentPublicProof() {
+        return currentPublicProof;
+    }
+
+    public void setCurrentPublicProof(PublicProofDTO currentPublicProof) {
+        this.currentPublicProof = currentPublicProof;
+    }
+
+    public UploadManager getUploadManager() {
+        return uploadManager;
+    }
+
+    public void setUploadManager(UploadManager uploadManager) {
+        this.uploadManager = uploadManager;
+    }
+
+    public DocumentDTO getDocument() {
+        return document;
+    }
+
+    public void setDocument(DocumentDTO document) {
+        this.document = document;
+    }
+    
 }

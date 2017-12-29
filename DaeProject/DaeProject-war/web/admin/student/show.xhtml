@@ -7,8 +7,23 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Estudante com número de estudante:#{administratorManager.currentStudent.studentNumber}</h1>
-            <p:panelGrid columns="2" class="table table-striped">
+            <h1 class="page-header">Dados do estudante com número de estudante: #{administratorManager.currentStudent.studentNumber}</h1>
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
+                <h:outputLabel for="courseName" value="Curso: " />
+                <h:outputText 
+                    id="courseName"
+                    value="#{administratorManager.currentStudent.courseName}"/>
+                
+                <h:outputLabel for="created_at" value="Criado em: " />
+                <h:outputText 
+                    id="created_at"
+                    value="#{administratorManager.currentStudent.created_at}"/>
+                
+                <h:outputLabel for="id" value="Id: " />
+                <h:outputText 
+                    id="id"
+                    value="#{administratorManager.currentStudent.id}"/>
+                
                 <h:outputLabel for="name" value="Nome: " />
                 <h:outputText 
                     id="name"
@@ -19,20 +34,19 @@
                     id="email"
                     value="#{administratorManager.currentStudent.email}"/>
 
-                <h:outputLabel for="studentNumber" value="Número do estudante: " />
+                <h:outputLabel for="city" value="Cidade: " />
                 <h:outputText 
-                    id="course"
-                    value="#{administratorManager.currentStudent.studentNumber}"/>
+                    id="city"
+                    value="#{administratorManager.currentStudent.city}"/> 
+                
+                <h:outputLabel for="address" value="Morada: " />
+                <h:outputText 
+                    id="address"
+                    value="#{administratorManager.currentStudent.address}"/> 
+
             </p:panelGrid>
             <br/>
             <br/>
-
-            <p:link class="btn btn-primary btn-md" value="Back" outcome="index"/>
-            <p:commandLink class="btn btn-primary btn-md" value="Edit" action="edit?faces-redirect=true">
-                <f:setPropertyActionListener 
-                    target="#{administratorManager.currentStudent}" 
-                    value="#{object}" />
-            </p:commandLink>
 
             <p:link class="btn btn-primary btn-md" 
                     style="margin-right: 15px"

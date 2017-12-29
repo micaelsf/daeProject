@@ -2,7 +2,6 @@ package dtos;
 
 import entities.TeacherProposal.TeacherProposalType;
 import java.io.Serializable;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -30,7 +29,8 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
             String successRequirements,  
             float budget,  
             String support,  
-            TeacherProposalType proposalType
+            TeacherProposalType proposalType,
+            int teacherId
     ) {
         super(
                 id, 
@@ -49,7 +49,8 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
                 budget, 
                 support,
                 "N/A",
-                proposalType.toString()
+                proposalType.toString(),
+                teacherId
         );
     }
     
@@ -57,5 +58,4 @@ public class TeacherProposalDTO extends WorkProposalDTO implements Serializable 
     public void reset() {
         super.reset();
     } 
-    
 }

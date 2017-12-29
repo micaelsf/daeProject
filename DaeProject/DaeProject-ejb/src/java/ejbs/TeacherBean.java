@@ -1,7 +1,10 @@
 package ejbs;
 
 import dtos.TeacherDTO;
+import entities.PublicProof;
 import entities.Teacher;
+import entities.WorkProposal;
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
@@ -35,14 +38,16 @@ public class TeacherBean extends Bean<Teacher> {
         try {
             Teacher teacher = em.find(Teacher.class, teacherDTO.getId());
             if (teacher != null) {
-                throw new EntityDoesNotExistsException("Já existe um professor com esse nome.");
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse nome.");
             }
 
             teacher = new Teacher(
                     teacherDTO.getPassword(),
                     teacherDTO.getName(),
                     teacherDTO.getEmail(),
-                    teacherDTO.getOffice()
+                    teacherDTO.getOffice(),
+                    teacherDTO.getCity(),
+                    teacherDTO.getAddress()
             );
 
             em.persist(teacher);
@@ -105,6 +110,8 @@ public class TeacherBean extends Bean<Teacher> {
             teacher.setPassword(teacherDTO.getPassword());
             teacher.setName(teacherDTO.getName());
             teacher.setEmail(teacherDTO.getEmail());
+            teacher.setCity(teacherDTO.getCity());
+            teacher.setAddress(teacherDTO.getAddress());
             em.merge(teacher);
 
         } catch (EntityDoesNotExistsException e) {
@@ -135,8 +142,28 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
+ 
+public Teacher getTeacherByEmail(String email)
+            throws EntityDoesNotExistsException {
+        try {
+            Teacher teacher = (Teacher) em.createNamedQuery("getTeacherByEmail")
+                    .setParameter("email", email)
+                    .getSingleResult();
 
-    public void sendEmailToTeacher(int id) throws MessagingException, EntityDoesNotExistsException {
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum professor com esse email.");
+            }
+            
+            return teacher;
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+ 
+    public void sendEmailAboutProposalTo(int id, WorkProposal proposal) 
+            throws MessagingException, EntityDoesNotExistsException {
         try {
             Teacher teacher = em.find(Teacher.class, id);
             if (teacher == null) {
@@ -146,11 +173,29 @@ public class TeacherBean extends Bean<Teacher> {
             emailBean.send(
                     teacher.getEmail(),
                     "Assunto",
-                    "Olá " + teacher.getName());
+                    "Olá " + teacher.getName() + ", o estado da sua proposta '"+proposal.getTitle()+"' foi alterado."
+            );
 
         } catch (MessagingException | EntityDoesNotExistsException e) {
             throw e;
         }
     }
+    
+    public void sendEmailAboutPublicProofTo(String email, String name, PublicProof publicProof) 
+            throws MessagingException {
+        try {
+            emailBean.send(
+                    email,
+                    "Marcação da Prova Pública",
+                    "<p>Exmo " + name + ", a Prova Pública com Título '"+publicProof.getWorkTitle()+
+                    "', está agendada para o dia "+publicProof.getProofDate()+" às "+publicProof.getProofTime()+" horas.</p>" +
+                    "<p>Por favor compareça 30 minutos antes de se iniciar a apresentação da mesma.</p>" +
+                    "<br/>" +        
+                    "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
 
+        } catch (MessagingException e) {
+            throw e;
+        }
+}
 }

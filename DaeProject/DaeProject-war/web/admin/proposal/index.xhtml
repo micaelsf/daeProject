@@ -5,13 +5,14 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h1 class="page-header">Propostas de trabalho</h1>
             <em:dt title="Propostas" 
-                   headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Objetivos', 'Estado']}" 
-                   props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'objectives', 'status']}" 
+                   headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                   props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 
                    list="#{administratorManager.allWorkProposalsREST}"> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 
@@ -25,31 +26,20 @@
                                     value="#{object}" /> 
                             </h:commandLink> &nbsp;
                             
-                            <h:commandLink
-                                class="btn btn-success btn-sm"
-                                value="Aceitar" 
-                                title="Aceitar"
-                                actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
-                                <f:param name="acceptProposalID" 
-                                    id="acceptProposal" 
-                                    value="#{object.id}" /> 
-                            </h:commandLink> &nbsp;
-                            
                             <h:commandLink 
-                                class="btn btn-danger btn-sm"
-                                value="Rejeitar" 
-                                title="Rejeitar"
-                                actionListener="#{administratorManager.updateStatusWorkProposalREST}"> 
-                                <f:param name="rejectProposalID" 
-                                    id="rejectProposal" 
-                                    value="#{object.id}" /> 
+                                class="btn btn-default btn-sm"
+                                value="Aceitar / Rejeitar" 
+                                title="Aceitar/Rejeitar Proposta"
+                                action="actionForm?faces-redirect=true"> 
+                                <f:setPropertyActionListener 
+                                    target="#{administratorManager.currentProposal}" 
+                                    value="#{object}" /> 
                             </h:commandLink> &nbsp;
                     </h:form> 
                 </p:column> 
             </em:dt>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/proposal/index"/>
         </ui:define>
     </ui:composition>
 </html>

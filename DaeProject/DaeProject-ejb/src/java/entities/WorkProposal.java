@@ -6,10 +6,12 @@
 package entities;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,16 +29,16 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "PROPOSALS",
+@Table(name = "PROPOSALS"/*,
     uniqueConstraints =
-        @UniqueConstraint(columnNames = {"TITLE"}))
+        @UniqueConstraint(columnNames = {"TITLE"})*/
+)
 @Inheritance(strategy = InheritanceType.JOINED)
 @NamedQueries({
-    @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title")
-    //@NamedQuery(name = "getAllBibliographies",  query = "SELECT b.bibliography FROM WorkProposal b WHERE b.id = :proposal_id")
+    @NamedQuery(name = "getAllProposals",  query = "SELECT wp FROM WorkProposal wp ORDER BY wp.title"),
+    @NamedQuery(name = "getAllEndedProposals",  query = "SELECT wp FROM WorkProposal wp WHERE wp.isWorkCompleted = TRUE ORDER BY wp.title")
 })
 public class WorkProposal implements Serializable {
     
@@ -103,12 +105,24 @@ public class WorkProposal implements Serializable {
     @Column(nullable = false)
     private String support;
     
+    @Column(nullable = false)
+    private String created_at;
+    
+    @Column(nullable = true)
+    private String published_at;
+    
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ProposalStatus status;
     
     @Column(name = "REJECT_REASON", nullable = true)
     private String rejectReason;
+    
+    @Column(nullable = true)
+    private String comments;
+    
+    @Column(name = "PROGRESS_STATUS", nullable = false)
+    private boolean isWorkCompleted; // true: proposal is ended can be published
     
     public WorkProposal() {
     }
@@ -144,8 +158,11 @@ public class WorkProposal implements Serializable {
         this.successRequirements = successRequirements;
         this.budget = budget;
         this.support = support;
-        this.status = ProposalStatus.Pendente;
         
+        this.rejectReason = " ";
+        this.comments = " ";
+        this.isWorkCompleted = false;
+        this.status = ProposalStatus.Pendente;
         
         this.studentsApply = new LinkedList<>();
         //this.bibliography = new LinkedList<>();
@@ -153,6 +170,10 @@ public class WorkProposal implements Serializable {
         /*for (String s: (List<String>) bibliography) {
             this.bibliography.add(s);
         }*/
+                
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        this.created_at = dateFormat.format(cal.getTime());
     }
      
     public void addStudentApply(Student student) {
@@ -171,6 +192,39 @@ public class WorkProposal implements Serializable {
         bibliography.remove(b);
     }
 */
+
+    public String getPublished_at() {
+        return published_at;
+    }
+
+    public void setPublished_at(String published_at) {
+        this.published_at = published_at;
+    }
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public boolean isIsWorkCompleted() {
+        return isWorkCompleted;
+    }
+
+    public void setIsWorkCompleted(boolean isWorkCompleted) {
+        this.isWorkCompleted = isWorkCompleted;
+    }
+    
     public int getId() {
         return id;
     }

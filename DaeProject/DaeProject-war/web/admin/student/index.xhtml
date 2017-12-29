@@ -10,8 +10,8 @@
         <ui:define name="main">
             <h1 class="page-header">Estudantes</h1>
             <em:dt title="Estudantes" 
-                   headers="#{['Id', 'Nome', 'Email', 'Número do estudante']}" 
-                   props="#{['id', 'name', 'email', 'studentNumber']}" 
+                   headers="#{['Id', 'Nome', 'Email', 'Número do estudante', 'Curso']}" 
+                   props="#{['id', 'name', 'email', 'studentNumber', 'courseName']}" 
                    list="#{administratorManager.allStudentsREST}"> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 

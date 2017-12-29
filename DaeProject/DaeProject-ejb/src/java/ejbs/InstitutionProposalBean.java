@@ -6,10 +6,12 @@
 package ejbs;
 
 import dtos.InstitutionProposalDTO;
+import entities.Institution;
 import entities.InstitutionProposal;
 import entities.InstitutionProposal.InstitutionProposalType;
 import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityDoesNotExistsException;
+import exceptions.InstitutionEnrolledException;
 import exceptions.MyConstraintViolationException;
 import exceptions.Utils;
 import java.util.Collection;
@@ -33,25 +35,27 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     @Path("/createREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     public void create(InstitutionProposalDTO proposalDTO)
-         throws EntityAlreadyExistsException, MyConstraintViolationException {
+         throws EntityAlreadyExistsException, MyConstraintViolationException, EntityDoesNotExistsException {
         try {
             if (em.find(InstitutionProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
-            /*
-            List<String> bibliography = new LinkedList<>();
-            bibliography.add(proposalDTO.getBibliography1());
-            bibliography.add(proposalDTO.getBibliography2());
-            bibliography.add(proposalDTO.getBibliography3());
-            bibliography.add(proposalDTO.getBibliography4());
-            bibliography.add(proposalDTO.getBibliography5());
-            */
+            
+            // just to test create new proposal until authentication is not implemented
+            if (proposalDTO.getProponentID() == 0) {
+                proposalDTO.setProponentID(10);
+            }
+            
+            Institution institution = em.find(Institution.class, proposalDTO.getProponentID());
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
+            }
+            
             InstitutionProposal proposal = new InstitutionProposal(
                     proposalDTO.getTitle(), 
                     proposalDTO.getScientificAreas(), 
                     proposalDTO.getObjectives(),
                     proposalDTO.getWorkResume(),
-                    //bibliography,
                     proposalDTO.getBibliography1(),
                     proposalDTO.getBibliography2(),
                     proposalDTO.getBibliography3(),
@@ -63,11 +67,14 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                     proposalDTO.getBudget(),
                     proposalDTO.getSupport(),
                     proposalDTO.getSupervisor(),
-                    InstitutionProposalType.valueOf(proposalDTO.getProposalType())
+                    InstitutionProposalType.valueOf(proposalDTO.getProposalType()),
+                    institution
             );
             
+            institution.addProposal(proposal);
             em.persist(proposal);
-        } catch (EntityAlreadyExistsException e) {
+            
+        } catch (EntityAlreadyExistsException | EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
@@ -86,6 +93,9 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             if (proposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
             }
+            
+            proposal.getInstitution().removeProposal(proposal);
+            
             em.remove(proposal);
         } catch (EntityDoesNotExistsException e) {
             throw e;
@@ -101,7 +111,7 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
     
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("/all")
+    @Path("all")
     public Collection<InstitutionProposalDTO> getAllProposals() {
         try {
             return getAll(InstitutionProposalDTO.class);
@@ -109,24 +119,25 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             throw new EJBException(e.getMessage());
         }
     }  
-/*    
+    
     @GET 
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
-    @Path("/allBibliography")
-    public Collection<String> getAllBibliographyProposalsFrom(
+    @Path("/all/institution/{id}")
+    public Collection<InstitutionProposalDTO> getAllInstitutionProposalsFrom(
             @PathParam("id") String idStr) {
-        System.out.println("ejbs.InstitutionProposalBean.getAllBibliographyProposalsFrom() arrived BEAN");
         try {
-            List<String> bibliografias = (List<String>) em.createNamedQuery("getAllBibliographies")
-                    .setParameter("proposal_id", Integer.parseInt(idStr))
-                    .getResultList();
+            Institution institution = em.find(Institution.class, Integer.parseInt(idStr));
             
-            return toDTOs(bibliografias, String.class);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe uma instituição com este ID");
+            }
+            
+            return toDTOs(institution.getProposals(), InstitutionProposalDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
     }
-  */
+  
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -138,18 +149,15 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
                 throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID");
             }
             
-            /*List<String> bibliography = new LinkedList<>();
-            bibliography.add(proposalDTO.getBibliography1());
-            bibliography.add(proposalDTO.getBibliography2());
-            bibliography.add(proposalDTO.getBibliography3());
-            bibliography.add(proposalDTO.getBibliography4());
-            bibliography.add(proposalDTO.getBibliography5());
-            */
+            Institution institution = em.find(Institution.class, proposalDTO.getProponentID());
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe uma Instituição com esse ID.");
+            }
+            
             proposal.setTitle(proposalDTO.getTitle());
             proposal.setScientificAreas(proposalDTO.getScientificAreas());
             proposal.setObjectives(proposalDTO.getObjectives());
             proposal.setWorkResume(proposalDTO.getWorkResume());
-            //bibliography;
             proposal.setBibliography1(proposalDTO.getBibliography1());
             proposal.setBibliography2(proposalDTO.getBibliography2());
             proposal.setBibliography3(proposalDTO.getBibliography3());
@@ -163,8 +171,12 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             proposal.setSupervisor(proposalDTO.getSupervisor());
             proposal.setEnumProposalType(InstitutionProposalType.valueOf(proposalDTO.getProposalType()));
             
-                    
+            proposal.getInstitution().removeProposal(proposal);
+            proposal.setInstitution(institution);
+                  
+            institution.addProposal(proposal);
             em.merge(proposal);
+            
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (ConstraintViolationException e) {
@@ -173,4 +185,59 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             throw new EJBException(e.getMessage());
         }
     }
+      
+    public void enrollProposal(int intitutionId, int proposalId)
+            throws EntityDoesNotExistsException, InstitutionEnrolledException {
+        try {
+
+            Institution institution = em.find(Institution.class, intitutionId);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+
+            InstitutionProposal proposal = em.find(InstitutionProposal.class, proposalId);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+
+            if (institution.getProposals().contains(proposal)) {
+                throw new InstitutionEnrolledException("A Instituição já contém essa Proposta.");
+            } 
+            
+            institution.addProposal(proposal);
+
+        } catch (EntityDoesNotExistsException | InstitutionEnrolledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
+    public void unrollProposal(int intitutionId, int proposalId)
+            throws EntityDoesNotExistsException, InstitutionEnrolledException {
+        try {
+
+            Institution institution = em.find(Institution.class, intitutionId);
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe um professor com esse ID.");
+            }
+
+            InstitutionProposal proposal = em.find(InstitutionProposal.class, proposalId);
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe uma proposta com esse ID.");
+            }
+            
+            if (institution.getProposals().contains(proposal)) {
+                throw new InstitutionEnrolledException("A Instituição já contém essa Proposta.");
+            } 
+            
+            institution.removeProposal(proposal);
+
+        } catch (EntityDoesNotExistsException | InstitutionEnrolledException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
 }

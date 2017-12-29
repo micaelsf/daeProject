@@ -4,6 +4,7 @@ import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.TeacherProposalDTO;
 import entities.TeacherProposal.TeacherProposalType;
+import entities.WorkProposal;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
@@ -150,6 +151,13 @@ public class TeacherManager implements Serializable {
         }
     }
 
+    public boolean isPendente(WorkProposal.ProposalStatus status) {
+        return status == WorkProposal.ProposalStatus.Pendente;
+    }
+    
+    public boolean isRejected() {
+        return currentProposal.getStatus() == WorkProposal.ProposalStatus.NãoAceite;
+    }
     
     public UserManager getUserManager() {
         return userManager;

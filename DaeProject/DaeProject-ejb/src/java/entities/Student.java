@@ -12,17 +12,25 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllStudents",
-            query = "SELECT s FROM Student s ORDER BY s.name")    ,
-
+            query = "SELECT s FROM Student s ORDER BY s.name"),
+    @NamedQuery(name = "getAllStudentsCourse",
+            query = "SELECT s FROM Student s WHERE s.course.id = :courseId ORDER BY s.name"),
+    @NamedQuery(name = "getStudentByNumber",
+            query = "SELECT s FROM Student s WHERE s.studentNumber = :number"),
+    @NamedQuery(name = "getStudentByEmail", 
+            query = "SELECT s FROM Student s WHERE s.email = :email")
 })
 
 /*   
@@ -32,10 +40,13 @@ import javax.persistence.OneToOne;
 
 public class Student extends User implements Serializable {
 
-    //@NotNull(message = "Student number must not be empty")
     @Column(nullable = false)
     private String studentNumber;
 
+    @ManyToOne
+    @JoinColumn(name = "COURSE_ID")
+    private Course course;
+    
     @OneToMany(mappedBy = "student")
     public List<Document> documents;
 
@@ -44,21 +55,42 @@ public class Student extends User implements Serializable {
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "student")
     private WorkProposal workProposal;
+    
+    @OneToOne(fetch=FetchType.LAZY)
+    @PrimaryKeyJoinColumn(name="ID")
+    private PublicProof publicProof;
 
     public Student() {
         documents = new LinkedList<>();
     }
 
-    public Student(String password, String name, String email, String studentNumber) {
-        super(password, GROUP.Student, name, email);
+    public Student(String password, String name, String email, String studentNumber, String city, String address, Course course) {
+        super(password, GROUP.Student, name, email, city, address);
+        this.course = course;
         this.studentNumber = studentNumber;
 
         documents = new LinkedList<>();
         this.workProposalsApply = new LinkedList<>();
     }
 
+    public PublicProof getPublicProof() {
+        return publicProof;
+    }
+
+    public void setPublicProof(PublicProof publicProof) {
+        this.publicProof = publicProof;
+    }
+
     public void addProposalApply(WorkProposal workProp) {
         workProposalsApply.add(workProp);
+    }
+
+    public Course getCourse() {
+        return course;
+    }
+
+    public void setCourse(Course course) {
+        this.course = course;
     }
 
     public void removeProposalApply(WorkProposal workProp) {

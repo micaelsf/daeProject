@@ -2,6 +2,9 @@ package dtos;
 
 import entities.WorkProposal.ProposalStatus;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -28,6 +31,11 @@ public class WorkProposalDTO implements Serializable {
     protected String supervisor;
     protected ProposalStatus status;
     protected String proposalType;
+    protected String rejectReason;
+    protected String comments;
+    protected boolean progressStatus;
+    protected int proponentID;
+    protected String created_at;
 
     public WorkProposalDTO() {
     }    
@@ -49,7 +57,8 @@ public class WorkProposalDTO implements Serializable {
             float budget,  
             String support,  
             String supervisor,
-            String proposalType
+            String proposalType,
+            int proponentID
     ) {
         this.id = id;        
         this.title = title;        
@@ -68,8 +77,16 @@ public class WorkProposalDTO implements Serializable {
         this.support = support;     
         this.supervisor = supervisor;
         this.proposalType = proposalType;
+        this.proponentID = proponentID;
         
+        this.rejectReason = " ";
+        this.comments = " ";
+        this.progressStatus = false;
         this.status = ProposalStatus.Pendente; 
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        this.created_at = dateFormat.format(cal.getTime());
     }
     
     public void reset() {
@@ -90,8 +107,49 @@ public class WorkProposalDTO implements Serializable {
         setSupport(null);
         setStatus(null);        
         setSupervisor(null);    
-        setProposalType(null);
+        setProposalType(null); 
+        setProponentID(0);
     }    
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getComments() {
+        return comments;
+    }
+
+    public void setComments(String comments) {
+        this.comments = comments;
+    }
+
+    public boolean isProgressStatus() {
+        return progressStatus;
+    }
+
+    public void setProgressStatus(boolean progressStatus) {
+        this.progressStatus = progressStatus;
+    }
+    
+    public int getProponentID() {
+        return proponentID;
+    }
+
+    public void setProponentID(int proponentID) {
+        this.proponentID = proponentID;
+    }
+
+    public String getRejectReason() {
+        return rejectReason;
+    }
+
+    public void setRejectReason(String rejectReason) {
+        this.rejectReason = rejectReason;
+    }
 
     public String getProposalType() {
         return proposalType;
@@ -244,5 +302,12 @@ public class WorkProposalDTO implements Serializable {
                 (this.bibliography4 != null ? this.bibliography4 + ", \n" : "") +
                 (this.bibliography5 != null ? this.bibliography5 : "") ;
     }
-
+        
+    public boolean isPendente() {
+        return this.status == ProposalStatus.Pendente;
+    }
+       
+    public boolean isRejected() {
+        return this.status == ProposalStatus.NãoAceite;
+    }
 }

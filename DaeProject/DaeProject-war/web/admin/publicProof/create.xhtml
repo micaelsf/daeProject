@@ -1,0 +1,179 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/admin.xhtml">
+        <ui:define name="main">
+            <h1 class="page-header">Criar Prova Pública</h1>   
+            <h:form>
+                
+                <h4>Dados gerais</h4>
+                <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="dateProof" value="Data da prova: " />
+                    <h:inputText 
+                        class="form-control rowMargin datepicker"
+                        id="dateProof" 
+                        required="true"
+                        requiredMessage="Erro: Campo Data da prova não pode ser vazio."
+                        validatorMessage=" Data inválida"                              
+                        value="#{administratorManager.newPublicProof.proofDate}" >
+                        <f:validateRegex pattern="([12]\d{3}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01]))" />
+                    </h:inputText>   
+                    <h:message for="dateProof" errorStyle="color: red" />
+
+                    <h:outputLabel for="timeProof" value="Hora da prova: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="timeProof"
+                        size="5" 
+                        maxlength="5"
+                        required="true"
+                        requiredMessage="Erro: Campo Hora da prova não pode ser vazio."
+                        validatorMessage=" Hora inválida"                              
+                        value="#{administratorManager.newPublicProof.proofTime}" >
+                        <f:validateRegex pattern="^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$" />
+                    </h:inputText>   
+                    <h:message for="timeProof" errorStyle="color: red" />
+
+                    <h:outputLabel for="location" value="Local: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="location"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: Campo Local não pode ser vazio."                            
+                        value="#{administratorManager.newPublicProof.location}" />
+                    <h:message for="location" errorStyle="color: red" />
+
+                    <h:outputLabel for="workTitle" value="Título do trabalho: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="workTitle"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: Campo Título do trabalho não pode ser vazio."                            
+                        value="#{administratorManager.newPublicProof.workTitle}" />
+                    <h:message for="workTitle" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="ccpMember" value="Nome do membro do CCP: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="ccpMember"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Nome do membro do CCP não pode ser vazio."                            
+                        value="#{administratorManager.newPublicProof.ccpMember}">
+                    </h:inputText>
+                    <h:message for="ccpMember" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="ccpMemberEmail" value="Email do membro do CCP: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="ccpMemberEmail"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Email do membro do CCP não pode ser vazio." 
+                        validatorMessage=" Email inválido"                              
+                        value="#{administratorManager.newPublicProof.ccpMemberEmail}" >
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </h:inputText>   
+                    <h:message for="ccpMemberEmail" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="workGuider" value="Nome do orientador: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="workGuider"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Nome do orientador não pode ser vazio."                            
+                        value="#{administratorManager.newPublicProof.workGuider}">
+                    </h:inputText>
+                    <h:message for="workGuider" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="workGuiderEmail" value="Email do orientador: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="workGuiderEmail"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Email do orientador não pode ser vazio."  
+                        validatorMessage=" Email inválido"                              
+                        value="#{administratorManager.newPublicProof.workGuiderEmail}" >
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </h:inputText>   
+                    <h:message for="workGuiderEmail" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="teacher" value="Nome do professor: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="teacher"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Nome do professor não pode ser vazio."                            
+                        value="#{administratorManager.newPublicProof.teacher}">
+                    </h:inputText>
+                    <h:message for="teacher" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="teacherEmail" value="Email do professor: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        id="teacherEmail"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Email do professor: não pode ser vazio." 
+                        validatorMessage=" Email inválido"                             
+                        value="#{administratorManager.newPublicProof.teacherEmail}" >
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </h:inputText>   
+                    <h:message for="teacherEmail" errorStyle="color: red" />
+                </h:panelGrid>  
+                <br/>
+                <h4>Dados do estudante</h4>
+                <h:panelGrid columns="2" columnClasses="columnWidth" style="width: 420px">
+                    <h:outputLabel for="student" value="Escolha o estudante: " />
+                    <h:selectOneMenu
+                        class="form-control"
+                        id="student"
+                        value="#{administratorManager.newPublicProof.studentId}" >
+                        <f:selectItems
+                            value="#{administratorManager.allStudentsREST}"
+                            var="student"
+                            itemValue="#{student.id}"
+                            itemLabel="#{student.courseName} - #{student.name}, #{student.studentNumber}" />
+                    </h:selectOneMenu>
+                </h:panelGrid> 
+                <br/>
+                <br/>
+                <h:link class="btn btn-primary pull-left" 
+                        style="margin-right: 15px"
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+                <h:commandButton
+                    class="btn btn-primary btn-md"
+                    id="submit"
+                    value="Criar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createPublicProofREST}" />
+                <h:message for="submit" style="color: red"/> 
+            </h:form>
+        </ui:define>  
+        
+        <ui:define name="scripts">
+            <script type="text/javascript">
+                (function() {
+                    "use strict"
+                    $(function() {
+                        $(".datepicker").datepicker({
+                           dateFormat: 'yy-mm-dd',
+                           yearRange: "2017:2030"
+                        });
+                    });
+                })();
+            </script>
+        </ui:define>  
+    </ui:composition> 
+          
+</html>
+

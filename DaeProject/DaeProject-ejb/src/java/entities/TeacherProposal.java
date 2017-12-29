@@ -6,15 +6,12 @@
 package entities;
 
 import java.io.Serializable;
-import java.util.LinkedList;
-import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 
@@ -33,11 +30,15 @@ public class TeacherProposal extends WorkProposal {
     @Column(nullable = false, name = "PROPOSAL_TYPE")
     private TeacherProposalType enumProposalType;
     
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "PROPOSAL_TEACHER",
             joinColumns = @JoinColumn(name = "PROPOSAL_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name = "PROPONENT_ID", referencedColumnName = "ID"))
-    private List<Teacher> teachers;
+    private List<Teacher> teachers;*/
+    
+    @ManyToOne
+    @JoinColumn(name = "TEACHER_ID")
+    private Teacher teacher;
         
     public TeacherProposal() {
     }
@@ -58,7 +59,8 @@ public class TeacherProposal extends WorkProposal {
             String successRequirements,
             float budget,
             String support,
-            TeacherProposalType proposalType
+            TeacherProposalType proposalType,
+            Teacher teacher
     ) {
         super(
                 title, 
@@ -78,9 +80,11 @@ public class TeacherProposal extends WorkProposal {
                 support
         );
         this.enumProposalType = proposalType;
-        this.teachers = new LinkedList<>();
+        this.teacher = teacher;
+        
+        //this.teachers = new LinkedList<>();
     }
-    
+ /*   
     public void addTeacher(Teacher teacher) {
         teachers.add(teacher);
     }
@@ -88,13 +92,13 @@ public class TeacherProposal extends WorkProposal {
     public void removeTeacher(Teacher teacher) {
         teachers.remove(teacher);
     }
-
-    public List<Teacher> getTeachers() {
-        return teachers;
+*/
+    public Teacher getTeacher() {
+        return teacher;
     }
 
-    public void setTeachers(List<Teacher> teachers) {
-        this.teachers = teachers;
+    public void setTeacher(Teacher teacher) {
+        this.teacher = teacher;
     }
 
     public TeacherProposalType getEnumProposalType() {

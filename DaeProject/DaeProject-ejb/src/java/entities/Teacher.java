@@ -7,24 +7,42 @@ package entities;
 
 import entities.UserGroup.GROUP;
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 
 @Entity
-@NamedQuery(name = "getAllTeachers", query = "SELECT t FROM Teacher t ORDER BY t.name")
-
+@NamedQueries({
+    @NamedQuery(name = "getAllTeachers", 
+            query = "SELECT t FROM Teacher t ORDER BY t.name"),
+    @NamedQuery(name = "getTeacherByEmail", 
+            query = "SELECT t FROM Teacher t WHERE t.email = :email")
+})
 public class Teacher extends User implements Serializable {
 
     @Column(nullable = false)
     private String office;
     
+    @OneToMany(mappedBy = "teacher", cascade = CascadeType.REMOVE)
+    private List<TeacherProposal> proposals;
+    
+    //@ManyToMany(mappedBy = "teachers")
+    //private List<TeacherProposal> proposals;
+    
     protected Teacher() {
     }
 
-    public Teacher(String password, String name, String email, String office) {
-        super(password, GROUP.Teacher, name, email);
+    public Teacher(String password, String name, String email, String office, String city, String address) {
+        super(password, GROUP.Teacher, name, email, city, address);
         this.office = office;
+        
+        proposals = new LinkedList<>();
     }
 
     @Override
@@ -34,6 +52,22 @@ public class Teacher extends User implements Serializable {
                 + ", e-mail=" + email + "}";
     }
 
+    public List<TeacherProposal> getProposals() {
+        return proposals;
+    }
+
+    public void setProposals(List<TeacherProposal> proposals) {
+        this.proposals = proposals;
+    }
+    
+    public void addProposal(TeacherProposal proposal) {
+        proposals.add(proposal);
+    }
+
+    public void removeProposal(TeacherProposal proposal) {
+        proposals.remove(proposal);
+    }
+    
     public String getOffice() {
         return office;
     }

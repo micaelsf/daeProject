@@ -8,10 +8,10 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
-            <h1 class="page-header">Teachers</h1>
+            <h1 class="page-header">Professores</h1>
             <em:dt title="Profesores" 
-                   headers="#{['Id', 'Nome', 'Email']}" 
-                   props="#{['id', 'name', 'email']}" 
+                   headers="#{['Id', 'Nome', 'Email', 'Escritório']}" 
+                   props="#{['id', 'name', 'email', 'office']}" 
                    list="#{administratorManager.allTeachersREST}"> 
                 <p:column headerText="Ações"> 
                     <h:form class="center-text"> 

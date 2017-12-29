@@ -3,16 +3,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
             <h2>Estado da proposta: <b>#{teacherManager.currentProposal.status}</b></h2>
             <h3>Tipo: #{teacherManager.currentProposal.proposalType}</h3>
-            <p:panelGrid columns="2" class="table table-striped">
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
                 <h:outputLabel for="id" value="Id: " />
                 <h:outputText 
                     id="id"
                     value="#{teacherManager.currentProposal.id}"/>
+                
+                <h:outputLabel for="created_at" value="Criado em: " />
+                <h:outputText 
+                    id="created_at"
+                    value="#{teacherManager.currentProposal.created_at}"/>
+                
                 <h:outputLabel for="title" value="Titulo: " />
                 <h:outputText 
                     id="title"
@@ -62,6 +69,19 @@
                 <h:outputText 
                     id="bibliography"
                     value="#{teacherManager.currentProposal.bibliographyToString}"/>
+                
+                <c:if test="#{!administratorManager.currentProposal.pendente}">
+                    <c:if test="#{teacherManager.currentProposal.rejected}">
+                        <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
+                        <h:outputText 
+                            id="rejectedReason"
+                            value="#{teacherManager.currentProposal.rejectReason}"/>
+                    </c:if>
+                    <h:outputLabel for="comments" value="Cometários: " />
+                    <h:outputText 
+                        id="comments" 
+                        value="#{teacherManager.currentProposal.comments}"/>
+                </c:if>
             </p:panelGrid>
             <br/>
             <br/>

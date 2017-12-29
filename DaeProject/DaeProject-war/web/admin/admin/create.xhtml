@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/admin.xhtml">
+        <ui:define name="main">
+            <h1 class="page-header">Criar Admin</h1>   
+            <h:form>
+                <h:panelGrid columns="3" columnClasses="columnWidth">
+                    <h:outputLabel for="name" value="Nome: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="name"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Nome não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.name}">
+                    </h:inputText>
+                    <h:message for="name" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="password" value="Password: " />
+                    <h:inputSecret
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="password"
+                        size="20"
+                        required="true"
+                        requiredMessage="Erro: O campo Password não pode ser vazio."
+                        value="#{administratorManager.newAdmin.password}"/>
+                    <h:message for="password" errorStyle="color: red" /> 
+                
+                    <h:outputLabel for="email" value="Email: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="email"
+                        size="52"
+                        required="true"
+                        requiredMessage="Erro: O campo Email não pode ser vazio." 
+                        validatorMessage=" Email inválido"                           
+                        value="#{administratorManager.newAdmin.email}" >
+                        <f:validateRegex pattern="[\w\.-]*[a-zA-Z0-9_]@[\w\.-]*[a-zA-Z0-9]\.[a-zA-Z][a-zA-Z\.]*[a-zA-Z]" />
+                    </h:inputText>    
+                    <h:message for="email" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="city" value="Cidade: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="city"
+                        size="30"
+                        required="true"
+                        requiredMessage="Erro: O campo Cidade não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.city}">
+                    </h:inputText>
+                    <h:message for="city" errorStyle="color: red" />
+                    
+                    <h:outputLabel for="address" value="Morada: " />
+                    <h:inputText
+                        class="form-control rowMargin"
+                        style="max-width: 50%"
+                        id="address"
+                        size="100"
+                        required="true"
+                        requiredMessage="Erro: O campo Morada não pode ser vazio."                            
+                        value="#{administratorManager.newAdmin.address}">
+                    </h:inputText>
+                    <h:message for="address" errorStyle="color: red" />
+                </h:panelGrid>    
+
+                <br/>
+                <br/>
+
+                <h:link styleClass="btn btn-primary" 
+                        style="margin-right: 15px"
+                        value="Voltar" 
+                        outcome="index?faces-redirect=true"/>
+                <h:commandButton
+                    styleClass="btn btn-primary"
+                    id="submit"
+                    value="Criar"
+                    binding="#{administratorManager.component}" 
+                    action="#{administratorManager.createAdmin}" />
+                <h:message for="submit" style="color: red"/>
+            </h:form>
+        </ui:define>    
+    </ui:composition> 
+</html>
+

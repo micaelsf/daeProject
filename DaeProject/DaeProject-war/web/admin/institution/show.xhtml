@@ -1,0 +1,65 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="/templates/admin.xhtml"> 
+        <ui:define name="main">
+            <h2 class="page-header">Dados da Instituição com id:#{administratorManager.currentInstituition.id}</h2>
+            <p:panelGrid columns="2" class="table table-striped" columnClasses="columnWidth">
+                <h:outputLabel for="created_at" value="Criado em: " />
+                <h:outputText 
+                    id="created_at"
+                    value="#{administratorManager.currentInstituition.created_at}"/>
+                
+                <h:outputLabel for="name" value="Name: " />
+                <h:outputText 
+                    id="name"
+                    value="#{administratorManager.currentInstituition.name}"/>
+
+                <h:outputLabel for="email" value="Email: " />
+                <h:outputText 
+                    id="email"
+                    value="#{administratorManager.currentInstituition.email}"/>
+
+                <h:outputLabel for="city" value="Cidade: " />
+                <h:outputText 
+                    id="city"
+                    value="#{administratorManager.currentInstituition.city}"/> 
+                
+                <h:outputLabel for="address" value="Morada: " />
+                <h:outputText 
+                    id="address"
+                    value="#{administratorManager.currentInstituition.address}"/> 
+
+            </p:panelGrid>
+            <br/>
+            <h2>Propostas a participar</h2>
+            <em:dt title="Propostas" 
+                   headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                   props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 
+                   list="#{administratorManager.proposalsFromInstitutionREST}"> 
+                <p:column headerText="Ações"> 
+                    <h:form class="center-text"> 
+                            <h:commandLink 
+                                class="btn btn-default btn-sm"
+                                value="Detalhes" 
+                                title="Detalhes"
+                                action="/admin/proposal/show?faces-redirect=true"> 
+                                <f:setPropertyActionListener 
+                                    target="#{administratorManager.currentProposal}" 
+                                    value="#{object}" /> 
+                            </h:commandLink> &nbsp;
+                    </h:form> 
+                </p:column> 
+            </em:dt>
+            <br/>
+            <br/>
+            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/institution/index"/>
+                
+        </ui:define>
+    </ui:composition>
+</html>

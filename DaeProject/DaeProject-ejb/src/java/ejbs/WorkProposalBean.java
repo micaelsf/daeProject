@@ -17,7 +17,13 @@ import exceptions.MyConstraintViolationException;
 import exceptions.StudentEnrolledException;
 import exceptions.StudentNotEnrolledException;
 import exceptions.Utils;
+import entities.InstitutionProposal;
+import entities.TeacherProposal;
+import entities.WorkProposal;
+import entities.WorkProposal.ProposalStatus;
+import exceptions.EntityDoesNotExistsException;
 import java.util.Collection;
+import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.validation.ConstraintViolationException;
@@ -33,6 +39,77 @@ import javax.ws.rs.core.MediaType;
 @Stateless
 @Path("/proposals")
 public class WorkProposalBean extends Bean<WorkProposal> {
+
+    @EJB
+    InstitutionBean institutionBean;
+
+    @EJB
+    TeacherBean teacherBean;
+
+    @Override
+    protected Collection<WorkProposal> getAll() {
+        return em.createNamedQuery("getAllProposals").getResultList();
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("all")
+    public Collection<WorkProposalDTO> getAllProposals() {
+        try {
+            return getAll(WorkProposalDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allEndedProposals")
+    public Collection<WorkProposalDTO> getAllEndedProposals() {
+        try {
+            return em.createNamedQuery("getAllEndedProposals").getResultList();
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    @POST
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("updateProposalStatusREST/{id}/{rejectReason}/{comments}/{status}")
+    public void acceptProposal(
+            @PathParam("id") String id,
+            @PathParam("rejectReason") String rejectReason,
+            @PathParam("comments") String comments,
+            @PathParam("status") String status
+    )
+            throws EntityDoesNotExistsException {
+        try {
+
+            WorkProposal proposal = em.find(WorkProposal.class, Integer.parseInt(id));
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse ID.");
+            }
+
+            proposal.setRejectReason(rejectReason);
+            proposal.setComments(comments);
+            proposal.setStatus(ProposalStatus.valueOf(status));
+            em.merge(proposal);
+
+            // send notification email
+            if (proposal instanceof InstitutionProposal) {
+                InstitutionProposal institutionProposal = (InstitutionProposal) proposal;
+                //institutionBean.sendEmailAboutProposalTo(institutionProposal.getInstitution().getId(), proposal);
+            } else {
+                TeacherProposal teacherProposal = (TeacherProposal) proposal;
+                //teacherBean.sendEmailAboutProposalTo(teacherProposal.getTeacher().getId(), proposal);
+            }
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @POST
     @Path("/createREST")
@@ -75,22 +152,6 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
-        }
-    }
-
-    @Override
-    protected Collection<WorkProposal> getAll() {
-        return em.createNamedQuery("getAllProposals").getResultList();
-    }
-
-    @GET
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Path("all")
-    public Collection<WorkProposalDTO> getAllProposals() {
-        try {
-            return getAll(WorkProposalDTO.class);
         } catch (Exception e) {
             throw new EJBException(e.getMessage());
         }
@@ -146,7 +207,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             throws EntityDoesNotExistsException,
             MyConstraintViolationException {
         try {
-            unrollStudentToWorkProposal(
+            unrollStudentFromWorkProposal(
                     Integer.valueOf(studentId),
                     Integer.valueOf(workProposalId)
             );
@@ -158,7 +219,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
     }
 
     public void enrollStudentToWorkProposal(int idStudent, int idWorkProposal)
-            throws EntityDoesNotExistsException, MyConstraintViolationException {
+            throws EntityDoesNotExistsException, MyConstraintViolationException, StudentNotEnrolledException, StudentEnrolledException {
         try {
 
             System.out.println("enrollStudentREST studentId:" + idStudent + " workProposalId: " + idWorkProposal);
@@ -188,13 +249,12 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
+
         }
     }
 
-    public void unrollStudentToWorkProposal(int idStudent, int idWorkProposal)
-            throws EntityDoesNotExistsException, MyConstraintViolationException {
+    public void unrollStudentFromWorkProposal(int idStudent, int idWorkProposal)
+            throws EntityDoesNotExistsException, MyConstraintViolationException, StudentNotEnrolledException {
         try {
             Student student = em.find(Student.class, idStudent);
             if (student == null) {
@@ -217,8 +277,6 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             throw e;
         } catch (ConstraintViolationException e) {
             throw new MyConstraintViolationException(Utils.getConstraintViolationMessages(e));
-        } catch (Exception e) {
-            throw new EJBException(e.getMessage());
         }
     }
 

@@ -30,7 +30,8 @@ public class InstitutionProposalDTO extends WorkProposalDTO implements Serializa
             float budget,  
             String support,  
             String supervisor,
-            InstitutionProposalType proposalType
+            InstitutionProposalType proposalType,
+            int institutionId
     ) {
         super(
                 id, 
@@ -49,7 +50,8 @@ public class InstitutionProposalDTO extends WorkProposalDTO implements Serializa
                 budget, 
                 support,
                 supervisor,
-                proposalType.toString()
+                proposalType.toString(),
+                institutionId
         );
     }
     

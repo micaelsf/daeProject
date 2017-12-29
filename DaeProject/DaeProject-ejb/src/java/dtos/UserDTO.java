@@ -6,6 +6,9 @@
 package dtos;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class UserDTO implements Serializable{
     
@@ -13,15 +16,24 @@ public class UserDTO implements Serializable{
     protected String password;    
     protected String name;
     protected String email;
+    protected String city;
+    protected String address;
+    protected String created_at;
 
     public UserDTO() {
     }    
     
-    public UserDTO(int id, String password, String name, String email) {
+    public UserDTO(int id, String password, String name, String email, String city, String address) {
         this.id = id;
         this.password = password;
         this.name = name;
         this.email = email;
+        this.city = city;
+        this.address = address;
+        
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Calendar cal = Calendar.getInstance();
+        this.created_at = dateFormat.format(cal.getTime());
     }
     
     public void reset() {
@@ -29,7 +41,33 @@ public class UserDTO implements Serializable{
         setPassword(null);
         setName(null);
         setEmail(null);
+        setCity(null);
+        setAddress(null);
     }        
+
+    public String getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(String created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public int getId() {
         return id;
