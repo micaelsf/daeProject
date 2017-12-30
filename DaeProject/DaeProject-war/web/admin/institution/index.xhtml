@@ -5,53 +5,108 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2 class="page-header">Instituições</h2>
-            <em:dt title="Instituições" 
-                   headers="#{['Username', 'Nome', 'Email']}" 
-                   props="#{['username', 'name', 'email']}" 
-                   list="#{administratorManager.allInstitutionsREST}"> 
-                <p:column headerText="Actions">
-                    <h:form class="center-text"> 
-                        <h:commandLink 
-                            class="fa fa-eye fa-fw"
-                            value=" " 
-                            title="Detalhes"
-                            action="show?faces-redirect=true"> 
-                            <f:setPropertyActionListener 
-                                target="#{administratorManager.currentInstitution}" 
-                                value="#{object}" /> 
-                        </h:commandLink> &nbsp; 
-                        <h:commandLink
-                            class="fa fa-pencil fa-fw"
-                            value=" " 
-                            title="Editar" 
-                            action="edit?faces-redirect=true"> 
-                            <f:setPropertyActionListener 
-                                target="#{administratorManager.currentInstitution}" 
-                                value="#{object}" /> 
-                        </h:commandLink> &nbsp; 
-                        <h:commandLink 
-                            class="fa fa-trash fa-fw"
-                            value=" " 
-                            title="Remover"
-<<<<<<< HEAD
-                            actionListener="#{administratorManager.removeInstituition}"> 
-                            <f:param name="username" 
-                                     id="username" 
-                                     value="#{object.username}" /> 
-=======
-                            actionListener="#{administratorManager.removeInstitution}"> 
-                            <f:param name="id" 
-                                     id="id" 
-                                     value="#{object.id}" /> 
->>>>>>> bafa33b4e0e3eace4d5324ea1297e9d15fedb645
-                        </h:commandLink> 
-                    </h:form> 
-                </p:column> 
-            </em:dt>
+            <h:form>
+                <div style="display: inline-block"><b>Search: </b> 
+                    <h:inputText 
+                        class="search-box"
+                        a:placeholder="Nome da instituição" 
+                        value="#{administratorManager.searchField}"/>&nbsp;
+                    <h:commandLink 
+                        style="font-size: 140%"
+                        class="fa fa-search fa-fw"
+                        title="Procurar"
+                        actionListener="#{administratorManager.clickSearchInstitution()}"> 
+                        <f:param name="id" 
+                            id="id" 
+                            value="#{object.id}" /> 
+                    </h:commandLink> &nbsp;
+                </div>
+                <c:choose>
+                    <c:when test="#{administratorManager.searchFieldIsEmpty()}">
+                        <em:dt title="Instituições" 
+                            headers="#{['Username', 'Nome', 'Email']}" 
+                            props="#{['username', 'name', 'email']}" 
+                            list="#{administratorManager.allInstitutionsREST}"> 
+                         <p:column headerText="Actions">
+                                <div class="center-text">
+                                <h:commandLink 
+                                    class="fa fa-eye fa-fw"
+                                    value=" " 
+                                    title="Detalhes"
+                                    action="show?faces-redirect=true"> 
+                                    <f:setPropertyActionListener 
+                                        target="#{administratorManager.currentInstitution}" 
+                                        value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink
+                                        class="fa fa-pencil fa-fw"
+                                        value=" " 
+                                        title="Editar" 
+                                        action="edit?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentInstitution}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink 
+                                        class="fa fa-trash fa-fw"
+                                        value=" " 
+                                        title="Remover"
+                                        actionListener="#{administratorManager.removeInstitution}"> 
+                                        <f:param name="id" 
+                                                 id="id" 
+                                                 value="#{object.username}" /> 
+                                    </h:commandLink> 
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:when>
+                    <c:otherwise>
+                        <em:dt title="Instituições" 
+                                headers="#{['Username', 'Nome', 'Email']}" 
+                                props="#{['username', 'name', 'email']}" 
+                                list="#{administratorManager.clickSearchInstitution()}"> 
+                            <p:column headerText="Ações"> 
+                                <div class="center-text">
+                                    <h:commandLink 
+                                        class="fa fa-eye fa-fw"
+                                        value=" " 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentInstitution}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                    <h:commandLink 
+                                        class="fa fa-pencil fa-fw"
+                                        value=" " 
+                                        title="Editar"
+                                        action="edit?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentInstitution}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink 
+                                        class="fa fa-trash fa-fw"
+                                        value=" " 
+                                        title="Remover"
+                                        actionListener="#{administratorManager.removeInstitution}"> 
+                                        <f:param name="username" 
+                                            id="username" 
+                                            value="#{object.username}" /> 
+                                    </h:commandLink> 
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:otherwise>
+                </c:choose>
+            </h:form>
+            
             <br/>
             <br/>
             <h:link 

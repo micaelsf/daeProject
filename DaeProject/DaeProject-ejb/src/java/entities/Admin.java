@@ -18,7 +18,9 @@ import javax.persistence.NamedQuery;
     @NamedQuery(name = "getAdminByUsername", 
             query = "SELECT a FROM Admin a WHERE a.username = :username"),
     @NamedQuery(name = "getAdminByEmail", 
-            query = "SELECT a FROM Admin a WHERE a.email = :email")
+            query = "SELECT a FROM Admin a WHERE a.email = :email"),
+    @NamedQuery(name = "getAdminByName", 
+            query = "SELECT a FROM Admin a WHERE a.name LIKE :name")
 })
 public class Admin extends User {
 

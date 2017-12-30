@@ -115,6 +115,24 @@ public class AdminBean extends Bean<Admin> {
         }
     }
     
+    @GET
+    @Path("/searchByName/{name}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public AdminDTO getAdminByName(@PathParam("name") String name) {
+        try {
+            Admin admin = (Admin) em.createNamedQuery("getAdminByName")
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+            if (admin == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum administrador com esse nome.");
+            }
+            return toDTO(admin, AdminDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @PUT
     @Path("/updateREST")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

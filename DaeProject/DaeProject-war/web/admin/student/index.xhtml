@@ -5,46 +5,108 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2 class="page-header">Estudantes</h2>
-            <em:dt title="Estudantes" 
-                   headers="#{['Username', 'Nome', 'Email', 'Número do estudante', 'Curso']}" 
-                   props="#{['username', 'name', 'email', 'studentNumber', 'courseName']}" 
-                   list="#{administratorManager.allStudentsREST}"> 
-                <p:column headerText="Ações"> 
-                    <h:form class="center-text"> 
-                            <h:commandLink 
-                                class="fa fa-eye fa-fw"
-                                value=" " 
-                                title="Detalhes"
-                                action="show?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentStudent}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp;
-                            <h:commandLink 
-                                class="fa fa-pencil fa-fw"
-                                value=" " 
-                                title="Editar"
-                                action="edit?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentStudent}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp; 
-                            <h:commandLink 
-                                class="fa fa-trash fa-fw"
-                                value=" " 
-                                title="Remover"
-                                actionListener="#{administratorManager.removeStudent}"> 
-                                <f:param name="username" 
-                                    id="username" 
-                                    value="#{object.username}" /> 
-                            </h:commandLink> 
-                    </h:form> 
-                </p:column> 
-            </em:dt>
+            <h:form>
+                <div style="display: inline-block"><b>Search: </b> 
+                    <h:inputText 
+                        class="search-box"
+                        a:placeholder="Nome do administrador" 
+                        value="#{administratorManager.searchField}"/>&nbsp;
+                    <h:commandLink 
+                        style="font-size: 140%"
+                        class="fa fa-search fa-fw"
+                        title="Procurar"
+                        actionListener="#{administratorManager.clickSearchStudent()}"> 
+                        <f:param name="id" 
+                            id="id" 
+                            value="#{object.id}" /> 
+                    </h:commandLink> &nbsp;
+                </div>
+                <c:choose>
+                    <c:when test="#{administratorManager.searchFieldIsEmpty()}">
+                        <em:dt title="Estudantes" 
+                                headers="#{['Username', 'Nome', 'Email', 'Número do estudante', 'Curso']}" 
+                                props="#{['username', 'name', 'email', 'studentNumber', 'courseName']}" 
+                                list="#{administratorManager.allStudentsREST}"> 
+                            <p:column headerText="Ações"> 
+                                <div class="center-text">
+                                    <h:commandLink 
+                                        class="fa fa-eye fa-fw"
+                                        value=" " 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentStudent}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                    <h:commandLink 
+                                        class="fa fa-pencil fa-fw"
+                                        value=" " 
+                                        title="Editar"
+                                        action="edit?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentStudent}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink 
+                                        class="fa fa-trash fa-fw"
+                                        value=" " 
+                                        title="Remover"
+                                        actionListener="#{administratorManager.removeStudent}"> 
+                                        <f:param name="username" 
+                                            id="username" 
+                                            value="#{object.username}" /> 
+                                    </h:commandLink> 
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:when>
+                    <c:otherwise>
+                        <em:dt title="Estudantes" 
+                                headers="#{['Username', 'Nome', 'Email', 'Número do estudante', 'Curso']}" 
+                                props="#{['username', 'name', 'email', 'studentNumber', 'courseName']}" 
+                                list="#{administratorManager.clickSearchStudent()}"> 
+                            <p:column headerText="Ações"> 
+                                <div class="center-text">
+                                    <h:commandLink 
+                                        class="fa fa-eye fa-fw"
+                                        value=" " 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentStudent}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                    <h:commandLink 
+                                        class="fa fa-pencil fa-fw"
+                                        value=" " 
+                                        title="Editar"
+                                        action="edit?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentStudent}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink 
+                                        class="fa fa-trash fa-fw"
+                                        value=" " 
+                                        title="Remover"
+                                        actionListener="#{administratorManager.removeStudent}"> 
+                                        <f:param name="username" 
+                                            id="username" 
+                                            value="#{object.username}" /> 
+                                    </h:commandLink> 
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:otherwise>
+                </c:choose>
+            </h:form>
+            
             <br/>
             <br/>
             <h:link class="btn btn-primary pull-left" value="Criar estudante" outcome="create"/>

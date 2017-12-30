@@ -39,3 +39,11 @@
 .rowMargin {
     margin-bottom: 8px;
 }
+
+.search-box {
+    border: 1px solid lightgray; 
+    border-radius: 5px; 
+    width: 300px; 
+    padding: 5px;
+    margin-bottom: 15px;
+}

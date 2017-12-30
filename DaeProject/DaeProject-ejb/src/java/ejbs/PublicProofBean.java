@@ -101,6 +101,24 @@ public class PublicProofBean extends Bean<PublicProof>{
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("/searchByWorkTitle/{workTitle}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public PublicProofDTO getPublicProofByWorkTitle(@PathParam("workTitle") String workTitle) {
+        try {
+            PublicProof publicProof = (PublicProof) em.createNamedQuery("getPublicProofByWorkTitle")
+                    .setParameter("workTitle", workTitle)
+                    .getSingleResult();
+
+            if (publicProof == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma Prova Pública com esse titulo do trabalho.");
+            }
+            return toDTO(publicProof, PublicProofDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @PUT
     @Path("/updateREST")

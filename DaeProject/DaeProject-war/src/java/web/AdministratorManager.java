@@ -16,6 +16,7 @@ import dtos.TeacherDTO;
 import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
@@ -72,6 +73,7 @@ public class AdministratorManager implements Serializable {
     private Client client;
 
     private int selectOption;
+    private String searchField = "";
 
     private HttpAuthenticationFeature feature;
     
@@ -116,6 +118,7 @@ public class AdministratorManager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<CourseDTO>>() {
                     });
+            
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -152,6 +155,33 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return "index?faces-redirect=true";
+    }
+    
+    public List<CourseDTO> clickSearchCourse() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllCoursesREST();
+        }
+        
+        return searchCourseByNameREST();
+    }
+    
+    public List<CourseDTO> searchCourseByNameREST() {
+        List<CourseDTO> courseList = new LinkedList<>();
+        try {
+            
+            CourseDTO course = client.target(URILookup.getBaseAPI())
+                    .path("/courses/searchByName")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<CourseDTO>() {
+                    });
+            courseList.add(course);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return courseList;
     }
     
     /////////////// ADMINS /////////////////
@@ -213,6 +243,33 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return "index?faces-redirect=true";
+    }
+    
+    public List<AdminDTO> clickSearchAdmin() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllAdminsREST();
+        }
+        
+        return searchAdminByNameREST();
+    }
+    
+    public List<AdminDTO> searchAdminByNameREST() {
+        List<AdminDTO> list = new LinkedList<>();
+        try {
+            
+            AdminDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/admins/searchByName")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<AdminDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
     }
     
     /////////////// STUDENTS /////////////////
@@ -291,6 +348,33 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
+    
+    public List<StudentDTO> clickSearchStudent() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllStudentsREST();
+        }
+        
+        return searchStudentByNameREST();
+    }
+    
+    public List<StudentDTO> searchStudentByNameREST() {
+        List<StudentDTO> list = new LinkedList<>();
+        try {
+            
+            StudentDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/students/searchByName")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<StudentDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
+    }
 
     //Institution
     public String createInstitution() {
@@ -353,6 +437,33 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return "index?faces-redirect=true";
+    }
+    
+    public List<InstitutionDTO> clickSearchInstitution() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllInstitutionsREST();
+        }
+        
+        return searchInstitutionByNameREST();
+    }
+    
+    public List<InstitutionDTO> searchInstitutionByNameREST() {
+        List<InstitutionDTO> list = new LinkedList<>();
+        try {
+            
+            InstitutionDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/institutions/searchByName")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<InstitutionDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
     }
 
     /////////////// TEACHERS //////////////////
@@ -417,6 +528,33 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return returnedTeachers;
+    }
+    
+    public List<TeacherDTO> clickSearchTeacher() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllTeachersREST();
+        }
+        
+        return searchTeacherByNameREST();
+    }
+    
+    public List<TeacherDTO> searchTeacherByNameREST() {
+        List<TeacherDTO> list = new LinkedList<>();
+        try {
+            
+            TeacherDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/teachers/searchByName")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<TeacherDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
     }
 
     /////////////// PROPOSAL //////////////////
@@ -491,6 +629,33 @@ public class AdministratorManager implements Serializable {
             return null;
         }
         return returnedProposals;
+    }
+    
+    public List<WorkProposalDTO> clickSearchProposal() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllWorkProposalsREST();
+        }
+        
+        return searchProposalByNameREST();
+    }
+    
+    public List<WorkProposalDTO> searchProposalByNameREST() {
+        List<WorkProposalDTO> list = new LinkedList<>();
+        try {
+            
+            WorkProposalDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/searchByTitle")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<WorkProposalDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
     }
     
        /////////////// PUBLIC PROOFS //////////////////
@@ -589,7 +754,41 @@ public class AdministratorManager implements Serializable {
         return "index?faces-redirect=true";
     }
     
+    public List<PublicProofDTO> clickSearchPublicProof() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllPublicProofsREST();
+        }
+        
+        return searchPublicProofByNameREST();
+    }
+    
+    public List<PublicProofDTO> searchPublicProofByNameREST() {
+        List<PublicProofDTO> list = new LinkedList<>();
+        try {
+            
+            PublicProofDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/publicProofs/searchByWorkTitle")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<PublicProofDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
+    }
+    
     /////////////// UTILS //////////////////
+    public boolean searchFieldIsEmpty() {
+        if (this.searchField == null) {
+            return true;
+        }
+        return this.searchField.trim().isEmpty();
+    }
+    
     public int getSelectOption() {
         return selectOption;
     }
@@ -598,6 +797,14 @@ public class AdministratorManager implements Serializable {
         this.selectOption = selectOption;
     }
 
+    public String getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(String searchField) {
+        this.searchField = searchField;
+    }
+    
     /////////////// GETTERS & SETTERS /////////////////
 
     public UserManager getUserManager() {

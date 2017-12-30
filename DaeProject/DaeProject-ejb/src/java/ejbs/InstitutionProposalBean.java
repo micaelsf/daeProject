@@ -135,6 +135,24 @@ public class InstitutionProposalBean extends Bean<InstitutionProposal> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("/searchByTitle/{title}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public InstitutionProposalDTO getInstitutionProposalByTitle(@PathParam("title") String title) {
+        try {
+            InstitutionProposal proposal = (InstitutionProposal) em.createNamedQuery("getInstitutionProposalByTitle")
+                    .setParameter("title", title)
+                    .getSingleResult();
+
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse titulo.");
+            }
+            return toDTO(proposal, InstitutionProposalDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
   
     @PUT
     @Path("/updateREST/{username}")

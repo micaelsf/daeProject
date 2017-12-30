@@ -15,7 +15,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "PUBLIC_PROOFS")
 @NamedQueries({
-    @NamedQuery(name = "getAllPublicProofs", query = "SELECT pp FROM PublicProof pp ORDER BY pp.proofDate")
+    @NamedQuery(name = "getAllPublicProofs", 
+            query = "SELECT pp FROM PublicProof pp ORDER BY pp.proofDate"),
+    @NamedQuery(name = "getPublicProofByWorkTitle", 
+            query = "SELECT pp FROM PublicProof pp WHERE pp.workTitle LIKE :workTitle")
 })
 public class PublicProof implements Serializable {
     @Id

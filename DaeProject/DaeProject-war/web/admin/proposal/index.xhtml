@@ -5,38 +5,91 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
             <h2 class="page-header">Propostas de trabalho</h2>
-            <em:dt title="Propostas" 
-                   headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
-                   props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 
-                   list="#{administratorManager.allWorkProposalsREST}"> 
-                <p:column headerText="Ações"> 
-                    <h:form class="center-text"> 
-                            <h:commandLink 
-                                class="btn btn-default btn-sm"
-                                value="Detalhes" 
-                                title="Detalhes"
-                                action="show?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentProposal}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp;
-                            
-                            <h:commandLink 
-                                class="btn btn-default btn-sm"
-                                value="Aceitar / Rejeitar" 
-                                title="Aceitar/Rejeitar Proposta"
-                                action="actionForm?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{administratorManager.currentProposal}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp;
-                    </h:form> 
-                </p:column> 
-            </em:dt>
+            <h:form>
+                <div style="display: inline-block"><b>Search: </b> 
+                    <h:inputText 
+                        class="search-box"
+                        a:placeholder="Nome da instituição" 
+                        value="#{administratorManager.searchField}"/>&nbsp;
+                    <h:commandLink 
+                        style="font-size: 140%"
+                        class="fa fa-search fa-fw"
+                        title="Procurar"
+                        actionListener="#{administratorManager.clickSearchProposal()}"> 
+                        <f:param name="id" 
+                            id="id" 
+                            value="#{object.id}" /> 
+                    </h:commandLink> &nbsp;
+                </div>
+                <c:choose>
+                    <c:when test="#{administratorManager.searchFieldIsEmpty()}">
+                        <em:dt title="Propostas" 
+                                headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                                props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 
+                                list="#{administratorManager.allWorkProposalsREST}"> 
+                            <p:column headerText="Ações"> 
+                                <div class="center-text">
+                                    <h:commandLink 
+                                        class="btn btn-default btn-sm"
+                                        value="Detalhes" 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+
+                                    <h:commandLink 
+                                        class="btn btn-default btn-sm"
+                                        value="Aceitar / Rejeitar" 
+                                        title="Aceitar/Rejeitar Proposta"
+                                        action="actionForm?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:when>
+                    <c:otherwise>
+                        <em:dt title="Propostas" 
+                                headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                                props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 
+                                list="#{administratorManager.clickSearchProposal()}"> 
+                            <p:column headerText="Ações"> 
+                                <div class="center-text">
+                                    <h:commandLink 
+                                        class="btn btn-default btn-sm"
+                                        value="Detalhes" 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+
+                                    <h:commandLink 
+                                        class="btn btn-default btn-sm"
+                                        value="Aceitar / Rejeitar" 
+                                        title="Aceitar/Rejeitar Proposta"
+                                        action="actionForm?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:otherwise>
+                </c:choose>
+            </h:form>
             <br/>
             <br/>
         </ui:define>

@@ -65,6 +65,24 @@ public class CourseBean extends Bean<Course> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("/searchByName/{name}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public CourseDTO getCourseByName(@PathParam("name") String name) {
+        try {
+            Course course = (Course) em.createNamedQuery("getCourseByName")
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+            if (course == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum curso com esse nome.");
+            }
+            return toDTO(course, CourseDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @PUT
     @Path("/updateREST")

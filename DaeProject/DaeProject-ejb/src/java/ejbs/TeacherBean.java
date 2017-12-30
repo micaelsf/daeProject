@@ -117,6 +117,24 @@ public class TeacherBean extends Bean<Teacher> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("/searchByName/{name}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public TeacherDTO getTeacherByName(@PathParam("name") String name) {
+        try {
+            Teacher teacher = (Teacher) em.createNamedQuery("getTeacherByName")
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+            if (teacher == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma professor com esse nome.");
+            }
+            return toDTO(teacher, TeacherDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @PUT
     @Path("/updateREST")

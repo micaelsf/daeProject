@@ -42,7 +42,9 @@ import javax.persistence.Table;
     @NamedQuery(name = "getAllEndedProposals",  
             query = "SELECT wp FROM WorkProposal wp WHERE wp.isWorkCompleted = TRUE ORDER BY wp.title"),
     @NamedQuery(name = "getProposalById",  
-            query = "SELECT wp FROM WorkProposal wp WHERE wp.id = :proposalId")
+            query = "SELECT wp FROM WorkProposal wp WHERE wp.id = :proposalId"),
+    @NamedQuery(name = "getWorkProposalByTitle", 
+            query = "SELECT wp FROM WorkProposal wp WHERE wp.title LIKE :title")
 })
 public class WorkProposal implements Serializable {
     

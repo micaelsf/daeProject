@@ -166,6 +166,24 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
     
+    @GET
+    @Path("/searchByTitle/{title}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public WorkProposalDTO getWorkProposalByTitle(@PathParam("title") String title) {
+        try {
+            WorkProposal proposal = (WorkProposal) em.createNamedQuery("getWorkProposalByTitle")
+                    .setParameter("title", title)
+                    .getSingleResult();
+
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse titulo.");
+            }
+            return toDTO(proposal, WorkProposalDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @POST
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("enrollStudentRest/{username}/{workProposalId}")

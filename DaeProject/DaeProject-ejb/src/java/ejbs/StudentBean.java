@@ -149,6 +149,24 @@ public class StudentBean extends Bean<Student> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("/searchByName/{name}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public StudentDTO getStudentByName(@PathParam("name") String name) {
+        try {
+            Student student = (Student) em.createNamedQuery("getStudentByName")
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse nome.");
+            }
+            return toDTO(student, StudentDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @PUT
     @Path("/updateREST")

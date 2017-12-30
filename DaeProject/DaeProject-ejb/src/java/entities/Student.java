@@ -32,7 +32,9 @@ import javax.persistence.PrimaryKeyJoinColumn;
     @NamedQuery(name = "getStudentByUsername", 
             query = "SELECT s FROM Student s WHERE s.username = :username"),
     @NamedQuery(name = "getStudentByEmail", 
-            query = "SELECT s FROM Student s WHERE s.email = :email")
+            query = "SELECT s FROM Student s WHERE s.email = :email"),
+    @NamedQuery(name = "getStudentByName", 
+            query = "SELECT s FROM Student s WHERE s.name LIKE :name")
 })
 
 /*   

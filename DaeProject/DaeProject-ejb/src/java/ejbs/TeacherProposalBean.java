@@ -135,6 +135,24 @@ public class TeacherProposalBean extends Bean<TeacherProposal> {
         }
     }
     
+    @GET
+    @Path("/searchByTitle/{title}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public TeacherProposalDTO getTeacherProposalByTitle(@PathParam("title") String title) {
+        try {
+            TeacherProposal proposal = (TeacherProposal) em.createNamedQuery("getTeacherProposalByTitle")
+                    .setParameter("title", title)
+                    .getSingleResult();
+
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse titulo.");
+            }
+            return toDTO(proposal, TeacherProposalDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+    
     @PUT
     @Path("/updateREST/{username}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})

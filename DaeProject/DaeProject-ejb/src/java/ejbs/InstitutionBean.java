@@ -124,6 +124,24 @@ public class InstitutionBean extends Bean<Institution> {
             throw new EJBException(e.getMessage());
         }
     }
+    
+    @GET
+    @Path("/searchByName/{name}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public InstitutionDTO getInstitutionByName(@PathParam("name") String name) {
+        try {
+            Institution institution = (Institution) em.createNamedQuery("getInstitutionByName")
+                    .setParameter("name", name)
+                    .getSingleResult();
+
+            if (institution == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+            }
+            return toDTO(institution, InstitutionDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
 
     @PUT
     @Path("/updateREST")

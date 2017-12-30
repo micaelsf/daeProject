@@ -21,7 +21,8 @@ uniqueConstraints =
 @UniqueConstraint(columnNames = {"NAME"}))
 @NamedQueries({
     @NamedQuery(name = "getAllCourses", query = "SELECT c FROM Course c ORDER BY c.name"),
-    @NamedQuery(name = "getAllCoursesNames", query = "SELECT c.name FROM Course c ORDER BY c.name")
+    @NamedQuery(name = "getAllCoursesNames", query = "SELECT c.name FROM Course c ORDER BY c.name"),
+    @NamedQuery(name = "getCourseByName", query = "SELECT c FROM Course c WHERE c.name LIKE :name")
 })
 public class Course implements Serializable {
     @Id

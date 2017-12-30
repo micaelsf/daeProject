@@ -18,7 +18,9 @@ import javax.persistence.NamedQuery;
 @Entity
 @NamedQueries({
     @NamedQuery(name = "getAllInstitutionProposals",
-            query = "SELECT ip FROM InstitutionProposal ip ORDER BY ip.title")
+            query = "SELECT ip FROM InstitutionProposal ip ORDER BY ip.title"),
+    @NamedQuery(name = "getInstitutionProposalByTitle", 
+            query = "SELECT ip FROM InstitutionProposal ip WHERE ip.title LIKE :title")
 })
 public class InstitutionProposal extends WorkProposal {
 
