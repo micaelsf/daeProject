@@ -4,46 +4,108 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"> 
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
             <h2 class="page-header">As minhas propostas de trabalho</h2>
-             <em:dt title="Propostas" 
-                   headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Estado']}" 
-                   props="#{['proposalType', 'title', 'scientificAreas', 'status']}" 
-                   list="#{teacherManager.proposalsFromTeacherREST}"> 
-                <p:column headerText="Ações">
-                    <h:form class="center-text"> 
-                            <h:commandLink 
-                                class="fa fa-eye fa-fw"
-                                value=" " 
-                                title="Detalhes"
-                                action="show?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{teacherManager.currentProposal}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp;
-                            <h:commandLink 
-                                class="fa fa-pencil fa-fw"
-                                value=" " 
-                                title="Editar"
-                                action="edit?faces-redirect=true"> 
-                                <f:setPropertyActionListener 
-                                    target="#{teacherManager.currentProposal}" 
-                                    value="#{object}" /> 
-                            </h:commandLink> &nbsp; 
-                            <h:commandLink 
-                                class="fa fa-trash fa-fw"
-                                value=" " 
-                                title="Remover"
-                                actionListener="#{teacherManager.removeProposal}"> 
-                                <f:param name="id" 
-                                    id="id" 
-                                    value="#{object.id}" /> 
-                            </h:commandLink> 
-                    </h:form> 
-                </p:column> 
-            </em:dt>
+            <h:form>
+                <div style="display: inline-block"><b>Search: </b> 
+                    <h:inputText 
+                        class="search-box"
+                        a:placeholder="Titulo da proposta" 
+                        value="#{teacherManager.searchField}"/>&nbsp;
+                    <h:commandLink 
+                        style="font-size: 140%"
+                        class="fa fa-search fa-fw"
+                        title="Procurar"
+                        actionListener="#{teacherManager.clickSearch()}"> 
+                        <f:param name="id" 
+                            id="id" 
+                            value="#{object.id}" /> 
+                    </h:commandLink> &nbsp;
+                </div>
+                <c:choose>
+                    <c:when test="#{teacherManager.searchFieldIsEmpty()}">
+                        <em:dt title="Propostas" 
+                                headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                                props="#{['proposalType', 'title', 'scientificAreas', 'status']}" 
+                                list="#{teacherManager.proposalsFromTeacherREST}"> 
+                            <p:column headerText="Ações">
+                                <div class="center-text"> 
+                                    <h:commandLink 
+                                        class="fa fa-eye fa-fw"
+                                        value=" " 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{teacherManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                    <h:commandLink 
+                                        class="fa fa-pencil fa-fw"
+                                        value=" " 
+                                        title="Editar"
+                                        action="edit?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{teacherManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink 
+                                        class="fa fa-trash fa-fw"
+                                        value=" " 
+                                        title="Remover"
+                                        actionListener="#{teacherManager.removeProposal}"> 
+                                        <f:param name="id" 
+                                            id="id" 
+                                            value="#{object.id}" /> 
+                                    </h:commandLink> 
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:when>
+                    <c:otherwise>
+                        <em:dt title="Propostas" 
+                                headers="#{['Tipo', 'Titulo', 'Áreas Científicas', 'Estado']}" 
+                                props="#{['proposalType', 'title', 'scientificAreas', 'status']}" 
+                                list="#{teacherManager.clickSearch()}"> 
+                            <p:column headerText="Ações">
+                                <div class="center-text"> 
+                                    <h:commandLink 
+                                        class="fa fa-eye fa-fw"
+                                        value=" " 
+                                        title="Detalhes"
+                                        action="show?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{teacherManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp;
+                                    <h:commandLink 
+                                        class="fa fa-pencil fa-fw"
+                                        value=" " 
+                                        title="Editar"
+                                        action="edit?faces-redirect=true"> 
+                                        <f:setPropertyActionListener 
+                                            target="#{teacherManager.currentProposal}" 
+                                            value="#{object}" /> 
+                                    </h:commandLink> &nbsp; 
+                                    <h:commandLink 
+                                        class="fa fa-trash fa-fw"
+                                        value=" " 
+                                        title="Remover"
+                                        actionListener="#{teacherManager.removeProposal}"> 
+                                        <f:param name="id" 
+                                            id="id" 
+                                            value="#{object.id}" /> 
+                                    </h:commandLink> 
+                                </div>
+                            </p:column> 
+                        </em:dt>
+                    </c:otherwise>
+                </c:choose>
+            </h:form>
+            
             <br/>
             <br/>
             <h:link class="btn btn-primary pull-left" value="Criar Proposta de trabalho" outcome="create"/>

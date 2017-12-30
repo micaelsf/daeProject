@@ -30,7 +30,7 @@ public class UserManager implements Serializable {
         }
 
         if (isUserInRole(UserGroup.GROUP.Student)) {
-            return "/faces/students/index?faces-redirect=true";
+            return "/faces/students/indexAppliedProposal?faces-redirect=true";
         }
 
         if (isUserInRole(UserGroup.GROUP.Teacher)) {

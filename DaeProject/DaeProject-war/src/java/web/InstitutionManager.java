@@ -9,6 +9,7 @@ import entities.InstitutionProposal.InstitutionProposalType;
 import entities.WorkProposal;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -48,6 +49,8 @@ public class InstitutionManager implements Serializable {
     private InstitutionBean institutionBean;
 
     private InstitutionDTO institution;
+    
+    private String searchField = "";
     
     private String filePath;
     private UIComponent component;
@@ -142,6 +145,48 @@ public class InstitutionManager implements Serializable {
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
         }
+    }
+    
+    public List<InstitutionProposalDTO> clickSearch() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getProposalsFromInstitutionREST();
+        }
+        
+        return searchInstitutionProposalByTitleREST();
+    }
+    
+    public List<InstitutionProposalDTO> searchInstitutionProposalByTitleREST() {
+        List<InstitutionProposalDTO> list = new LinkedList<>();
+        try {
+            
+            InstitutionProposalDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/institutionProposals/searchByTitle")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<InstitutionProposalDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
+    }
+
+    public boolean searchFieldIsEmpty() {
+        if (this.searchField == null) {
+            return true;
+        }
+        return this.searchField.trim().isEmpty();
+    }
+    
+    public String getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(String searchField) {
+        this.searchField = searchField;
     }
     
     public boolean isPendente(WorkProposal.ProposalStatus status) {

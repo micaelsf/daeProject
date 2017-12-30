@@ -3,14 +3,11 @@ package web;
 import static com.sun.xml.ws.security.impl.policy.Constants.logger;
 import dtos.DocumentDTO;
 import dtos.StudentDTO;
-import dtos.TeacherProposalDTO;
 import dtos.WorkProposalDTO;
 import ejbs.StudentBean;
-import entities.Student;
-import entities.WorkProposal;
-import exceptions.EntityDoesNotExistsException;
 import javax.faces.bean.SessionScoped;
 import java.io.Serializable;
+import java.util.LinkedList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
@@ -49,6 +46,8 @@ public class StudentManager implements Serializable {
     @EJB
     private StudentBean studentBean;
     private StudentDTO student;
+    
+    private String searchField = "";
     
     private String filePath;
     private UIComponent component;
@@ -128,7 +127,7 @@ public class StudentManager implements Serializable {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
-        return "index?faces-redirect=true";
+        return "indexAppliedProposal?faces-redirect=true";
     }
 
     public void unrollStudentFromProposal(ActionEvent event) {
@@ -191,7 +190,48 @@ public class StudentManager implements Serializable {
         }
         return maxReached;
     }
+    
+    public List<WorkProposalDTO> clickSearch() {
+        if (this.searchField == null || this.searchField.trim().length() == 0) {
+            return getAllWorkProposalsREST();
+        }
+        
+        return searchProposalByTitleREST();
+    }
+    
+    public List<WorkProposalDTO> searchProposalByTitleREST() {
+        List<WorkProposalDTO> list = new LinkedList<>();
+        try {
+            
+            WorkProposalDTO resource = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/searchByTitle")
+                    .path(this.searchField + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<WorkProposalDTO>() {
+                    });
+            list.add(resource);
+            
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return list;
+    }
 
+    public boolean searchFieldIsEmpty() {
+        if (this.searchField == null) {
+            return true;
+        }
+        return this.searchField.trim().isEmpty();
+    }
+    
+    public String getSearchField() {
+        return searchField;
+    }
+
+    public void setSearchField(String searchField) {
+        this.searchField = searchField;
+    }
 
     public UserManager getUserManager() {
         return userManager;

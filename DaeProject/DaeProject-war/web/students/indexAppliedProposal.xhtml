@@ -7,11 +7,11 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"> 
     <ui:composition template="/templates/skeleton.xhtml"> 
         <ui:define name="main">
-            <h2 class="page-header">Lista das Propostas de Trabalho</h2>
+            <h2 class="page-header">As propostas ao qual me candidatei</h2>
             <em:dt title="Propostas" 
                    headers="#{['Titulo', 'Áreas Científica', 'Objetivos']}" 
                    props="#{['title', 'scientificAreas', 'objectives']}" 
-                   list="#{studentManager.allWorkProposalsREST}">
+                   list="#{studentManager.allStudentWorkProposalsREST}"> 
                 <p:column headerText="Ações">
                     <h:form class="center-text"> 
                         <h:commandButton 
@@ -22,12 +22,20 @@
                                 target="#{studentManager.currentProposal}" 
                                 value="#{object}" /> 
                         </h:commandButton> &nbsp;
+                        <h:commandButton 
+                            value="Eliminar" 
+                            title="Eliminar candidatura da lista"
+                            actionListener="#{studentManager.unrollStudentFromProposal}"> 
+                            <f:param name="removeId" 
+                                id="removeId" 
+                                value="#{object.id}" /> 
+                        </h:commandButton> &nbsp;
                     </h:form> 
                 </p:column> 
             </em:dt>
             <br/>
             <br/>
-            <p:link class="btn btn-primary btn-md" value="Voltar" outcome="index"/>
+            <h:link class="btn btn-primary pull-left" value="Ver todas as Propostas de Trabalho" outcome="indexAllProposals"/>
         </ui:define>
     </ui:composition>
 </html>

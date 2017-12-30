@@ -248,23 +248,23 @@ public class PublicProofBean extends Bean<PublicProof>{
         }
         return new PublicProofDTO(
                 publicProof.getId(),
-                    publicProof.getProofDate(),
-                    publicProof.getProofTime(),
-                    publicProof.getLocation(),
-                    publicProof.getCcpMember(),
-                    publicProof.getCcpMemberEmail(),
-                    publicProof.getWorkGuider(),
-                    publicProof.getWorkGuiderEmail(),
-                    publicProof.getTeacher(),
-                    publicProof.getTeacherEmail(),
-                    publicProof.getStudent().getUsername(),
-                    publicProof.getStudent().getName(),
-                    publicProof.getStudent().getEmail(),
-                    publicProof.getStudent().getStudentNumber(),
-                    publicProof.getStudent().getCourse().getName(),
-                    publicProof.getWorkTitle(),
-                    ataName,
-                    filePath
+                publicProof.getProofDate(),
+                publicProof.getProofTime(),
+                publicProof.getLocation(),
+                publicProof.getCcpMember(),
+                publicProof.getCcpMemberEmail(),
+                publicProof.getWorkGuider(),
+                publicProof.getWorkGuiderEmail(),
+                publicProof.getTeacher(),
+                publicProof.getTeacherEmail(),
+                publicProof.getStudent().getUsername(),
+                publicProof.getStudent().getName(),
+                publicProof.getStudent().getEmail(),
+                publicProof.getStudent().getStudentNumber(),
+                publicProof.getStudent().getCourse().getName(),
+                publicProof.getWorkTitle(),
+                ataName,
+                filePath
         );
     }
 
