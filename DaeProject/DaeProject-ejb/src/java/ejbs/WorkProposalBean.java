@@ -25,6 +25,7 @@ import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.ejb.Stateless;
+import javax.mail.MessagingException;
 import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -43,6 +44,9 @@ public class WorkProposalBean extends Bean<WorkProposal> {
 
     @EJB
     TeacherBean teacherBean;
+
+    @EJB
+    EmailBean emailBean;
 
     @Override
     protected Collection<WorkProposal> getAll() {
@@ -275,14 +279,35 @@ public class WorkProposalBean extends Bean<WorkProposal> {
                 throw new StudentNotEnrolledException("A Proposta de Trabalho não tem este estudante inscrito!");
             }
 
+            String studentRefused = "";
+
             if (workProposal.getStudent() != null && !(workProposal.getStudent().equals(student))) {
+                studentRefused = workProposal.getStudent().getUsername();
                 workProposal.getStudent().setWorkProposal(null);
+                //mail
+                sendEmailAcceptedProposalChangedTo(student.getUsername(), workProposal);
             }
 
-            student.setWorkProposal(workProposal);
-            workProposal.setStudent(student);
-            System.out.println("workProposal.setStudent(student): " + workProposal.getStudent().getUsername());
-            
+            if (workProposal.getStudent().equals(student)) {
+                student.setWorkProposal(workProposal);
+                workProposal.setStudent(student);
+                System.out.println("workProposal.setStudent(student): " + workProposal.getStudent().getUsername());
+                //send e-mail ao estudante aceite para a execução do trabalho
+                sendEmailAcceptProposalTo(student.getUsername(), workProposal);
+
+                if (workProposal.getStudentsApply().size() > 1) {
+                    for (Student std : workProposal.getStudentsApply()) {
+                        //verifica se o estudante não é o estudante aceite
+                        // e verifica se o estudante não foi o estudante anteriormente revogado que assim iria receber 2 e-mails
+                        if (!student.equals(std) && !std.getUsername().equals(studentRefused)) {
+                            //send e-mail aos estudantes candidatos não aceites para a execução do trabalho
+                            sendEmailNotAcceptedProposalTo(std.getUsername(), workProposal);
+                        }
+                    }
+                }
+
+            }
+
         } catch (EntityDoesNotExistsException e) {
             throw e;
         } catch (Exception e) {
@@ -385,4 +410,65 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
+    public void sendEmailAcceptProposalTo(String username, WorkProposal proposal)
+            throws MessagingException, EntityDoesNotExistsException {
+        try {
+            Student student = em.find(Student.class, username);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+            }
+
+            emailBean.send(
+                    student.getEmail(),
+                    "Candidatura aceite!",
+                    "Olá " + student.getName() + ", <br/> <br/> A sua candidatura à '" + proposal.getTitle() + "' foi aceite. </p> <br/>"
+                    + "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
+    }
+
+    public void sendEmailNotAcceptedProposalTo(String username, WorkProposal proposal)
+            throws MessagingException, EntityDoesNotExistsException {
+        try {
+            Student student = em.find(Student.class, username);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+            }
+
+            emailBean.send(
+                    student.getEmail(),
+                    "Candidatura à " + proposal.getTitle(),
+                    "Olá " + student.getName() + ", <br/> <br/> A sua candidatura à '" + proposal.getTitle() + "' não foi aceite. <br/>"
+                    + "Caso pretenda esclarecimentos adicionais contacte a equipa docente! </p> <br/>"
+                    + "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
+    }
+
+    public void sendEmailAcceptedProposalChangedTo(String username, WorkProposal proposal)
+            throws MessagingException, EntityDoesNotExistsException {
+        try {
+            Student student = em.find(Student.class, username);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma instituição com esse nome.");
+            }
+
+            emailBean.send(
+                    student.getEmail(),
+                    "Candidatura à " + proposal.getTitle(),
+                    "Olá " + student.getName() + ", <br/> <br/> A sua candidatura à '" + proposal.getTitle() + "' foi revogada. <br/>"
+                    + "Caso pretenda esclarecimentos adicionais contacte a equipa docente! </p> <br/>"
+                    + "<p>Atenciosamente,<br/> Membro da CCP</p>"
+            );
+
+        } catch (MessagingException | EntityDoesNotExistsException e) {
+            throw e;
+        }
+    }
 }
