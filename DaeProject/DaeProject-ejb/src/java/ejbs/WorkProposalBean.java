@@ -280,20 +280,21 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             }
 
             String studentRefused = "";
-
             if (workProposal.getStudent() != null && !(workProposal.getStudent().equals(student))) {
                 studentRefused = workProposal.getStudent().getUsername();
                 workProposal.getStudent().setWorkProposal(null);
                 //mail
-                sendEmailAcceptedProposalChangedTo(student.getUsername(), workProposal);
+              //  sendEmailAcceptedProposalChangedTo(student.getUsername(), workProposal);
             }
-
-            if (workProposal.getStudent().equals(student)) {
+            
+            if (workProposal.getStudent() == null || workProposal.getStudent().equals(student)) {
                 student.setWorkProposal(workProposal);
                 workProposal.setStudent(student);
                 System.out.println("workProposal.setStudent(student): " + workProposal.getStudent().getUsername());
                 //send e-mail ao estudante aceite para a execução do trabalho
-                sendEmailAcceptProposalTo(student.getUsername(), workProposal);
+               
+                // mail
+                // sendEmailAcceptProposalTo(student.getUsername(), workProposal);
 
                 if (workProposal.getStudentsApply().size() > 1) {
                     for (Student std : workProposal.getStudentsApply()) {
@@ -301,7 +302,10 @@ public class WorkProposalBean extends Bean<WorkProposal> {
                         // e verifica se o estudante não foi o estudante anteriormente revogado que assim iria receber 2 e-mails
                         if (!student.equals(std) && !std.getUsername().equals(studentRefused)) {
                             //send e-mail aos estudantes candidatos não aceites para a execução do trabalho
-                            sendEmailNotAcceptedProposalTo(std.getUsername(), workProposal);
+                            
+                            //mail
+                           // sendEmailNotAcceptedProposalTo(std.getUsername(), workProposal);
+
                         }
                     }
                 }
