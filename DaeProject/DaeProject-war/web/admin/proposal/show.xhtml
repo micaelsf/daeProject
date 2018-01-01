@@ -1,9 +1,11 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:h="http://xmlns.jcp.org/jsf/html" 
+      xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
+      xmlns:f="http://java.sun.com/jsf/core" 
+      xmlns:p="http://primefaces.org/ui" 
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
@@ -14,17 +16,17 @@
                 <h:outputText 
                     id="id"
                     value="#{administratorManager.currentProposal.id}"/>
-                
+
                 <h:outputLabel for="created_at" value="Criado em: " />
                 <h:outputText 
                     id="created_at"
                     value="#{administratorManager.currentProposal.created_at}"/>
-                
+
                 <h:outputLabel for="supervisor" value="Supervisor: " />
                 <h:outputText 
                     id="supervisor"
                     value="#{administratorManager.currentProposal.supervisor}"/>
-                
+
                 <h:outputLabel for="title" value="Titulo: " />
                 <h:outputText 
                     id="title"
@@ -34,47 +36,47 @@
                 <h:outputText 
                     id="scientificAreas"
                     value="#{administratorManager.currentProposal.scientificAreas}"/>
-                
+
                 <h:outputLabel for="objectives" value="Objetivos: " />
                 <h:outputText 
                     id="objectives"
                     value="#{administratorManager.currentProposal.objectives}"/>
-                
+
                 <h:outputLabel for="workResume" value="Resumo do trabalho: " />
                 <h:outputText 
                     id="workResume"
                     value="#{administratorManager.currentProposal.workResume}"/>
-                
+
                 <h:outputLabel for="workPlan" value="Plano de trabalho: " />
                 <h:outputText 
                     id="workPlan"
                     value="#{administratorManager.currentProposal.workPlan}"/>
-                
+
                 <h:outputLabel for="workLocality" value="Localidade do trabalho: " />
                 <h:outputText 
                     id="workLocality"
                     value="#{administratorManager.currentProposal.workLocality}"/>
-                
+
                 <h:outputLabel for="successRequirements" value="Requisitos fundamentais: " />
                 <h:outputText 
                     id="successRequirements"
                     value="#{administratorManager.currentProposal.successRequirements}"/>
-                
+
                 <h:outputLabel for="budget" value="Orçamento: " />
                 <h:outputText 
                     id="budget"
                     value="#{administratorManager.currentProposal.budget} €"/>
-                
+
                 <h:outputLabel for="support" value="Apoios: " />
                 <h:outputText 
                     id="support"
                     value="#{administratorManager.currentProposal.support}"/>
-                
+
                 <h:outputLabel for="bibliography" value="Bibliografia: " />
                 <h:outputText 
                     id="bibliography"
                     value="#{administratorManager.currentProposal.bibliographyToString}"/>
-                
+
                 <c:if test="#{!administratorManager.currentProposal.pendente}">
                     <c:if test="#{administratorManager.currentProposal.rejected}">
                         <h:outputLabel for="rejectedReason" value="Razão da Proposta Rejeitada: " />
@@ -89,9 +91,37 @@
                 </c:if>
             </p:panelGrid>
             <br/>
+            <h:form>
+                <em:dt title="Estudantes Inscritos" 
+                       headers="#{['Username', 'Nome', 'Email', 'Número do estudante', 'Curso']}" 
+                       props="#{['username', 'name', 'email', 'studentNumber', 'courseName']}" 
+                       list="#{administratorManager.allStudentInWorkProposalREST}">
+                    <p:column headerText="Estado da Candidatura"> 
+                        <div class="center-text">
+                            
+                            <h:outputText
+                                id="acceptedAppliance"
+                                value="#{administratorManager.isStudentAcceptedRest(object.username)}">
+                            </h:outputText>
+                        </div>
+                    </p:column>
+                    <p:column headerText="Candidatura"> 
+                        <div class="center-text">
+                            <h:commandLink 
+                                class="btn btn-bg btn-default"
+                                value="Aceitar/Alterar" 
+                                title="Aceitar/Alterar candidatura"
+                                actionListener="#{administratorManager.workProposalAcceptApplianceRest}">
+                                <f:param name="username" 
+                                         id="username" 
+                                         value="#{object.username}" /> 
+                            </h:commandLink>
+                        </div>
+                    </p:column> 
+                </em:dt>
+            </h:form>
             <br/>
             <p:link class="btn btn-primary btn-md" value="Voltar" outcome="/admin/proposal/index"/>
-                
         </ui:define>
     </ui:composition>
 </html>

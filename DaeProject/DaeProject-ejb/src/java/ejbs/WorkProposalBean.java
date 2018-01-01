@@ -5,6 +5,7 @@
  */
 package ejbs;
 
+import dtos.StudentDTO;
 import dtos.WorkProposalDTO;
 import entities.Student;
 import exceptions.EntityAlreadyExistsException;
@@ -47,9 +48,9 @@ public class WorkProposalBean extends Bean<WorkProposal> {
     protected Collection<WorkProposal> getAll() {
         return em.createNamedQuery("getAllProposals").getResultList();
     }
-    
-    @GET 
-    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON}) 
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @RolesAllowed({"Administrator", "Teacher", "Institution", "Student"})
     @Path("all")
     public Collection<WorkProposalDTO> getAllProposals() {
@@ -119,7 +120,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             if (em.find(WorkProposal.class, proposalDTO.getId()) != null) {
                 throw new EntityAlreadyExistsException("A proposta já existe.");
             }
- 
+
             WorkProposal proposal = new WorkProposal(
                     proposalDTO.getTitle(),
                     proposalDTO.getScientificAreas(),
@@ -165,7 +166,25 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
+    @GET
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("allStudentInProposalRest/{id}")
+    public Collection<StudentDTO> getAllStudentInWorkProposalREST(
+            @PathParam("id") String id)
+            throws EntityDoesNotExistsException {
+        try {
+            WorkProposal proposal = em.find(WorkProposal.class, Integer.parseInt(id));
+
+            if (proposal == null) {
+                throw new EntityDoesNotExistsException("Não existe nenhuma proposta com esse id.");
+            }
+            return toDTOs(proposal.getStudentsApply(), StudentDTO.class);
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
     @GET
     @Path("/searchByTitle/{title}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -183,7 +202,7 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             throw new EJBException(e.getMessage());
         }
     }
-    
+
     @POST
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Path("enrollStudentRest/{username}/{workProposalId}")
@@ -228,6 +247,77 @@ public class WorkProposalBean extends Bean<WorkProposal> {
         }
     }
 
+    @POST
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Path("workProposalAcceptApplianceRest/{username}/{workProposalId}")
+    public void workProposalAcceptAppliance(
+            @PathParam("username") String username,
+            @PathParam("workProposalId") String idWp)
+            throws EntityDoesNotExistsException,
+            MyConstraintViolationException {
+        System.out.println("WorkProposalBean with username: " + username + " and workporposal id: " + idWp);
+        try {
+            Student student = em.find(Student.class, username);
+            if (student == null) {
+                throw new EntityDoesNotExistsException("Não exite nenhum estudante com esse username!");
+            }
+
+            WorkProposal workProposal = em.find(WorkProposal.class, Integer.parseInt(idWp));
+            if (workProposal == null) {
+                throw new EntityDoesNotExistsException("Não exite nenhum Proposta de trabalho com esse ID!");
+            }
+
+            if (!workProposal.getStudentsApply().contains(student)) {
+                throw new StudentEnrolledException("O estudante não está está inscrito nesta Proposta de Trabalho!");
+            }
+
+            if (!student.getWorkProposalsApply().contains(workProposal)) {
+                throw new StudentNotEnrolledException("A Proposta de Trabalho não tem este estudante inscrito!");
+            }
+
+            if (workProposal.getStudent() != null && !(workProposal.getStudent().equals(student))) {
+                workProposal.getStudent().setWorkProposal(null);
+            }
+
+            student.setWorkProposal(workProposal);
+            workProposal.setStudent(student);
+            System.out.println("workProposal.setStudent(student): " + workProposal.getStudent().getUsername());
+            
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+    }
+
+    @GET
+    @Path("getAcceptedStudentRest/{workProposalId}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    public String getAcceptedStudent(
+            @PathParam("workProposalId") String idWp)
+            throws EntityDoesNotExistsException,
+            MyConstraintViolationException {
+
+        try {
+            WorkProposal workProposal = em.find(WorkProposal.class, Integer.parseInt(idWp));
+            if (workProposal == null) {
+                throw new EntityDoesNotExistsException("Não exite nenhum Proposta de trabalho com esse ID.");
+            }
+
+            if (workProposal.getStudent() == null) {
+                return "noStudent";
+            }
+
+            return workProposal.getStudent().getUsername();
+
+        } catch (EntityDoesNotExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new EJBException(e.getMessage());
+        }
+
+    }
+
     public void enrollStudentToWorkProposal(String username, String idWp)
             throws EntityDoesNotExistsException, MyConstraintViolationException, StudentNotEnrolledException, StudentEnrolledException {
         try {
@@ -243,11 +333,11 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             }
 
             if (student.getWorkProposalsApply().contains(workProposal)) {
-                throw new StudentNotEnrolledException("O estudante já está inscrito neste Proposta de trabalho.");
+                throw new StudentNotEnrolledException("O estudante já está inscrito nesta Proposta de Trabalho.");
             }
 
             if (workProposal.getStudentsApply().contains(student)) {
-                throw new StudentEnrolledException("O estudante já está proposto a este Proposta de trabalho.");
+                throw new StudentEnrolledException("O estudante já está proposto a esta Proposta de trabalho.");
             }
 
             student.addProposalApply(workProposal);
@@ -270,21 +360,21 @@ public class WorkProposalBean extends Bean<WorkProposal> {
             if (student == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhum estudante com esse username.");
             }
-            
+
             WorkProposal workProposal = em.find(WorkProposal.class, Integer.parseInt(idWp));
 
             if (workProposal == null) {
                 throw new EntityDoesNotExistsException("Não existe nenhuma Proposta de Trabalho com esse Id.");
             }
-            
+
             if (!student.getWorkProposalsApply().contains(workProposal)) {
                 throw new ProposalNotInStudentException("O estudante não contem essa Proposta de Trabalho.");
             }
-            
+
             if (!workProposal.getStudentsApply().contains(student)) {
                 throw new StudentNotInProposalException("A Proposta de Trabalho não contem esse estudante.");
             }
-            
+
             student.removeProposalApply(workProposal);
             workProposal.removeStudentApply(student);
 

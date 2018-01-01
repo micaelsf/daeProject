@@ -42,10 +42,10 @@ public class AdministratorManager implements Serializable {
 
     private CourseDTO newCourse;
     private CourseDTO currentCourse;
-    
+
     private AdminDTO newAdmin;
     private AdminDTO currentAdmin;
-    
+
     private StudentDTO newStudent;
     private StudentDTO currentStudent;
 
@@ -60,15 +60,15 @@ public class AdministratorManager implements Serializable {
 
     private PublicProofDTO newPublicProof;
     private PublicProofDTO currentPublicProof;
-    
+
     @ManagedProperty(value = "#{uploadManager}")
     private UploadManager uploadManager;
-    
+
     @ManagedProperty(value = "#{userManager}")
     private UserManager userManager;
-    
+
     private DocumentDTO document;
-    
+
     private UIComponent component;
     private Client client;
 
@@ -76,7 +76,7 @@ public class AdministratorManager implements Serializable {
     private String searchField = "";
 
     private HttpAuthenticationFeature feature;
-    
+
     public AdministratorManager() {
         newCourse = new CourseDTO();
         newAdmin = new AdminDTO();
@@ -87,13 +87,13 @@ public class AdministratorManager implements Serializable {
         newPublicProof = new PublicProofDTO();
         client = ClientBuilder.newClient();
     }
-    
+
     @PostConstruct
     public void initClient() {
         feature = HttpAuthenticationFeature.basic(userManager.getUsername(), userManager.getPassword());
         client.register(feature);
     }
-    
+
     /////////////// COURSES /////////////////
     public String createCourseREST() {
         try {
@@ -102,7 +102,7 @@ public class AdministratorManager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(newCourse));
             newCourse.reset();
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
@@ -118,7 +118,7 @@ public class AdministratorManager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<CourseDTO>>() {
                     });
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -144,7 +144,7 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("id");
             int id = Integer.parseInt(param.getValue().toString());
-            
+
             client.target(URILookup.getBaseAPI())
                     .path("/courses/removeREST")
                     .path(id + "")
@@ -156,19 +156,19 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-    
+
     public List<CourseDTO> clickSearchCourse() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllCoursesREST();
         }
-        
+
         return searchCourseByNameREST();
     }
-    
+
     public List<CourseDTO> searchCourseByNameREST() {
         List<CourseDTO> courseList = new LinkedList<>();
         try {
-            
+
             CourseDTO course = client.target(URILookup.getBaseAPI())
                     .path("/courses/searchByName")
                     .path(this.searchField + "")
@@ -176,14 +176,14 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<CourseDTO>() {
                     });
             courseList.add(course);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return courseList;
     }
-    
+
     /////////////// ADMINS /////////////////
     public String createAdmin() {
         try {
@@ -232,7 +232,7 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("username");
             String username = param.getValue().toString();
- 
+
             client.target(URILookup.getBaseAPI())
                     .path("/admins/removeREST")
                     .path(username + "")
@@ -244,19 +244,19 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-    
+
     public List<AdminDTO> clickSearchAdmin() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllAdminsREST();
         }
-        
+
         return searchAdminByNameREST();
     }
-    
+
     public List<AdminDTO> searchAdminByNameREST() {
         List<AdminDTO> list = new LinkedList<>();
         try {
-            
+
             AdminDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/admins/searchByName")
                     .path(this.searchField + "")
@@ -264,14 +264,14 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<AdminDTO>() {
                     });
             list.add(resource);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return list;
     }
-    
+
     /////////////// STUDENTS /////////////////
     public String createStudent() {
         try {
@@ -315,7 +315,7 @@ public class AdministratorManager implements Serializable {
         }
         return returnedStudents;
     }
-    
+
     public List<StudentDTO> getAllStudentsCourseREST() {
         List<StudentDTO> returnedStudents;
         try {
@@ -336,7 +336,7 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("username");
             String username = param.getValue().toString();
- 
+
             client.target(URILookup.getBaseAPI())
                     .path("/students/removeREST")
                     .path(username + "")
@@ -348,19 +348,19 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-    
+
     public List<StudentDTO> clickSearchStudent() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllStudentsREST();
         }
-        
+
         return searchStudentByNameREST();
     }
-    
+
     public List<StudentDTO> searchStudentByNameREST() {
         List<StudentDTO> list = new LinkedList<>();
         try {
-            
+
             StudentDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/students/searchByName")
                     .path(this.searchField + "")
@@ -368,7 +368,7 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<StudentDTO>() {
                     });
             list.add(resource);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -426,7 +426,7 @@ public class AdministratorManager implements Serializable {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("username");
             String username = param.getValue().toString();
-            
+
             client.target(URILookup.getBaseAPI())
                     .path("/institutions/removeREST")
                     .path(username + "")
@@ -438,19 +438,19 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-    
+
     public List<InstitutionDTO> clickSearchInstitution() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllInstitutionsREST();
         }
-        
+
         return searchInstitutionByNameREST();
     }
-    
+
     public List<InstitutionDTO> searchInstitutionByNameREST() {
         List<InstitutionDTO> list = new LinkedList<>();
         try {
-            
+
             InstitutionDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/institutions/searchByName")
                     .path(this.searchField + "")
@@ -458,7 +458,7 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<InstitutionDTO>() {
                     });
             list.add(resource);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -529,19 +529,19 @@ public class AdministratorManager implements Serializable {
         }
         return returnedTeachers;
     }
-    
+
     public List<TeacherDTO> clickSearchTeacher() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllTeachersREST();
         }
-        
+
         return searchTeacherByNameREST();
     }
-    
+
     public List<TeacherDTO> searchTeacherByNameREST() {
         List<TeacherDTO> list = new LinkedList<>();
         try {
-            
+
             TeacherDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/teachers/searchByName")
                     .path(this.searchField + "")
@@ -549,7 +549,7 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<TeacherDTO>() {
                     });
             list.add(resource);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
@@ -572,7 +572,7 @@ public class AdministratorManager implements Serializable {
         }
         return returnedProposals;
     }
-    
+
     public String updateProposalStatusREST() {
         try {
             String option = null;
@@ -591,20 +591,20 @@ public class AdministratorManager implements Serializable {
                     .path(option)
                     .request(MediaType.APPLICATION_XML)
                     .post(Entity.xml(""));
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", component, logger);
             return null;
         }
         return "index?faces-redirect=true";
     }
-    
+
     public List<InstitutionProposalDTO> getProposalsFromInstitutionREST() {
         List<InstitutionProposalDTO> returnedProposals;
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
                     .path("/institutionProposals/all/institution")
-                    .path(currentInstitution.getUsername()+ "")
+                    .path(currentInstitution.getUsername() + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<InstitutionProposalDTO>>() {
                     });
@@ -614,13 +614,13 @@ public class AdministratorManager implements Serializable {
         }
         return returnedProposals;
     }
-    
+
     public List<TeacherProposalDTO> getProposalsFromTeacherREST() {
         List<TeacherProposalDTO> returnedProposals;
         try {
             returnedProposals = client.target(URILookup.getBaseAPI())
                     .path("/teacherProposals/all/teacher")
-                    .path(currentTeacher.getUsername()+ "")
+                    .path(currentTeacher.getUsername() + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<TeacherProposalDTO>>() {
                     });
@@ -630,19 +630,19 @@ public class AdministratorManager implements Serializable {
         }
         return returnedProposals;
     }
-    
+
     public List<WorkProposalDTO> clickSearchProposal() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllWorkProposalsREST();
         }
-        
+
         return searchProposalByNameREST();
     }
-    
+
     public List<WorkProposalDTO> searchProposalByNameREST() {
         List<WorkProposalDTO> list = new LinkedList<>();
         try {
-            
+
             WorkProposalDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/proposals/searchByTitle")
                     .path(this.searchField + "")
@@ -650,15 +650,70 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<WorkProposalDTO>() {
                     });
             list.add(resource);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return list;
     }
-    
-       /////////////// PUBLIC PROOFS //////////////////
+
+    public List<StudentDTO> getAllStudentInWorkProposalREST() {
+        List<StudentDTO> returnedStudents;
+        System.out.println("AdminManager getAllStudentInWorkProposalREST");
+        try {
+            returnedStudents = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/allStudentInProposalRest")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<List<StudentDTO>>() {
+                    });
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return returnedStudents;
+    }
+
+    public String workProposalAcceptApplianceRest(ActionEvent event) {
+        try {
+            UIParameter param = (UIParameter) event.getComponent().findComponent("username");
+            String username = param.getValue().toString();
+            System.out.println("workProposalAcceptApplianceRest param received: " + username);
+            client.target(URILookup.getBaseAPI())
+                    .path("/proposals/workProposalAcceptApplianceRest")
+                    .path(username + "")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .post(Entity.xml(""));
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+            return null;
+        }
+        return "show?faces-redirect=true";
+    }
+
+    public String isStudentAcceptedRest(String username) {
+        System.out.println("AdminManager isStudentAcceptedRest");
+        try {
+           /* UIParameter param = (UIParameter) event.getComponent().findComponent("username");
+            String username = param.getValue().toString();*/
+            
+            String studentUsername = client.target(URILookup.getBaseAPI())
+                    .path("/proposals/getAcceptedStudentRest")
+                    .path(currentProposal.getId() + "")
+                    .request(MediaType.APPLICATION_XML)
+                    .get(new GenericType<String>() {
+                    });
+            System.out.println("isStudentAcceptedRest stdUsername: " + studentUsername);
+            return studentUsername.equals(username) ? "Aceite" : "Não Aceite";
+        } catch (Exception e) {
+            FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
+        }
+        return "não aceite";
+    }
+
+    /////////////// PUBLIC PROOFS //////////////////
     public String createPublicProofREST() {
         try {
             client.target(URILookup.getBaseAPI())
@@ -713,14 +768,14 @@ public class AdministratorManager implements Serializable {
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<List<PublicProofDTO>>() {
                     });
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return returnedPublicProofs;
     }
-    
+
     public String uploadDocumentToPublicProofREST() {
         try {
             document = new DocumentDTO(uploadManager.getCompletePathFile(), uploadManager.getFilename(), uploadManager.getFile().getContentType());
@@ -729,15 +784,15 @@ public class AdministratorManager implements Serializable {
                     .path(currentPublicProof.getId() + "")
                     .request(MediaType.APPLICATION_XML)
                     .put(Entity.xml(document));
-            
+
         } catch (NumberFormatException e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return "index?faces-redirect=true";
     }
-    
-     public String sendEmailToAllInPublicProof(ActionEvent event) {
+
+    public String sendEmailToAllInPublicProof(ActionEvent event) {
         try {
             UIParameter param = (UIParameter) event.getComponent().findComponent("idEmail");
             int id = Integer.parseInt(param.getValue().toString());
@@ -753,19 +808,19 @@ public class AdministratorManager implements Serializable {
         }
         return "index?faces-redirect=true";
     }
-    
+
     public List<PublicProofDTO> clickSearchPublicProof() {
         if (this.searchField == null || this.searchField.trim().length() == 0) {
             return getAllPublicProofsREST();
         }
-        
+
         return searchPublicProofByNameREST();
     }
-    
+
     public List<PublicProofDTO> searchPublicProofByNameREST() {
         List<PublicProofDTO> list = new LinkedList<>();
         try {
-            
+
             PublicProofDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/publicProofs/searchByWorkTitle")
                     .path(this.searchField + "")
@@ -773,14 +828,14 @@ public class AdministratorManager implements Serializable {
                     .get(new GenericType<PublicProofDTO>() {
                     });
             list.add(resource);
-            
+
         } catch (Exception e) {
             FacesExceptionHandler.handleException(e, "Erro inesperado! Tente novamente mais tarde!", logger);
             return null;
         }
         return list;
     }
-    
+
     /////////////// UTILS //////////////////
     public boolean searchFieldIsEmpty() {
         if (this.searchField == null) {
@@ -788,7 +843,7 @@ public class AdministratorManager implements Serializable {
         }
         return this.searchField.trim().isEmpty();
     }
-    
+
     public int getSelectOption() {
         return selectOption;
     }
@@ -804,9 +859,8 @@ public class AdministratorManager implements Serializable {
     public void setSearchField(String searchField) {
         this.searchField = searchField;
     }
-    
-    /////////////// GETTERS & SETTERS /////////////////
 
+    /////////////// GETTERS & SETTERS /////////////////
     public UserManager getUserManager() {
         return userManager;
     }
@@ -814,9 +868,9 @@ public class AdministratorManager implements Serializable {
     public void setUserManager(UserManager userManager) {
         this.userManager = userManager;
     }
-    
+
     //Courses
-    public CourseDTO getNewCourse() {    
+    public CourseDTO getNewCourse() {
         return newCourse;
     }
 
@@ -827,7 +881,7 @@ public class AdministratorManager implements Serializable {
     public CourseDTO getCurrentCourse() {
         return currentCourse;
     }
-    
+
     public void setCurrentCourse(CourseDTO currentCourse) {
         this.currentCourse = currentCourse;
     }
@@ -844,7 +898,8 @@ public class AdministratorManager implements Serializable {
     public AdminDTO getCurrentAdmin() {
         return currentAdmin;
     }
-    public void setCurrentAdmin(AdminDTO currentAdmin) {    
+
+    public void setCurrentAdmin(AdminDTO currentAdmin) {
         this.currentAdmin = currentAdmin;
     }
 
@@ -954,5 +1009,5 @@ public class AdministratorManager implements Serializable {
     public void setDocument(DocumentDTO document) {
         this.document = document;
     }
-    
+
 }

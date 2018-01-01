@@ -58,9 +58,9 @@
                                         value=" " 
                                         title="Remover"
                                         actionListener="#{administratorManager.removeAdmin}"> 
-                                        <f:param name="username" 
-                                            id="username" 
-                                            value="#{object.username}" /> 
+                                        <f:setPropertyActionListener 
+                                            target="#{administratorManager.currentAdmin}" 
+                                            value="#{object}" />
                                     </h:commandLink> 
                                 </div>
                             </p:column> 

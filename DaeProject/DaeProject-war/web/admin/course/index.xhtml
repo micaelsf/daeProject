@@ -5,8 +5,8 @@
       xmlns:em="http://xmlns.jcp.org/jsf/composite/emcomp"
       xmlns:f="http://java.sun.com/jsf/core" 
       xmlns:p="http://primefaces.org/ui" 
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> 
     <ui:composition template="/templates/admin.xhtml"> 
         <ui:define name="main">
@@ -23,16 +23,16 @@
                         title="Procurar"
                         actionListener="#{administratorManager.clickSearchCourse()}"> 
                         <f:param name="id" 
-                            id="id" 
-                            value="#{object.id}" /> 
+                                 id="id" 
+                                 value="#{object.id}" /> 
                     </h:commandLink> &nbsp;
                 </div>
                 <c:choose>
                     <c:when test="#{administratorManager.searchFieldIsEmpty()}">
                         <em:dt title="Cursos" 
-                                headers="#{['Id', 'Nome']}" 
-                                props="#{['id', 'name']}" 
-                                list="#{administratorManager.allCoursesREST}"> 
+                               headers="#{['Id', 'Nome']}" 
+                               props="#{['id', 'name']}" 
+                               list="#{administratorManager.allCoursesREST}"> 
                             <p:column headerText="Ações"> 
                                 <div class="center-text">
                                     <h:commandLink 
@@ -59,22 +59,22 @@
                                         id="remove"
                                         title="Remover"
                                         actionListener="#{administratorManager.removeCourseREST}"> 
-                                       <f:param name="id" 
-                                            id="id" 
-                                            value="#{object.id}" /> 
-                                   </h:commandLink> 
+                                        <f:param name="id" 
+                                                 id="id" 
+                                                 value="#{object.id}" /> 
+                                    </h:commandLink> 
                                 </div> 
                             </p:column> 
-                         </em:dt>
+                        </em:dt>
                     </c:when>
                     <c:otherwise>
                         <em:dt title="Cursos" 
-                                headers="#{['Id', 'Nome']}" 
-                                props="#{['id', 'name']}" 
-                                list="#{administratorManager.clickSearchCourse()}"> 
+                               headers="#{['Id', 'Nome']}" 
+                               props="#{['id', 'name']}" 
+                               list="#{administratorManager.clickSearchCourse()}"> 
                             <p:column headerText="Ações"> 
                                 <div class="center-text">
-                                        <h:commandLink 
+                                    <h:commandLink 
                                         class="fa fa-eye fa-fw"
                                         value=" " 
                                         title="Detalhes"
@@ -98,18 +98,18 @@
                                         id="remove"
                                         title="Remover"
                                         actionListener="#{administratorManager.removeCourseREST}"> 
-                                       <f:param name="id" 
-                                            id="id" 
-                                            value="#{object.id}" /> 
-                                   </h:commandLink> 
+                                        <f:param name="id" 
+                                                 id="id" 
+                                                 value="#{object.id}" /> 
+                                    </h:commandLink> 
                                 </div> 
                             </p:column> 
-                         </em:dt>
+                        </em:dt>
                     </c:otherwise>
                 </c:choose>
             </h:form>
-            
-            
+
+
             <br/>
             <br/>
             <h:link class="btn btn-primary pull-left" value="Criar Curso" outcome="create"/>

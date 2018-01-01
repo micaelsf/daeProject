@@ -444,8 +444,9 @@ public class ConfigBean {
                     null
             ));
 
-            //System.out.println("ConfigBean enroll Student in WorkProposal");
-            //workProposalBean.enrollStudent("7", "20");
+            System.out.println("ConfigBean enroll Student in WorkProposal");
+            workProposalBean.enrollStudent("student5", "5");
+            workProposalBean.enrollStudent("student1", "5");
 
             /*
             studentBean.enrollStudent("1111111", 1);
