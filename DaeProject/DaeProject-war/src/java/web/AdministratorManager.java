@@ -680,6 +680,7 @@ public class AdministratorManager implements Serializable {
             UIParameter param = (UIParameter) event.getComponent().findComponent("username");
             String username = param.getValue().toString();
             System.out.println("workProposalAcceptApplianceRest param received: " + username);
+            
             client.target(URILookup.getBaseAPI())
                     .path("/proposals/workProposalAcceptApplianceRest")
                     .path(username + "")
