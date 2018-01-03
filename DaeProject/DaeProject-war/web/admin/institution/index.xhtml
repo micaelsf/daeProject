@@ -16,7 +16,7 @@
                     <h:inputText 
                         class="search-box"
                         a:placeholder="Nome da instituição" 
-                        value="#{administratorManager.searchField}"/>&nbsp;
+                        value="#{administratorManager.searchInstitution}"/>&nbsp;
                     <h:commandLink 
                         style="font-size: 140%"
                         class="fa fa-search fa-fw"
@@ -28,7 +28,7 @@
                     </h:commandLink> &nbsp;
                 </div>
                 <c:choose>
-                    <c:when test="#{administratorManager.searchFieldIsEmpty()}">
+                    <c:when test="#{administratorManager.searchFieldInstitutionIsEmpty()}">
                         <em:dt title="Instituições" 
                             headers="#{['Username', 'Nome', 'Email']}" 
                             props="#{['username', 'name', 'email']}" 

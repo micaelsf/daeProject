@@ -15,8 +15,8 @@
                 <div style="display: inline-block"><b>Search: </b> 
                     <h:inputText 
                         class="search-box"
-                        a:placeholder="Nome da instituição" 
-                        value="#{administratorManager.searchField}"/>&nbsp;
+                        a:placeholder="Título da proposta" 
+                        value="#{administratorManager.searchProposal}"/>&nbsp;
                     <h:commandLink 
                         style="font-size: 140%"
                         class="fa fa-search fa-fw"
@@ -28,7 +28,7 @@
                     </h:commandLink> &nbsp;
                 </div>
                 <c:choose>
-                    <c:when test="#{administratorManager.searchFieldIsEmpty()}">
+                    <c:when test="#{administratorManager.searchFieldProposalIsEmpty()}">
                         <em:dt title="Propostas" 
                                 headers="#{['Tipo', 'Supervisor', 'Titulo', 'Áreas Científicas', 'Estado']}" 
                                 props="#{['proposalType', 'supervisor', 'title', 'scientificAreas', 'status']}" 

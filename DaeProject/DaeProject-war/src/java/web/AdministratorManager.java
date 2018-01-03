@@ -73,7 +73,14 @@ public class AdministratorManager implements Serializable {
     private Client client;
 
     private int selectOption;
-    private String searchField = "";
+    
+    private String searchCourse = "";
+    private String searchAdmin = "";
+    private String searchStudent = "";
+    private String searchTeacher = "";
+    private String searchInstitution = "";
+    private String searchProposal = "";
+    private String searchPublicProof = "";
 
     private HttpAuthenticationFeature feature;
 
@@ -158,7 +165,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<CourseDTO> clickSearchCourse() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchCourse == null || this.searchCourse.trim().length() == 0) {
             return getAllCoursesREST();
         }
 
@@ -171,7 +178,7 @@ public class AdministratorManager implements Serializable {
 
             CourseDTO course = client.target(URILookup.getBaseAPI())
                     .path("/courses/searchByName")
-                    .path(this.searchField + "")
+                    .path(this.searchCourse + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<CourseDTO>() {
                     });
@@ -246,7 +253,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<AdminDTO> clickSearchAdmin() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchAdmin == null || this.searchAdmin.trim().length() == 0) {
             return getAllAdminsREST();
         }
 
@@ -259,7 +266,7 @@ public class AdministratorManager implements Serializable {
 
             AdminDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/admins/searchByName")
-                    .path(this.searchField + "")
+                    .path(this.searchAdmin + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<AdminDTO>() {
                     });
@@ -350,7 +357,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<StudentDTO> clickSearchStudent() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchStudent == null || this.searchStudent.trim().length() == 0) {
             return getAllStudentsREST();
         }
 
@@ -363,7 +370,7 @@ public class AdministratorManager implements Serializable {
 
             StudentDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/students/searchByName")
-                    .path(this.searchField + "")
+                    .path(this.searchStudent + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<StudentDTO>() {
                     });
@@ -440,7 +447,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<InstitutionDTO> clickSearchInstitution() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchInstitution == null || this.searchInstitution.trim().length() == 0) {
             return getAllInstitutionsREST();
         }
 
@@ -453,7 +460,7 @@ public class AdministratorManager implements Serializable {
 
             InstitutionDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/institutions/searchByName")
-                    .path(this.searchField + "")
+                    .path(this.searchInstitution + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<InstitutionDTO>() {
                     });
@@ -531,7 +538,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<TeacherDTO> clickSearchTeacher() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchTeacher == null || this.searchTeacher.trim().length() == 0) {
             return getAllTeachersREST();
         }
 
@@ -544,7 +551,7 @@ public class AdministratorManager implements Serializable {
 
             TeacherDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/teachers/searchByName")
-                    .path(this.searchField + "")
+                    .path(this.searchTeacher + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<TeacherDTO>() {
                     });
@@ -632,7 +639,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<WorkProposalDTO> clickSearchProposal() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchProposal == null || this.searchProposal.trim().length() == 0) {
             return getAllWorkProposalsREST();
         }
 
@@ -645,7 +652,7 @@ public class AdministratorManager implements Serializable {
 
             WorkProposalDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/proposals/searchByTitle")
-                    .path(this.searchField + "")
+                    .path(this.searchProposal + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<WorkProposalDTO>() {
                     });
@@ -811,7 +818,7 @@ public class AdministratorManager implements Serializable {
     }
 
     public List<PublicProofDTO> clickSearchPublicProof() {
-        if (this.searchField == null || this.searchField.trim().length() == 0) {
+        if (this.searchPublicProof == null || this.searchPublicProof.trim().length() == 0) {
             return getAllPublicProofsREST();
         }
 
@@ -824,7 +831,7 @@ public class AdministratorManager implements Serializable {
 
             PublicProofDTO resource = client.target(URILookup.getBaseAPI())
                     .path("/publicProofs/searchByWorkTitle")
-                    .path(this.searchField + "")
+                    .path(this.searchPublicProof + "")
                     .request(MediaType.APPLICATION_XML)
                     .get(new GenericType<PublicProofDTO>() {
                     });
@@ -838,11 +845,53 @@ public class AdministratorManager implements Serializable {
     }
 
     /////////////// UTILS //////////////////
-    public boolean searchFieldIsEmpty() {
-        if (this.searchField == null) {
+    public boolean searchFieldCourseIsEmpty() {
+        if (this.searchCourse == null) {
             return true;
         }
-        return this.searchField.trim().isEmpty();
+        return this.searchCourse.trim().isEmpty();
+    }
+    
+    public boolean searchFieldAdminIsEmpty() {
+        if (this.searchAdmin == null) {
+            return true;
+        }
+        return this.searchAdmin.trim().isEmpty();
+    }
+        
+    public boolean searchFieldStudentIsEmpty() {
+        if (this.searchStudent == null) {
+            return true;
+        }
+        return this.searchStudent.trim().isEmpty();
+    }
+    
+    public boolean searchFieldTeacherIsEmpty() {
+        if (this.searchTeacher == null) {
+            return true;
+        }
+        return this.searchTeacher.trim().isEmpty();
+    }
+    
+    public boolean searchFieldInstitutionIsEmpty() {
+        if (this.searchInstitution == null) {
+            return true;
+        }
+        return this.searchInstitution.trim().isEmpty();
+    }
+    
+    public boolean searchFieldProposalIsEmpty() {
+        if (this.searchProposal == null) {
+            return true;
+        }
+        return this.searchProposal.trim().isEmpty();
+    }
+    
+    public boolean searchFieldPublicProofIsEmpty() {
+        if (this.searchPublicProof == null) {
+            return true;
+        }
+        return this.searchPublicProof.trim().isEmpty();
     }
 
     public int getSelectOption() {
@@ -853,12 +902,60 @@ public class AdministratorManager implements Serializable {
         this.selectOption = selectOption;
     }
 
-    public String getSearchField() {
-        return searchField;
+    public String getSearchCourse() {
+        return searchCourse;
     }
 
-    public void setSearchField(String searchField) {
-        this.searchField = searchField;
+    public void setSearchCourse(String searchCourse) {
+        this.searchCourse = searchCourse;
+    }
+
+    public String getSearchAdmin() {
+        return searchAdmin;
+    }
+
+    public void setSearchAdmin(String searchAdmin) {
+        this.searchAdmin = searchAdmin;
+    }
+
+    public String getSearchStudent() {
+        return searchStudent;
+    }
+
+    public void setSearchStudent(String searchStudent) {
+        this.searchStudent = searchStudent;
+    }
+
+    public String getSearchTeacher() {
+        return searchTeacher;
+    }
+
+    public void setSearchTeacher(String searchTeacher) {
+        this.searchTeacher = searchTeacher;
+    }
+
+    public String getSearchInstitution() {
+        return searchInstitution;
+    }
+
+    public void setSearchInstitution(String searchInstitution) {
+        this.searchInstitution = searchInstitution;
+    }
+
+    public String getSearchProposal() {
+        return searchProposal;
+    }
+
+    public void setSearchProposal(String searchProposal) {
+        this.searchProposal = searchProposal;
+    }
+
+    public String getSearchPublicProof() {
+        return searchPublicProof;
+    }
+
+    public void setSearchPublicProof(String searchPublicProof) {
+        this.searchPublicProof = searchPublicProof;
     }
 
     /////////////// GETTERS & SETTERS /////////////////
